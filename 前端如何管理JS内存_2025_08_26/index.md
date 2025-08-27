@@ -21,7 +21,7 @@ JavaScript 的内存管理主要依赖以下两个过程：
 全局变量会一直存在于内存中，直到页面关闭。例如：
 
 
-```
+```ts
 function createLeak() { 
     leakedVar = "I am a global variable"; // 没有使用 `var`、`let` 或 `const`
 }
@@ -35,7 +35,7 @@ function createLeak() {
 
 
 
-```
+```ts
 function createClosure() {  
     let largeData = new Array(1000000); // 占用大量内存  
     return function () {    console.log(largeData);  };
@@ -46,7 +46,7 @@ let closure = createClosure();
 **解决方法**：当闭包不再需要时，手动清理引用。
 
 
-```
+```ts
 closure = null; // 解除引用
 ```
 
@@ -69,7 +69,7 @@ element = null;
 事件监听器会保留对目标元素的引用，导致内存泄漏。
 
 
-```
+```ts
 let button = document.getElementById("myButton");
 button.addEventListener("click", ()=> {  
     console.log("clicked");
@@ -87,13 +87,13 @@ button.removeEventListener("click", handler);
 
 使用 `setInterval` 或 `setTimeout` 创建的定时器，如果未清理，可能导致内存泄漏。
 
-```
+```ts
 setInterval(() => {  console.log("Running...");}, 1000);
 ```
 **解决方法**：在不需要时清理定时器。
 
 
-```
+```ts
 let intervalId = setInterval(() => {  
     console.log("Running...");
 }, 1000);
@@ -145,7 +145,7 @@ clearInterval(intervalId);
 • 使用 `console.memory` 查看内存使用情况：
 
 
-```
+```ts
 console.log(performance.memory);
 ```
 
