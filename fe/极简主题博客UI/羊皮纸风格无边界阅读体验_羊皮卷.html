@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>羊皮纸风格无边界阅读体验</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        /* 羊皮纸书卷风格背景 */
+        body {
+            background-color: #f9f4e8; /* 羊皮纸主色调 */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.03) 20%, transparent 20.1%),
+                radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.03) 20%, transparent 20.1%),
+                linear-gradient(to bottom, rgba(230, 220, 195, 0.1) 0%, transparent 20%),
+                linear-gradient(to right, rgba(240, 230, 210, 0.5) 0%, transparent 50%),
+                linear-gradient(315deg, rgba(200, 185, 160, 0.1) 0%, transparent 30%);
+            background-size: 150% 150%, 150% 150%, 100% 100%, 100% 100%, 100% 100%;
+            background-position: 10% 10%, 90% 90%, 0 0, 0 0, 0 0;
+            color: #333;
+            line-height: 1.8;
+            padding-top: 40px;
+            transition: background-color 0.3s ease;
+        }
+        
+        body.dark-mode {
+            background-color: #121212;
+            background-image: none;
+            color: #d0d0d0;
+        }
+        
+        /* 添加微妙的纸张质感 */
+        .article-content {
+            position: relative;
+        }
+        
+        .article-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(200, 185, 160, 0.1) 0px, transparent 1px);
+            background-size: 100% 1.8em;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        body.dark-mode .article-content::before {
+            opacity: 0.15;
+        }
+        
+        /* 导航栏设计 */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: transparent;
+            transition: all 0.4s ease;
+        }
+        
+        .nav-container.scrolled {
+            background: rgba(249, 244, 232, 0.9); /* 羊皮纸色的半透明背景 */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        
+        body.dark-mode .nav-container.scrolled {
+            background: rgba(18, 18, 18, 0.9);
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #2c2418; /* 更深的棕色以配合羊皮纸 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .logo {
+            color: #d0d0d0;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: #5d4c33; /* 与羊皮纸协调的棕色 */
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #8b7a5e; /* 深棕色 */
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #8b7a5e; /* 更深的棕色 */
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        body.dark-mode .nav-menu a {
+            color: #888;
+        }
+        
+        body.dark-mode .nav-menu a:hover {
+            color: #aaa;
+        }
+        
+        body.dark-mode .nav-menu a::after {
+            background-color: #d0d0d0;
+        }
+        
+        /* 内容区域 */
+        .content {
+            width: 40%;
+            min-width: 650px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .article-title {
+            font-size: 36px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+            color: #2c2418; /* 深棕色文字 */
+        }
+        
+        body.dark-mode .article-title {
+            color: #e0e0e0;
+        }
+        
+        .article-meta {
+            color: #8b7a5e; /* 与羊皮纸协调的棕色 */
+            font-size: 14px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        body.dark-mode .article-meta {
+            color: #999;
+        }
+        
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+            position: relative;
+            padding: 20px 30px 30px;
+        }
+        
+        .article-content p {
+            margin-bottom: 30px;
+            color: #333; /* 深灰色在羊皮纸上提供足够对比 */
+        }
+        
+        body.dark-mode .article-content p {
+            color: #d0d0d0;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 60px 0 20px;
+            padding-bottom: 10px;
+            position: relative;
+            color: #2c2418; /* 深棕色 */
+            border-bottom: 1px solid rgba(139, 122, 94, 0.3); /* 微妙的棕色线条 */
+            padding-bottom: 10px;
+        }
+        
+        body.dark-mode .section-title {
+            color: #e0e0e0;
+            border-bottom: 1px solid rgba(139, 122, 94, 0.5);
+        }
+        
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .image-placeholder {
+            height: 400px;
+            background-color: #e2d5bc; /* 浅羊皮纸色 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b7a5e;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            border-radius: 2px;
+        }
+        
+        body.dark-mode .image-placeholder {
+            background-color: #222;
+            color: #666;
+        }
+        
+        .image-caption {
+            color: #8b7a5e;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        body.dark-mode .image-caption {
+            color: #777;
+        }
+        
+        /* 控制按钮组 */
+        .control-buttons {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .control-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(249, 244, 232, 0.8); /* 羊皮纸色的半透明背景 */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(139, 122, 94, 0.2); /* 微妙的棕色边框 */
+        }
+        
+        .control-button:hover {
+            transform: scale(1.1);
+            background: rgba(249, 244, 232, 0.95); /* 悬停时更不透明 */
+        }
+        
+        body.dark-mode .control-button {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(139, 122, 94, 0.4);
+        }
+        
+        /* 字体选择面板 */
+        .font-panel {
+            position: fixed;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(249, 244, 232, 0.95); /* 羊皮纸色的半透明背景 */
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 99;
+            border: 1px solid rgba(139, 122, 94, 0.2); /* 微妙的棕色边框 */
+        }
+        
+        body.dark-mode .font-panel {
+            background: rgba(30, 30, 30, 0.9);
+        }
+        
+        .font-panel h3 {
+            margin-bottom: 10px;
+            color: #2c2418; /* 深棕色标题 */
+            font-size: 16px;
+        }
+        
+        body.dark-mode .font-panel h3 {
+            color: #e0e0e0;
+        }
+        
+        .font-option {
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            color: #5d4c33; /* 与羊皮纸协调的棕色 */
+        }
+        
+        .font-option:hover {
+            background-color: rgba(139, 122, 94, 0.15); /* 淡棕色悬停效果 */
+        }
+        
+        body.dark-mode .font-option {
+            color: #d0d0d0;
+        }
+        
+        body.dark-mode .font-option:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* 页脚 */
+        footer {
+            width: 40%;
+            min-width: 650px;
+            max-width: 1000px;
+            margin: 100px auto 40px;
+            padding: 0;
+            text-align: center;
+            color: #8b7a5e; /* 与羊皮纸协调的棕色 */
+            font-size: 14px;
+        }
+        
+        body.dark-mode footer {
+            color: #666;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .content, footer {
+                width: 50%;
+                min-width: unset;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .content, footer {
+                width: 60%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .content, footer {
+                width: 95%;
+                min-width: unset;
+                max-width: unset;
+                padding-top: 20px;
+            }
+            
+            .article-title {
+                font-size: 28px;
+            }
+            
+            .control-buttons {
+                right: 10px;
+                gap: 10px;
+            }
+            
+            .control-button {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .image-placeholder {
+                height: 300px;
+            }
+            
+            .font-panel {
+                right: 50px;
+                width: 180px;
+            }
+        }
+        
+        @media (min-width: 1600px) {
+            .content, footer {
+                max-width: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav-container" id="navContainer">
+        <a href="#" class="logo">墨韵 · 简</a>
+        <div class="nav-menu">
+            <a href="#">文苑</a>
+            <a href="#">雅集</a>
+            <a href="#">关于</a>
+        </div>
+    </div>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="article-title">羊皮纸风格：极简与复古的融合</h1>
+        
+        <div class="article-meta">
+            <span>作者：张墨白</span>
+            <span>癸卯年十月十六</span>
+            <span>阅读时长：5分钟</span>
+        </div>
+        
+        <div class="article-content">
+            <p>
+                在无边界设计的基础上引入羊皮纸风格，创造了一种独特的视觉体验。这种设计将极简主义的现代美学与传统书籍的温暖质感完美融合，让数字阅读获得纸张般的亲切感。
+            </p>
+            
+            <div class="image-container">
+                <div class="image-placeholder">羊皮纸设计示例</div>
+                <p class="image-caption">图1：羊皮纸质感在界面设计中的应用</p>
+            </div>
+            
+            <p>
+                羊皮纸风格不仅仅是背景色的改变，而是通过精心的视觉层次设计，模拟纸张的纹理和质感。微妙的阴影、精致的线条和恰到好处的透明度控制，共同营造出一种优雅的阅读氛围。
+            </p>
+            
+            <h2 class="section-title">纸张质感的表现</h2>
+            
+            <p>
+                实现羊皮纸效果的关键在于精细的背景纹理和颜色层次：
+            </p>
+            
+            <ul>
+                <li>使用多层渐变营造纸张的自然纹理</li>
+                <li>添加微妙的径向渐变模拟光照下的纸张质感</li>
+                <li>精心调配的底色（#f9f4e8）保持护眼同时复古</li>
+                <li>保留适当的半透明效果保持无边界设计的精髓</li>
+            </ul>
+            
+            <div class="image-container">
+                <div class="image-placeholder">纸张纹理细节</div>
+                <p class="image-caption">图2：多层渐变压花效果的实现</p>
+            </div>
+            
+            <p>
+                这种设计在提供视觉舒适感的同时，保持了无边界设计的简洁性。用户仍然可以沉浸在内容中，但多了一份传统阅读的温暖。
+            </p>
+            
+            <h2 class="section-title">色彩系统的调整</h2>
+            
+            <p>
+                为了与羊皮纸背景协调，我们对色彩系统进行了精心调整：
+            </p>
+            
+            <ul>
+                <li>正文文字颜色调整为稍深的#333，确保在淡黄色背景上的可读性</li>
+                <li>标题使用#2c2418深褐色，创造视觉层次感</li>
+                <li>次要元素使用#8b7a5e土色调，与羊皮纸色调协调</li>
+                <li>悬停和交互元素强调淡雅的棕色，模拟古籍色调</li>
+            </ul>
+            
+            <p>
+                这一系列的色彩调整确保了设计在保持复古风格的同时，不影响内容的清晰度和易读性。
+            </p>
+            
+            <h2 class="section-title">质感细节的呈现</h2>
+            
+            <p>
+                几个关键的质感细节让羊皮纸效果更加逼真：
+            </p>
+            
+            <div class="image-container">
+                <div class="image-placeholder">质感细节展示</div>
+                <p class="image-caption">图3：纹理、光线和阴影的运用</p>
+            </div>
+            
+            <ol>
+                <li><strong>微妙的纸张质感</strong>：使用多层渐变和透明度变化模拟纸张表面的细微纹理</li>
+                <li><strong>自然的光照效果</strong>：顶部淡入的渐变和角落的径向渐变模拟自然光源</li>
+                <li><strong>装饰线条</strong>：章节标题下方使用微妙的线条分隔，模拟书中分隔线的质感</li>
+                <li><strong>半透明控制元素</strong>：按钮和面板保持羊皮纸色调的半透明效果</li>
+            </ol>
+        </div>
+    </div>
+    
+    <!-- 控制按钮组 -->
+    <div class="control-buttons">
+        <div class="control-button" id="fontToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <text x="5" y="18" font-family="Arial" font-size="16" fill="currentColor">A</text>
+            </svg>
+        </div>
+        <div class="control-button" id="darkModeToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </div>
+        <div class="control-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+        <div class="control-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5l7 7-7 7"></path>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- 字体选择面板 -->
+    <div class="font-panel" id="fontPanel">
+        <h3>选择字体</h3>
+        <div class="font-option" data-font="'STZhongsong', 'SimSun', serif">中宋 (默认)</div>
+        <div class="font-option" data-font="'SimSun', '宋体', serif">宋体</div>
+        <div class="font-option" data-font="'Microsoft YaHei', '微软雅黑', sans-serif">微软雅黑</div>
+        <div class="font-option" data-font="'PingFang SC', '苹方', sans-serif">苹方</div>
+        <div class="font-option" data-font="'Hiragino Sans GB', '冬青黑体', sans-serif">冬青黑体</div>
+        <div class="font-option" data-font="'STKaiti', '华文楷体', serif">华文楷体</div>
+        <div class="font-option" data-font="'STXingkai', '华文行楷', serif">华文行楷</div>
+        <div class="font-option" data-font="'STLiti', '华文隶书', serif">华文隶书</div>
+        <div class="font-option" data-font="'STXinwei', '华文新魏', serif">华文新魏</div>
+        <div class="font-option" data-font="'STHupo', '华文琥珀', serif">华文琥珀</div>
+        <div class="font-option" data-font="'STSong', '华文宋体', serif">华文宋体</div>
+        <div class="font-option" data-font="'FZShuTi', '方正舒体', serif">方正舒体</div>
+        <div class="font-option" data-font="'FZYaoti', '方正姚体', serif">方正姚体</div>
+        <div class="font-option" data-font="'YouYuan', '幼圆', sans-serif">幼圆</div>
+        <div class="font-option" data-font="'KaiTi', '楷体', serif">楷体</div>
+        <div class="font-option" data-font="'Arial', sans-serif">Arial</div>
+        <div class="font-option" data-font="'Helvetica', sans-serif">Helvetica</div>
+        <div class="font-option" data-font="'Times New Roman', serif">Times New Roman</div>
+        <div class="font-option" data-font="'Georgia', serif">Georgia</div>
+        <div class="font-option" data-font="'Courier New', monospace">Courier New</div>
+        <div class="font-option" data-font="'Verdana', sans-serif">Verdana</div>
+        <div class="font-option" data-font="'Tahoma', sans-serif">Tahoma</div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <p>© 癸卯年 墨韵 · 简. 保留所有权利.</p>
+    </footer>
+    
+    <script>
+        // 导航栏滚动效果
+        const navContainer = document.getElementById('navContainer');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                navContainer.classList.add('scrolled');
+                
+                // 向下滚动时隐藏导航栏
+                if (scrollTop > lastScrollTop) {
+                    navContainer.style.transform = 'translateY(-100%)';
+                } 
+                // 向上滚动时显示导航栏
+                else {
+                    navContainer.style.transform = 'translateY(0)';
+                }
+            } else {
+                navContainer.classList.remove('scrolled');
+                navContainer.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // 暗黑模式切换
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+        });
+        
+        // 检查本地存储中的用户偏好
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+        }
+        
+        // 字体切换功能
+        const fontToggle = document.getElementById('fontToggle');
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOptions = document.querySelectorAll('.font-option');
+        
+        // 字体面板显示/隐藏控制
+        let fontPanelTimer;
+        
+        fontToggle.addEventListener('mouseenter', function() {
+            clearTimeout(fontPanelTimer);
+            fontPanel.style.display = 'block';
+        });
+        
+        fontToggle.addEventListener('mouseleave', function() {
+            fontPanelTimer = setTimeout(function() {
+                fontPanel.style.display = 'none';
+            }, 300);
+        });
+        
+        fontPanel.addEventListener('mouseenter', function() {
+            clearTimeout(fontPanelTimer);
+        });
+        
+        fontPanel.addEventListener('mouseleave', function() {
+            fontPanelTimer = setTimeout(function() {
+                fontPanel.style.display = 'none';
+            }, 300);
+        });
+        
+        // 字体切换逻辑
+        fontOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const fontFamily = this.getAttribute('data-font');
+                
+                // 应用字体到整个页面
+                document.querySelectorAll('*').forEach(element => {
+                    element.style.fontFamily = fontFamily;
+                });
+                
+                localStorage.setItem('fontFamily', fontFamily);
+            });
+        });
+        
+        // 初始化字体
+        const savedFont = localStorage.getItem('fontFamily');
+        if (savedFont) {
+            document.querySelectorAll('*').forEach(element => {
+                element.style.fontFamily = savedFont;
+            });
+        }
+    </script>
+</body>
+</html>

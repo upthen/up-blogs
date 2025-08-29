@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无边界设计规范</title>
+    <style>
+        :root {
+            --primary-gray: #F5F5F7;
+            --aux-gray-1: #E0E0E0;
+            --aux-gray-2: #9E9E9E;
+            --accent-black: #212121;
+            --dynamic-gray: #616161;
+            --hover-gray: #BDBDBD;
+            --white: #FFFFFF;
+            --deep-gray: #424242;
+            --dark-bg: #121212;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "STZhongsong", "SimSun", serif;
+        }
+        
+        body {
+            background-color: var(--primary-gray);
+            color: var(--accent-black);
+            line-height: 1.7;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 100px;
+        }
+        
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--aux-gray-1);
+        }
+        
+        .header {
+            padding: var(--space-xl) 0;
+            text-align: center;
+            margin-bottom: var(--space-xxl);
+            border-bottom: 1px solid var(--aux-gray-1);
+        }
+        
+        .section {
+            margin-bottom: var(--space-xxl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--aux-gray-1);
+        }
+        
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: var(--space-sm);
+        }
+        
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin: var(--space-xl) 0 var(--space-lg);
+            position: relative;
+            padding-bottom: var(--space-md);
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 1px;
+            background-color: var(--accent-black);
+        }
+        
+        body.dark-mode h2::after {
+            background-color: var(--aux-gray-1);
+        }
+        
+        h3 {
+            font-size: 22px;
+            font-weight: bold;
+            margin: var(--space-lg) 0 var(--space-md);
+            color: var(--dynamic-gray);
+        }
+        
+        p {
+            margin-bottom: var(--space-lg);
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+        
+        .color-item {
+            padding: var(--space-md);
+            border-radius: 4px;
+            border: 1px solid var(--aux-gray-1);
+            background: var(--white);
+        }
+        
+        .color-box {
+            height: 80px;
+            border-radius: 4px;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .typography-example {
+            padding: var(--space-md);
+            background: var(--white);
+            border-radius: 4px;
+            margin: var(--space-md) 0;
+            border: 1px solid var(--aux-gray-1);
+        }
+        
+        .spacing-visual {
+            background: var(--aux-gray-1);
+            height: 4px;
+            margin: var(--space-md) 0;
+            position: relative;
+        }
+        
+        .spacing-visual::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            height: 4px;
+            background: var(--accent-black);
+        }
+        
+        .spacing-sm::after { width: var(--space-sm); }
+        .spacing-md::after { width: var(--space-md); }
+        .spacing-lg::after { width: var(--space-lg); }
+        .spacing-xl::after { width: var(--space-xl); }
+        .spacing-xxl::after { width: var(--space-xxl); }
+        
+        .image-placeholder {
+            height: 300px;
+            background-color: var(--aux-gray-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--aux-gray-2);
+            border-radius: 4px;
+            margin: var(--space-lg) 0;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            z-index: 100;
+        }
+        
+        .control-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border: 1px solid var(--aux-gray-1);
+        }
+        
+        .dark-mode-toggle, .font-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
+        }
+        
+        @media (max-width: 768px) {
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .controls {
+                right: 15px;
+                bottom: 15px;
+            }
+            
+            .control-button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>无边界设计规范</h1>
+        <p>追求极致的简洁与沉浸式体验</p>
+    </div>
+    
+    <div class="section">
+        <h2>设计理念</h2>
+        <p>无边界设计以"少即是多"为核心原则，通过消除视觉干扰和冗余元素，创造纯粹的阅读体验。设计中隐藏界面元素让内容成为焦点，通过空间的留白构建视觉节奏，并以微妙的交互引导用户而不干扰。</p>
+        
+        <div class="image-placeholder">无边界设计理念示意图</div>
+    </div>
+    
+    <div class="section">
+        <h2>色彩系统</h2>
+        <p>采用严谨的单色调配方式，明暗模式无缝切换保持一致性。</p>
+        
+        <div class="color-grid">
+            <div class="color-item">
+                <div class="color-box" style="background-color: var(--primary-gray);"></div>
+                <h3>主背景色</h3>
+                <p>Light: #F5F5F7<br>Dark: #121212</p>
+            </div>
+            <div class="color-item">
+                <div class="color-box" style="background-color: var(--accent-black);"></div>
+                <h3>强调色</h3>
+                <p>Light: #212121<br>Dark: #E0E0E0</p>
+            </div>
+            <div class="color-item">
+                <div class="color-box" style="background-color: var(--aux-gray-1);"></div>
+                <h3>辅助色</h3>
+                <p>#E0E0E0</p>
+            </div>
+            <div class="color-item">
+                <div class="color-box" style="background-color: var(--aux-gray-2);"></div>
+                <h3>次要文本</h3>
+                <p>#9E9E9E</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>字体规范</h2>
+        <div class="typography-example" style="font-size: 32px; font-weight: bold;">
+            标题1 - 32px 加粗
+        </div>
+        <div class="typography-example" style="font-size: 28px; font-weight: bold;">
+            标题2 - 28px 加粗
+        </div>
+        <div class="typography-example" style="font-size: 24px; font-weight: bold;">
+            标题3 - 24px 加粗
+        </div>
+        <div class="typography-example" style="font-size: 18px; line-height: 1.8;">
+            正文 - 18px 行高1.8
+        </div>
+        <div class="typography-example" style="font-size: 14px;">
+            辅助文本 - 14px
+        </div>
+        
+        <p>默认字体: STZhongsong, SimSun, serif<br>允许用户自定义切换20种常用字体</p>
+    </div>
+    
+    <div class="section">
+        <h2>间距系统</h2>
+        <p>通过精确的空间节奏构建视觉层次，不使用视觉分隔元素</p>
+        
+        <div>
+            <h3>超小间距 (XS)</h3>
+            <p>8px - 微元素间距离</p>
+            <div class="spacing-visual spacing-sm"></div>
+        </div>
+        <div>
+            <h3>小间距 (S)</h3>
+            <p>16px - 文本段落与元素间距</p>
+            <div class="spacing-visual spacing-md"></div>
+        </div>
+        <div>
+            <h3>中间距 (M)</h3>
+            <p>24px - 段落与标题间距</p>
+            <div class="spacing-visual spacing-lg"></div>
+        </div>
+        <div>
+            <h3>大间距 (L)</h3>
+            <p>32px - 主要区域分隔</p>
+            <div class="spacing-visual spacing-xl"></div>
+        </div>
+        <div>
+            <h3>超大间距 (XL)</h3>
+            <p>48px - 内容区块分隔</p>
+            <div class="spacing-visual spacing-xxl"></div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>导航设计</h2>
+        <p>静态导航栏与动态交互完美结合</p>
+        
+        <div class="image-placeholder">导航栏设计示例</div>
+        
+        <h3>设计要点</h3>
+        <ul style="margin-left: 24px; margin-bottom: 24px;">
+            <li>默认状态透明，与背景融合</li>
+            <li>滚动时动态显示/隐藏</li>
+            <li>上滚时显示，下滚时隐藏</li>
+            <li>悬停出现精细下划线效果</li>
+            <li>不固定宽度，随内容自然扩展</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>交互元素</h2>
+        <p>所有交互元素保持极简风格，避免视觉干扰</p>
+        
+        <div class="image-placeholder">按钮与控件设计示例</div>
+        
+        <h3>控制按钮组</h3>
+        <p>固定在右侧垂直居中位置，包含：</p>
+        <ul style="margin-left: 24px; margin-bottom: 24px;">
+            <li>目录切换按钮</li>
+            <li>字体切换按钮</li>
+            <li>暗黑模式切换</li>
+            <li>搜索功能</li>
+            <li>返回顶部</li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>内容展示</h2>
+        <p>通过空间而非视觉元素区分内容层次</p>
+        
+        <div class="image-placeholder">文章详情页设计示例</div>
+        <div class="image-placeholder">文章列表页设计示例</div>
+        <div class="image-placeholder">关于我页面设计示例</div>
+    </div>
+    
+    <div class="controls">
+        <div class="control-button">A</div>
+        <div class="control-button">☀</div>
+        <div class="control-button">⇧</div>
+    </div>
+    
+    <script>
+        // 简化的暗黑模式切换示例
+        const darkModeToggle = document.querySelector('.control-button:nth-child(2)');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
