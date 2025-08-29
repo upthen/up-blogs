@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极简博客</title>
+    <style>
+        :root {
+            --primary-gray: #F5F5F7;
+            --aux-gray-1: #E0E0E0;
+            --aux-gray-2: #9E9E9E;
+            --accent-black: #212121;
+            --dynamic-gray: #616161;
+            --hover-gray: #BDBDBD;
+            --white: #FFFFFF;
+            --deep-gray: #424242;
+            --dark-bg: #121212;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "SimSun", "宋体", serif;
+        }
+        
+        body {
+            background-color: var(--primary-gray);
+            color: var(--accent-black);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: normal;
+            color: var(--accent-black);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--accent-black);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-black);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 主要内容 */
+        main {
+            padding: 30px 0;
+        }
+        
+        /* 文章卡片 */
+        .article-card {
+            background-color: var(--white);
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--aux-gray-2);
+            font-size: 13px;
+        }
+        
+        .article-meta .date {
+            margin-right: 15px;
+        }
+        
+        .article-meta .category {
+            padding: 2px 8px;
+            border-radius: 2px;
+            font-size: 12px;
+            border-bottom: 1px dashed var(--aux-gray-2);
+        }
+        
+        .article-title {
+            font-size: 24px;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: var(--accent-black);
+            letter-spacing: 0.5px;
+        }
+        
+        .article-excerpt {
+            color: var(--deep-gray);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        
+        .read-more {
+            display: inline-block;
+            color: var(--accent-black);
+            text-decoration: none;
+            font-weight: normal;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 2px;
+            overflow: hidden;
+        }
+        
+        .read-more::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--aux-gray-2);
+            transition: width 0.3s ease;
+        }
+        
+        .read-more:hover {
+            color: var(--dynamic-gray);
+        }
+        
+        .read-more:hover::after {
+            width: 100%;
+            background-color: var(--dynamic-gray);
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: var(--accent-black);
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--aux-gray-1);
+            padding-bottom: 5px;
+        }
+        
+        .sidebar-widget {
+            background-color: var(--white);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tag {
+            color: var(--accent-black);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 1px;
+            overflow: hidden;
+        }
+        
+        .tag::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--aux-gray-2);
+            transition: width 0.3s ease;
+        }
+        
+        .tag:hover {
+            color: var(--dynamic-gray);
+        }
+        
+        .tag:hover::after {
+            width: 100%;
+            background-color: var(--dynamic-gray);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--white);
+            color: var(--accent-black);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--aux-gray-1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--accent-black);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 1px;
+            overflow: hidden;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--aux-gray-2);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--dynamic-gray);
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+            background-color: var(--dynamic-gray);
+        }
+        
+        .copyright {
+            color: var(--aux-gray-2);
+            font-size: 13px;
+        }
+        
+        /* 布局 */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 30px;
+        }
+        
+        /* 暗黑模式切换 */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid var(--aux-gray-1);
+        }
+        
+        .dark-mode-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* 暗黑模式样式 */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode header,
+        body.dark-mode .article-card,
+        body.dark-mode .sidebar-widget,
+        body.dark-mode footer {
+            background-color: var(--deep-gray);
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .article-title,
+        body.dark-mode .sidebar-title {
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .article-excerpt {
+            color: var(--aux-gray-2);
+        }
+        
+        body.dark-mode .read-more,
+        body.dark-mode .tag,
+        body.dark-mode .footer-links a {
+            color: var(--aux-gray-1);
+        }
+        
+        body.d dark-mode .read-more::after,
+        body.dark-mode .tag::after,
+        body.dark-mode .footer-links a::after {
+            background-color: var(--aux-gray-2);
+        }
+        
+        body.dark-mode .read-more:hover,
+        body.dark-mode .tag:hover,
+        body.dark-mode .footer-links a:hover {
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .read-more:hover::after,
+        body.dark-mode .tag:hover::after,
+        body.dark-mode .footer-links a:hover::after {
+            background-color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .dark-mode-toggle {
+            background-color: var(--deep-gray);
+            border-color: var(--aux-gray-2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .article-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">墨韵 · 简</a>
+                <div class="nav-links">
+                    <a href="#">首页</a>
+                    <a href="#">文苑</a>
+                    <a href="#">雅集</a>
+                    <a href="#">关于</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="content-wrapper">
+            <div class="main-content">
+                <article class="article-card">
+                    <div class="article-meta">
+                        <span class="date">癸卯年九月廿三</span>
+                        <span class="category">设计</span>
+                    </div>
+                    <h2 class="article-title">黑白灰极简设计的美学原理</h2>
+                    <p class="article-excerpt">
+                        极简主义设计通过减少视觉元素，强调内容本身的价值。黑白灰配色方案通过精确的明度控制，创造出丰富的视觉层次，同时保持整体的纯粹与克制。本文将探讨如何运用60-30-10法则构建平衡的界面...
+                    </p>
+                    <a href="#" class="read-more">阅读全文</a>
+                </article>
+                
+                <article class="article-card">
+                    <div class="article-meta">
+                        <span class="date">癸卯年九月十八</span>
+                        <span class="category">技术</span>
+                    </div>
+                    <h2 class="article-title">现代Web设计的色彩心理学</h2>
+                    <p class="article-excerpt">
+                        色彩在用户界面设计中扮演着至关重要的角色。研究表明，黑白灰配色能够减少视觉疲劳，提高用户停留时间。本文将分析不同灰度值对用户行为和情绪的影响，以及如何选择适合您产品的灰度阶梯...
+                    </p>
+                    <a href="#" class="read-more">阅读全文</a>
+                </article>
+                
+                <article class="article-card">
+                    <div class="article-meta">
+                        <span class="date">癸卯年九月十三</span>
+                        <span class="category">生活</span>
+                    </div>
+                    <h2 class="article-title">极简主义生活方式指南</h2>
+                    <p class="article-excerpt">
+                        极简主义不仅是一种设计风格，更是一种生活哲学。通过去除不必要的物品和干扰，我们可以更专注于真正重要的事物。本文分享10个实用技巧，帮助您将极简主义原则应用到日常生活中...
+                    </p>
+                    <a href="#" class="read-more">阅读全文</a>
+                </article>
+            </div>
+            
+            <aside class="sidebar">
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">关于本站</h3>
+                    <p>一个专注于极简设计与生活美学的博客，分享设计理念、技术实践和生活哲学。</p>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">文章分类</h3>
+                    <div class="tag-list">
+                        <a href="#" class="tag">设计</a>
+                        <a href="#" class="tag">技术</a>
+                        <a href="#" class="tag">生活</a>
+                        <a href="#" class="tag">摄影</a>
+                        <a href="#" class="tag">阅读</a>
+                    </div>
+                </div>
+                
+                <div class="sidebar-widget">
+                    <h3 class="sidebar-title">热门标签</h3>
+                    <div class="tag-list">
+                        <a href="#" class="tag">极简主义</a>
+                        <a href="#" class="tag">UI设计</a>
+                        <a href="#" class="tag">色彩理论</a>
+                        <a href="#" class="tag">Web开发</a>
+                        <a href="#" class="tag">生活方式</a>
+                        <a href="#" class="tag">生产力</a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">首页</a>
+                <a href="#">关于</a>
+                <a href="#">联系</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="copyright">© 癸卯年 墨韵 · 简. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </div>
+    
+    <script>
+        // 暗黑模式切换
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            
+            // 保存用户偏好
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+        
+        // 检查本地存储中的用户偏好
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>

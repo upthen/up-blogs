@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无边界阅读体验</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #fafafa;
+            color: #555;
+            line-height: 1.8;
+            padding-top: 40px;
+            transition: background-color 0.3s ease;
+        }
+        
+        body.dark-mode {
+            background-color: #121212;
+            color: #d0d0d0;
+        }
+        
+        /* 导航栏设计 */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: transparent;
+            transition: all 0.4s ease;
+        }
+        
+        .nav-container.scrolled {
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        
+        body.dark-mode .nav-container.scrolled {
+            background: rgba(18, 18, 18, 0.9);
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        body.dark-mode .logo {
+            color: #d0d0d0;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: #999;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #333;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #777;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        body.dark-mode .nav-menu a {
+            color: #888;
+        }
+        
+        body.dark-mode .nav-menu a:hover {
+            color: #aaa;
+        }
+        
+        body.dark-mode .nav-menu a::after {
+            background-color: #d0d0d0;
+        }
+        
+        /* 内容区域 */
+        .content {
+            width: 40%;
+            min-width: 650px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .article-title {
+            font-size: 36px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+            color: #444;
+        }
+        
+        body.dark-mode .article-title {
+            color: #e0e0e0;
+        }
+        
+        .article-meta {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        body.dark-mode .article-meta {
+            color: #999;
+        }
+        
+        .article-content {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .article-content p {
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        body.dark-mode .article-content p {
+            color: #d0d0d0;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 60px 0 20px;
+            padding-bottom: 10px;
+            position: relative;
+            color: #444;
+        }
+        
+        body.dark-mode .section-title {
+            color: #e0e0e0;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        body.dark-mode .section-title::after {
+            background-color: #444;
+        }
+        
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .image-placeholder {
+            height: 400px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        body.dark-mode .image-placeholder {
+            background-color: #222;
+            color: #666;
+        }
+        
+        .image-caption {
+            color: #888;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        body.dark-mode .image-caption {
+            color: #777;
+        }
+        
+        /* 控制按钮组 */
+        .control-buttons {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .control-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(250, 250, 250, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-button:hover {
+            transform: scale(1.1);
+        }
+        
+        body.dark-mode .control-button {
+            background: rgba(30, 30, 30, 0.8);
+        }
+        
+        /* 字体选择面板 */
+        .font-panel {
+            position: fixed;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 99;
+        }
+        
+        body.dark-mode .font-panel {
+            background: rgba(30, 30, 30, 0.9);
+        }
+        
+        .font-panel h3 {
+            margin-bottom: 10px;
+            color: #444;
+            font-size: 16px;
+        }
+        
+        body.dark-mode .font-panel h3 {
+            color: #e0e0e0;
+        }
+        
+        .font-option {
+            padding: 8px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .font-option:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        body.dark-mode .font-option:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* 页脚 */
+        footer {
+            width: 40%;
+            min-width: 650px;
+            max-width: 1000px;
+            margin: 100px auto 40px;
+            padding: 0;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        body.dark-mode footer {
+            color: #666;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .content, footer {
+                width: 50%;
+                min-width: unset;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .content, footer {
+                width: 60%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .content, footer {
+                width: 95%;
+                min-width: unset;
+                max-width: unset;
+                padding-top: 20px;
+            }
+            
+            .article-title {
+                font-size: 28px;
+            }
+            
+            .control-buttons {
+                right: 10px;
+                gap: 10px;
+            }
+            
+            .control-button {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .image-placeholder {
+                height: 300px;
+            }
+            
+            .font-panel {
+                right: 50px;
+                width: 180px;
+            }
+        }
+        
+        @media (min-width: 1600px) {
+            .content, footer {
+                max-width: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav-container" id="navContainer">
+        <a href="#" class="logo">墨韵 · 简</a>
+        <div class="nav-menu">
+            <a href="#">文苑</a>
+            <a href="#">雅集</a>
+            <a href="#">关于</a>
+        </div>
+    </div>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="article-title">无边界阅读体验：极简主义的新高度</h1>
+        
+        <div class="article-meta">
+            <span>作者：张墨白</span>
+            <span>癸卯年十月十五</span>
+            <span>阅读时长：6分钟</span>
+        </div>
+        
+        <div class="article-content">
+            <p>
+                在数字信息泛滥的时代，我们开始重新思考阅读的本质。无边界设计理念正是对这一思考的回应——它试图消除所有干扰阅读的视觉元素，让文字回归其最纯粹的形式。
+            </p>
+            
+            <div class="image-container">
+                <div class="image-placeholder">无边界设计示例</div>
+                <p class="image-caption">图1：去除视觉边界后的阅读体验</p>
+            </div>
+            
+            <p>
+                这种设计理念的核心在于"消失的界面"。当设计师隐去所有非必要的视觉元素后，读者将获得前所未有的沉浸式体验。文字不再是页面上的客体，而是成为读者思维的自然延伸。
+            </p>
+            
+            <h2 class="section-title">空间即内容</h2>
+            
+            <p>
+                在无边界设计中，留白不再仅仅是视觉元素，而是内容本身的重要组成部分。精心设计的空间节奏引导着读者的视线，创造自然的阅读流。这种设计不需要任何分割线或背景色块，仅通过文字间距和段落间距就能构建清晰的视觉层次。
+            </p>
+            
+            <div class="image-container">
+                <div class="image-placeholder">空间节奏示例</div>
+                <p class="image-caption">图2：通过间距创造的视觉层次</p>
+            </div>
+            
+            <p>
+                研究表明，合理的留白可以提高阅读速度15%，同时提升理解能力23%。在数字阅读环境中，这种提升尤为显著，因为屏幕阅读更容易导致视觉疲劳。
+            </p>
+            
+            <h2 class="section-title">色彩的减法</h2>
+            
+            <p>
+                无边界设计在色彩运用上极其克制。通常只使用2-3种灰度色彩，通过微妙的明度差异建立视觉层次。这种极简的色彩方案减少了视觉噪音，让读者能够更专注于内容本身。
+            </p>
+            
+            <p>
+                在暗黑模式下，设计同样保持极简原则。深色背景与浅色文字形成舒适的对比度，同时保持整体设计的纯粹性。研究表明，合理的暗黑模式设计可以减少视觉疲劳达40%。
+            </p>
+            
+            <h2 class="section-title">交互的隐退</h2>
+            
+            <p>
+                在无边界设计中，交互元素只在需要时出现。导航栏在滚动时自动隐藏，控制按钮采用半透明设计并置于边缘位置。这种设计确保了阅读过程的连续性，避免了不必要的视觉中断。
+            </p>
+            
+            <div class="image-container">
+                <div class="image-placeholder">交互元素设计</div>
+                <p class="image-caption">图3：半透明控制按钮示例</p>
+            </div>
+            
+            <p>
+                当用户需要导航或调整设置时，这些元素会优雅地出现，完成任务后又悄然隐退。这种设计哲学体现了"形式追随功能"的极致，每一个元素都只在必要时存在。
+            </p>
+        </div>
+    </div>
+    
+    <!-- 控制按钮组 -->
+    <div class="control-buttons">
+        <div class="control-button" id="fontToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <text x="5" y="18" font-family="Arial" font-size="16" fill="currentColor">A</text>
+            </svg>
+        </div>
+        <div class="control-button" id="darkModeToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </div>
+        <div class="control-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+        <div class="control-button">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5l7 7-7 7"></path>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- 字体选择面板 -->
+    <div class="font-panel" id="fontPanel">
+        <h3>选择字体</h3>
+        <div class="font-option" data-font="'STZhongsong', 'SimSun', serif">中宋 (默认)</div>
+        <div class="font-option" data-font="'SimSun', '宋体', serif">宋体</div>
+        <div class="font-option" data-font="'Microsoft YaHei', '微软雅黑', sans-serif">微软雅黑</div>
+        <div class="font-option" data-font="'PingFang SC', '苹方', sans-serif">苹方</div>
+        <div class="font-option" data-font="'Hiragino Sans GB', '冬青黑体', sans-serif">冬青黑体</div>
+        <div class="font-option" data-font="'STKaiti', '华文楷体', serif">华文楷体</div>
+        <div class="font-option" data-font="'STXingkai', '华文行楷', serif">华文行楷</div>
+        <div class="font-option" data-font="'STLiti', '华文隶书', serif">华文隶书</div>
+        <div class="font-option" data-font="'STXinwei', '华文新魏', serif">华文新魏</div>
+        <div class="font-option" data-font="'STHupo', '华文琥珀', serif">华文琥珀</div>
+        <div class="font-option" data-font="'STSong', '华文宋体', serif">华文宋体</div>
+        <div class="font-option" data-font="'FZShuTi', '方正舒体', serif">方正舒体</div>
+        <div class="font-option" data-font="'FZYaoti', '方正姚体', serif">方正姚体</div>
+        <div class="font-option" data-font="'YouYuan', '幼圆', sans-serif">幼圆</div>
+        <div class="font-option" data-font="'KaiTi', '楷体', serif">楷体</div>
+        <div class="font-option" data-font="'Arial', sans-serif">Arial</div>
+        <div class="font-option" data-font="'Helvetica', sans-serif">Helvetica</div>
+        <div class="font-option" data-font="'Times New Roman', serif">Times New Roman</div>
+        <div class="font-option" data-font="'Georgia', serif">Georgia</div>
+        <div class="font-option" data-font="'Courier New', monospace">Courier New</div>
+        <div class="font-option" data-font="'Verdana', sans-serif">Verdana</div>
+        <div class="font-option" data-font="'Tahoma', sans-serif">Tahoma</div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <p>© 癸卯年 墨韵 · 简. 保留所有权利.</p>
+    </footer>
+    
+    <script>
+        // 导航栏滚动效果
+        const navContainer = document.getElementById('navContainer');
+        let lastScrollTop = 0;
+        
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                navContainer.classList.add('scrolled');
+                
+                // 向下滚动时隐藏导航栏
+                if (scrollTop > lastScrollTop) {
+                    navContainer.style.transform = 'translateY(-100%)';
+                } 
+                // 向上滚动时显示导航栏
+                else {
+                    navContainer.style.transform = 'translateY(0)';
+                }
+            } else {
+                navContainer.classList.remove('scrolled');
+                navContainer.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        // 暗黑模式切换
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+        });
+        
+        // 检查本地存储中的用户偏好
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+        }
+        
+        // 字体切换功能
+        const fontToggle = document.getElementById('fontToggle');
+        const fontPanel = document.getElementById('fontPanel');
+        const fontOptions = document.querySelectorAll('.font-option');
+        
+        // 字体面板显示/隐藏控制
+        let fontPanelTimer;
+        
+        fontToggle.addEventListener('mouseenter', function() {
+            clearTimeout(fontPanelTimer);
+            fontPanel.style.display = 'block';
+        });
+        
+        fontToggle.addEventListener('mouseleave', function() {
+            fontPanelTimer = setTimeout(function() {
+                fontPanel.style.display = 'none';
+            }, 300);
+        });
+        
+        fontPanel.addEventListener('mouseenter', function() {
+            clearTimeout(fontPanelTimer);
+        });
+        
+        fontPanel.addEventListener('mouseleave', function() {
+            fontPanelTimer = setTimeout(function() {
+                fontPanel.style.display = 'none';
+            }, 300);
+        });
+        
+        // 字体切换逻辑
+        fontOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const fontFamily = this.getAttribute('data-font');
+                document.body.style.fontFamily = fontFamily;
+                localStorage.setItem('fontFamily', fontFamily);
+            });
+        });
+        
+        // 初始化字体
+        const savedFont = localStorage.getItem('fontFamily');
+        if (savedFont) {
+            document.body.style.fontFamily = savedFont;
+        }
+    </script>
+</body>
+</html>

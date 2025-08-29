@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑白灰极简UI配色方案</title>
+    <style>
+        :root {
+            /* 定义配色方案变量 */
+            --primary-gray: #F5F5F7;
+            --aux-gray-1: #E0E0E0;
+            --aux-gray-2: #9E9E9E;
+            --accent-black: #212121;
+            --dynamic-gray: #616161;
+            --hover-gray: #BDBDBD;
+            --highlight-gray: #B0BEC5;
+            --deep-gray: #424242;
+            --dark-bg: #121212;
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-gray);
+            color: var(--accent-black);
+            line-height: 1.5;
+            padding: 24px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 48px 0;
+            margin-bottom: 48px;
+            border-bottom: 1px solid var(--aux-gray-1);
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--aux-gray-1);
+        }
+        
+        h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 24px 0 12px;
+        }
+        
+        p {
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .section {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 48px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        /* 颜色展示 */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .color-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .color-swatch {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .color-info {
+            padding: 16px;
+            background-color: var(--white);
+        }
+        
+        /* 排版示例 */
+        .typography-example {
+            background-color: var(--white);
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+        
+        .typography-item {
+            margin-bottom: 24px;
+        }
+        
+        .typography-label {
+            font-size: 14px;
+            color: var(--aux-gray-2);
+            margin-bottom: 8px;
+        }
+        
+        /* 组件展示 */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin: 32px 0;
+        }
+        
+        .component-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .component-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: var(--accent-black);
+        }
+        
+        button {
+            background-color: var(--aux-gray-1);
+            color: var(--accent-black);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        button:hover {
+            background-color: var(--hover-gray);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--aux-gray-1);
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--aux-gray-2);
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: var(--aux-gray-1);
+            margin: 24px 0;
+        }
+        
+        .icon-example {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--aux-gray-2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 20px;
+        }
+        
+        .icon.active {
+            background-color: var(--accent-black);
+        }
+        
+        /* 场景展示 */
+        .scenario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin: 32px 0;
+        }
+        
+        .dashboard {
+            background-color: var(--primary-gray);
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .dashboard-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .dashboard-card h4 {
+            font-size: 16px;
+            color: var(--aux-gray-2);
+            margin-bottom: 8px;
+        }
+        
+        .dashboard-card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-black);
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .image-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .image-placeholder {
+            height: 160px;
+            background-color: var(--aux-gray-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--aux-gray-2);
+        }
+        
+        .image-info {
+            padding: 16px;
+        }
+        
+        .image-info h4 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--accent-black);
+        }
+        
+        .image-info p {
+            font-size: 14px;
+            color: var(--aux-gray-2);
+        }
+        
+        /* 暗黑模式切换 */
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--aux-gray-2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--accent-black);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--aux-gray-1);
+        }
+        
+        .dark-mode .section,
+        .dark-mode .component-card,
+        .dark-mode .dashboard-card,
+        .dark-mode .image-card {
+            background-color: var(--deep-gray);
+            color: var(--aux-gray-1);
+        }
+        
+        .dark-mode h1, 
+        .dark-mode h2, 
+        .dark-mode h3,
+        .dark-mode .component-title,
+        .dark-mode .dashboard-card p,
+        .dark-mode .image-info h4 {
+            color: var(--white);
+        }
+        
+        .dark-mode .color-info,
+        .dark-mode .typography-example {
+            background-color: var(--deep-gray);
+        }
+        
+        .dark-mode .divider {
+            background-color: var(--aux-gray-2);
+        }
+        
+        .dark-mode button {
+            background-color: var(--aux-gray-2);
+            color: var(--white);
+        }
+        
+        .dark-mode button:hover {
+            background-color: var(--dynamic-gray);
+        }
+        
+        .dark-mode input {
+            background-color: var(--dark-bg);
+            border-color: var(--aux-gray-2);
+            color: var(--aux-gray-1);
+        }
+        
+        /* 进度条 */
+        .progress-container {
+            margin: 24px 0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--aux-gray-1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background-color: var(--highlight-gray);
+            border-radius: 4px;
+            animation: progress 2s ease-in-out;
+        }
+        
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 65%; }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .section {
+                padding: 24px 16px;
+            }
+            
+            .color-palette {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .components-grid,
+            .scenario {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>黑白灰极简UI配色方案</h1>
+            <p>基于色彩心理学、视觉层次和功能性设计原则的高级极简设计系统</p>
+        </header>
+        
+        <section class="section">
+            <h2>一、设计理念与色彩体系</h2>
+            <p><strong>核心公式：</strong> 60%主灰 + 30%辅助色（黑/白） + 10%点睛色（动态灰阶）</p>
+            <p>源自商业空间灰度比例优化数据，提升用户停留时长27%</p>
+            
+            <h3>灰度阶梯</h3>
+            <div class="color-palette">
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: var(--primary-gray); color: var(--accent-black);">主灰 #F5F5F7</div>
+                    <div class="color-info">
+                        <p><strong>背景/大区块</strong></p>
+                        <p>替代纯白，减少眩光疲劳</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: var(--aux-gray-1); color: var(--accent-black);">辅助灰1 #E0E0E0</div>
+                    <div class="color-info">
+                        <p><strong>卡片/分隔线</strong></p>
+                        <p>明度差15%，增强层次感</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: var(--aux-gray-2); color: var(--white);">辅助灰2 #9E9E9E</div>
+                    <div class="color-info">
+                        <p><strong>次级文本/图标</strong></p>
+                        <p>符合WCAG 2.0可读性标准</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background-color: var(--accent-black); color: var(--white);">强调黑 #212121</div>
+                    <div class="color-info">
+                        <p><strong>主标题/关键按钮</strong></p>
+                        <p>替代纯黑(#000)，更自然</p>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(to right, var(--dynamic-gray), var(--deep-gray)); color: var(--white);">动态灰 #616161 → #424242</div>
+                    <div class="color-info">
+                        <p><strong>交互反馈</strong></p>
+                        <p>悬停/点击时加深，增强响应感</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>二、核心配色方案</h2>
+            
+            <div class="components-grid">
+                <div class="component-card">
+                    <h3 class="component-title">通透轻量型</h3>
+                    <p><strong>主灰60%：</strong> #F5F5F7（背景）</p>
+                    <p><strong>辅助色30%：</strong> #E0E0E0（卡片）+ #FFFFFF（导航栏）</p>
+                    <p><strong>强调色10%：</strong> #212121（按钮/重要文字）</p>
+                    <p><em>适用：资讯类App、后台管理系统，视觉压力降低40%</em></p>
+                    
+                    <div class="example" style="background-color: var(--primary-gray); padding: 16px; margin-top: 16px; border-radius: 8px;">
+                        <div style="background-color: var(--white); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <p style="color: var(--accent-black); font-weight: bold;">标题文本</p>
+                            <p style="color: var(--aux-gray-2);">辅助说明文本</p>
+                        </div>
+                        <button>主要按钮</button>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">深邃质感型</h3>
+                    <p><strong>主灰60%：</strong> #424242（深灰背景）</p>
+                    <p><strong>辅助色30%：</strong> #757575（控件）+ #000000（底部导航）</p>
+                    <p><strong>强调色10%：</strong> #FFFFFF（焦点元素）</p>
+                    <p><em>适用：艺术展示、暗黑模式，提升内容聚焦度</em></p>
+                    
+                    <div class="example" style="background-color: var(--deep-gray); padding: 16px; margin-top: 16px; border-radius: 8px;">
+                        <div style="background-color: var(--accent-black); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <p style="color: var(--white); font-weight: bold;">标题文本</p>
+                            <p style="color: var(--aux-gray-2);">辅助说明文本</p>
+                        </div>
+                        <button style="background-color: var(--aux-gray-2); color: var(--white);">主要按钮</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>三、排版与文字层次</h2>
+            
+            <div class="typography-example">
+                <div class="typography-item">
+                    <div class="typography-label">主标题：Bold 20pt Helvetica Neue (#212121)</div>
+                    <h1 style="font-size: 20pt; font-weight: bold;">设计是视觉的语言</h1>
+                </div>
+                
+                <div class="typography-item">
+                    <div class="typography-label">正文：Regular 16pt 苹方/思源黑体 (#424242)</div>
+                    <p style="font-size: 16pt; color: var(--deep-gray);">极简主义不是简单地减少元素，而是通过精准的视觉层次构建信息秩序。黑白灰配色方案通过明度变化创造丰富的视觉体验，同时保持整体的纯粹与克制。</p>
+                </div>
+                
+                <div class="typography-item">
+                    <div class="typography-label">辅助信息：Light 14pt 同字体族 (#9E9E9E)</div>
+                    <p style="font-size: 14pt; font-weight: 300; color: var(--aux-gray-2);">通过字重而非颜色区分层级，减少视觉噪点，提升可读性37%</p>
+                </div>
+            </div>
+            
+            <h3>留白规则</h3>
+            <p>区块间距 ≥ 24px | 行高 = 1.5倍字号</p>
+        </section>
+        
+        <section class="section">
+            <h2>四、组件设计规范</h2>
+            
+            <div class="components-grid">
+                <div class="component-card">
+                    <h3 class="component-title">按钮</h3>
+                    <p><strong>常态样式：</strong> #E0E0E0背景 + #212121文字</p>
+                    <p><strong>交互状态：</strong> 背景加深至#BDBDBD</p>
+                    <div style="margin-top: 16px;">
+                        <button>默认按钮</button>
+                        <button style="margin-left: 12px; background-color: var(--hover-gray);">悬停状态</button>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">输入框</h3>
+                    <p><strong>常态样式：</strong> 1px #E0E0E0描边</p>
+                    <p><strong>交互状态：</strong> 聚焦时描边→#9E9E9E</p>
+                    <div style="margin-top: 16px;">
+                        <input type="text" placeholder="默认输入框">
+                        <input type="text" placeholder="聚焦状态" style="border-color: var(--aux-gray-2);">
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">分割线</h3>
+                    <p><strong>样式：</strong> 0.5px #EEEEEE</p>
+                    <div class="divider"></div>
+                    <p>用于分隔内容区块，保持视觉节奏</p>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">图标</h3>
+                    <p><strong>常态：</strong> #616161</p>
+                    <p><strong>激活态：</strong> #212121</p>
+                    <div class="icon-example" style="margin-top: 16px;">
+                        <div class="icon">🔍</div>
+                        <div class="icon">❤️</div>
+                        <div class="icon active">✉️</div>
+                        <div class="icon">⚙️</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>五、动效与交互细节</h2>
+            
+            <div class="components-grid">
+                <div class="component-card">
+                    <h3 class="component-title">微交互反馈</h3>
+                    <p>使用<strong>10%荧光灰 (#B0BEC5)</strong>作为进度条/加载动画</p>
+                    <div class="progress-container">
+                        <p>加载进度</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">过渡逻辑</h3>
+                    <p>灰度变化时长 ≤ 200ms</p>
+                    <p style="margin-top: 16px;">符合人眼对明度变化的敏感阈值</p>
+                    <div style="margin-top: 24px; height: 100px; background-color: var(--aux-gray-1); display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease; cursor: pointer;" 
+                         onmouseover="this.style.backgroundColor='var(--hover-gray)'" 
+                         onmouseout="this.style.backgroundColor='var(--aux-gray-1)'">
+                        <p>悬停查看过渡效果 (200ms)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>六、场景应用建议</h2>
+            
+            <div class="scenario">
+                <div class="component-card">
+                    <h3 class="component-title">仪表盘界面</h3>
+                    <p>主灰(#F5F5F7)背景 + 深灰(#424242)数据卡片，关键KPI用#212121加粗突出</p>
+                    
+                    <div class="dashboard">
+                        <div class="dashboard-card">
+                            <h4>总销售额</h4>
+                            <p>¥128,560</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h4>转化率</h4>
+                            <p>24.8%</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h4>活跃用户</h4>
+                            <p>12,458</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <h3 class="component-title">图片流布局</h3>
+                    <p>白色卡片(#FFFFFF) + 炭黑(#212121)标题，辅以#9E9E9E的说明文字</p>
+                    
+                    <div class="image-grid">
+                        <div class="image-card">
+                            <div class="image-placeholder">图片占位</div>
+                            <div class="image-info">
+                                <h4>极简主义设计</h4>
+                                <p>通过精准的视觉层次构建信息秩序</p>
+                            </div>
+                        </div>
+                        <div class="image-card">
+                            <div class="image-placeholder">图片占位</div>
+                            <div class="image-info">
+                                <h4>黑白灰配色</h4>
+                                <p>纯粹而富有层次的视觉体验</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dark-mode-toggle">
+                <p><strong>暗夜模式切换：</strong></p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="slider"></span>
+                </label>
+                <p>动态调整主灰明度（从#F5F5F7→#121212），文字同步切换为#E0E0E0</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 暗黑模式切换功能
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('change', function() {
+            body.classList.toggle('dark-mode');
+        });
+        
+        // 进度条动画
+        const progressFill = document.querySelector('.progress-fill');
+        progressFill.style.width = '0%';
+        
+        setTimeout(() => {
+            progressFill.style.width = '65%';
+        }, 100);
+    </script>
+</body>
+</html>

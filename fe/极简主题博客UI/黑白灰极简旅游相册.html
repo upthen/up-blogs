@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅行相册 | 墨韵 · 简</title>
+    <style>
+        :root {
+            --primary-gray: #F5F5F7;
+            --aux-gray-1: #E0E0E0;
+            --aux-gray-2: #9E9E9E;
+            --accent-black: #212121;
+            --dynamic-gray: #616161;
+            --hover-gray: #BDBDBD;
+            --white: #FFFFFF;
+            --deep-gray: #424242;
+            --dark-bg: #121212;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "SimSun", "宋体", serif;
+        }
+        
+        body {
+            background-color: var(--primary-gray);
+            color: var(--accent-black);
+            line-height: 1.6;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: normal;
+            color: var(--accent-black);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--accent-black);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-black);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 主要内容 */
+        main {
+            padding: 40px 0;
+        }
+        
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .gallery-title {
+            font-size: 32px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            color: var(--accent-black);
+        }
+        
+        .gallery-subtitle {
+            color: var(--aux-gray-2);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background: none;
+            border: none;
+            color: var(--accent-black);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-black);
+            transition: width 0.3s ease;
+        }
+        
+        .filter-btn:hover::after,
+        .filter-btn.active::after {
+            width: 100%;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            height: 300px;
+            background-color: var(--aux-gray-1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 20px;
+            color: var(--white);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-info {
+            transform: translateY(0);
+        }
+        
+        .gallery-item-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .gallery-item-location {
+            font-size: 14px;
+            color: var(--aux-gray-1);
+        }
+        
+        .gallery-item-date {
+            font-size: 12px;
+            color: var(--aux-gray-1);
+            margin-top: 5px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: none;
+            border: 1px solid var(--aux-gray-1);
+            color: var(--accent-black);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn:hover,
+        .page-btn.active {
+            background-color: var(--accent-black);
+            color: var(--white);
+            border-color: var(--accent-black);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--white);
+            color: var(--accent-black);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--aux-gray-1);
+            margin-top: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--accent-black);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 1px;
+            overflow: hidden;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--aux-gray-2);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--dynamic-gray);
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+            background-color: var(--dynamic-gray);
+        }
+        
+        .copyright {
+            color: var(--aux-gray-2);
+            font-size: 13px;
+        }
+        
+        /* 暗黑模式切换 */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid var(--aux-gray-1);
+        }
+        
+        .dark-mode-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* 暗黑模式样式 */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode header,
+        body.dark-mode footer {
+            background-color: var(--deep-gray);
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .gallery-title {
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .gallery-subtitle {
+            color: var(--aux-gray-2);
+        }
+        
+        body.dark-mode .filter-btn {
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .filter-btn::after {
+            background-color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .gallery-item {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        body.dark-mode .page-btn {
+            border-color: var(--aux-gray-2);
+            color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .page-btn:hover,
+        body.dark-mode .page-btn.active {
+            background-color: var(--aux-gray-1);
+            color: var(--dark-bg);
+            border-color: var(--aux-gray-1);
+        }
+        
+        body.dark-mode .dark-mode-toggle {
+            background-color: var(--deep-gray);
+            border-color: var(--aux-gray-2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">墨韵 · 简</a>
+                <div class="nav-links">
+                    <a href="#">首页</a>
+                    <a href="#">文苑</a>
+                    <a href="#">雅集</a>
+                    <a href="#">关于</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="gallery-header">
+            <h1 class="gallery-title">行旅印记</h1>
+            <p class="gallery-subtitle">在世界的角落，寻找内心的宁静。这些照片记录了旅途中的片刻，每一帧都是时光的切片。</p>
+        </div>
+        
+        <div class="filter-bar">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">山川</button>
+            <button class="filter-btn">湖海</button>
+            <button class="filter-btn">城市</button>
+            <button class="filter-btn">人文</button>
+        </div>
+        
+        <div class="gallery-grid">
+            <!-- 图片1 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #D9D9D9; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">山峦叠嶂</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">黄山云海</h3>
+                    <p class="gallery-item-location">安徽 · 中国</p>
+                    <p class="gallery-item-date">2023年5月</p>
+                </div>
+            </div>
+            
+            <!-- 图片2 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #C4C4C4; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">古城小巷</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">平遥古城</h3>
+                    <p class="gallery-item-location">山西 · 中国</p>
+                    <p class="gallery-item-date">2022年10月</p>
+                </div>
+            </div>
+            
+            <!-- 图片3 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #AEAEAE; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">海岸晨曦</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">三亚日出</h3>
+                    <p class="gallery-item-location">海南 · 中国</p>
+                    <p class="gallery-item-date">2023年3月</p>
+                </div>
+            </div>
+            
+            <!-- 图片4 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #999999; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">雪域高原</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">西藏纳木错</h3>
+                    <p class="gallery-item-location">西藏 · 中国</p>
+                    <p class="gallery-item-date">2021年8月</p>
+                </div>
+            </div>
+            
+            <!-- 图片5 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #848484; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">江南水乡</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">乌镇夜色</h3>
+                    <p class="gallery-item-location">浙江 · 中国</p>
+                    <p class="gallery-item-date">2022年6月</p>
+                </div>
+            </div>
+            
+            <!-- 图片6 -->
+            <div class="gallery-item">
+                <div class="gallery-img-placeholder" style="background-color: #6F6F6F; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--aux-gray-2);">沙漠驼影</div>
+                <div class="gallery-info">
+                    <h3 class="gallery-item-title">敦煌月牙泉</h3>
+                    <p class="gallery-item-location">甘肃 · 中国</p>
+                    <p class="gallery-item-date">2021年9月</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">首页</a>
+                <a href="#">关于</a>
+                <a href="#">联系</a>
+                <a href="#">隐私政策</a>
+            </div>
+            <p class="copyright">© 癸卯年 墨韵 · 简. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <div class="dark-mode-toggle" id="darkModeToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </div>
+    
+    <script>
+        // 暗黑模式切换
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+        
+        darkModeToggle.addEventListener('click', function() {
+            body.classList.toggle('dark-mode');
+            
+            // 保存用户偏好
+            const isDarkMode = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+        
+        // 检查本地存储中的用户偏好
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+        }
+        
+        // 添加滚动效果监听
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const header = document.querySelector('header');
+            
+            if (scrollPosition > 50) {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            } else {
+                header.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+            }
+        });
+        
+        // 图片悬停效果
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+            });
+        });
+        
+        // 分页按钮交互
+        const pageBtns = document.querySelectorAll('.page-btn');
+        pageBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                pageBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // 过滤按钮交互
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
