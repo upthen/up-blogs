@@ -1,0 +1,41 @@
+html {
+  a {
+    /* 清空默认样式 */
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  h1 {
+    letter-spacing: -0.02em;
+    line-height: 40px;
+    font-size: 28px;
+  }
+
+  h2 {
+    letter-spacing: -0.02em;
+    line-height: 32px;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 60px 0 20px;
+    padding-bottom: 10px;
+    position: relative;
+    color: #444;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 1px;
+    background-color: #ddd;
+  }
+}
+
+@keyframes slideIn {
+  to {
+    transform: scaleX(1);
+  }
+}
