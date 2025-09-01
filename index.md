@@ -1,6 +1,6 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
-layout: home
+layout: list
 title: 闻 · 斋
 description: 一个关于闻的博客
 ---
