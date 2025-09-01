@@ -27,11 +27,20 @@
   margin: 60px 0 20px;
   padding-bottom: 10px;
   position: relative;
-  color: #444;
+  color: #616161;
+  cursor: pointer;
+}
+
+.dark .up-doc h2 {
+  color: #616161;
+}
+
+.up-doc h2:hover {
+  opacity: 0.8;
 }
 
 .up-doc h2::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -237,12 +246,12 @@
   margin: 0;
 }
 
-.up-doc .custom-block div[class*='language-'] {
+.up-doc .custom-block div[class*="language-"] {
   margin: 8px 0;
   border-radius: 8px;
 }
 
-.up-doc .custom-block div[class*='language-'] code {
+.up-doc .custom-block div[class*="language-"] code {
   font-weight: 400;
   background-color: transparent;
 }
@@ -286,7 +295,7 @@
   font-size: 0.9em;
 }
 
-.up-doc div[class*='language-'],
+.up-doc div[class*="language-"],
 .vp-block {
   position: relative;
   margin: 16px -24px;
@@ -296,7 +305,7 @@
 }
 
 @media (min-width: 640px) {
-  .up-doc div[class*='language-'],
+  .up-doc div[class*="language-"],
   .vp-block {
     border-radius: 8px;
     margin: 16px 0;
@@ -304,25 +313,25 @@
 }
 
 @media (max-width: 639px) {
-  .up-doc li div[class*='language-'] {
+  .up-doc li div[class*="language-"] {
     border-radius: 8px 0 0 8px;
   }
 }
 
-.up-doc div[class*='language-'] + div[class*='language-'],
-.up-doc div[class$='-api'] + div[class*='language-'],
-.up-doc div[class*='language-'] + div[class$='-api'] > div[class*='language-'] {
+.up-doc div[class*="language-"] + div[class*="language-"],
+.up-doc div[class$="-api"] + div[class*="language-"],
+.up-doc div[class*="language-"] + div[class$="-api"] > div[class*="language-"] {
   margin-top: -8px;
 }
 
-.up-doc [class*='language-'] pre,
-.up-doc [class*='language-'] code {
+.up-doc [class*="language-"] pre,
+.up-doc [class*="language-"] code {
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
 }
 
-.up-doc [class*='language-'] pre {
+.up-doc [class*="language-"] pre {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -333,7 +342,7 @@
   text-align: left;
 }
 
-.up-doc [class*='language-'] code {
+.up-doc [class*="language-"] code {
   display: block;
   padding: 0 24px;
   width: fit-content;
@@ -344,7 +353,7 @@
   transition: color 0.5s;
 }
 
-.up-doc [class*='language-'] code .highlighted {
+.up-doc [class*="language-"] code .highlighted {
   background-color: var(--vp-code-line-highlight-color);
   transition: background-color 0.5s;
   margin: 0 -24px;
@@ -353,15 +362,15 @@
   display: inline-block;
 }
 
-.up-doc [class*='language-'] code .highlighted.error {
+.up-doc [class*="language-"] code .highlighted.error {
   background-color: var(--vp-code-line-error-color);
 }
 
-.up-doc [class*='language-'] code .highlighted.warning {
+.up-doc [class*="language-"] code .highlighted.warning {
   background-color: var(--vp-code-line-warning-color);
 }
 
-.up-doc [class*='language-'] code .diff {
+.up-doc [class*="language-"] code .diff {
   transition: background-color 0.5s;
   margin: 0 -24px;
   padding: 0 24px;
@@ -369,12 +378,12 @@
   display: inline-block;
 }
 
-.up-doc [class*='language-'] code .diff::before {
+.up-doc [class*="language-"] code .diff::before {
   position: absolute;
   left: 10px;
 }
 
-.up-doc [class*='language-'] .has-focused-lines .line:not(.has-focus) {
+.up-doc [class*="language-"] .has-focused-lines .line:not(.has-focus) {
   filter: blur(0.095rem);
   opacity: 0.4;
   transition:
@@ -382,38 +391,38 @@
     opacity 0.35s;
 }
 
-.up-doc [class*='language-'] .has-focused-lines .line:not(.has-focus) {
+.up-doc [class*="language-"] .has-focused-lines .line:not(.has-focus) {
   opacity: 0.7;
   transition:
     filter 0.35s,
     opacity 0.35s;
 }
 
-.up-doc [class*='language-']:hover .has-focused-lines .line:not(.has-focus) {
+.up-doc [class*="language-"]:hover .has-focused-lines .line:not(.has-focus) {
   filter: blur(0);
   opacity: 1;
 }
 
-.up-doc [class*='language-'] code .diff.remove {
+.up-doc [class*="language-"] code .diff.remove {
   background-color: var(--vp-code-line-diff-remove-color);
   opacity: 0.7;
 }
 
-.up-doc [class*='language-'] code .diff.remove::before {
-  content: '-';
+.up-doc [class*="language-"] code .diff.remove::before {
+  content: "-";
   color: var(--vp-code-line-diff-remove-symbol-color);
 }
 
-.up-doc [class*='language-'] code .diff.add {
+.up-doc [class*="language-"] code .diff.add {
   background-color: var(--vp-code-line-diff-add-color);
 }
 
-.up-doc [class*='language-'] code .diff.add::before {
-  content: '+';
+.up-doc [class*="language-"] code .diff.add::before {
+  content: "+";
   color: var(--vp-code-line-diff-add-symbol-color);
 }
 
-.up-doc div[class*='language-'].line-numbers-mode {
+.up-doc div[class*="language-"].line-numbers-mode {
   /*rtl:ignore*/
   padding-left: 32px;
 }
@@ -439,7 +448,7 @@
     color 0.5s;
 }
 
-.up-doc [class*='language-'] > button.copy {
+.up-doc [class*="language-"] > button.copy {
   /*rtl:ignore*/
   direction: ltr;
   position: absolute;
@@ -464,27 +473,27 @@
     opacity 0.25s;
 }
 
-.up-doc [class*='language-']:hover > button.copy,
-.up-doc [class*='language-'] > button.copy:focus {
+.up-doc [class*="language-"]:hover > button.copy,
+.up-doc [class*="language-"] > button.copy:focus {
   opacity: 1;
 }
 
-.up-doc [class*='language-'] > button.copy:hover,
-.up-doc [class*='language-'] > button.copy.copied {
+.up-doc [class*="language-"] > button.copy:hover,
+.up-doc [class*="language-"] > button.copy.copied {
   border-color: var(--vp-code-copy-code-hover-border-color);
   background-color: var(--vp-code-copy-code-hover-bg);
 }
 
-.up-doc [class*='language-'] > button.copy.copied,
-.up-doc [class*='language-'] > button.copy:hover.copied {
+.up-doc [class*="language-"] > button.copy.copied,
+.up-doc [class*="language-"] > button.copy:hover.copied {
   /*rtl:ignore*/
   border-radius: 0 4px 4px 0;
   background-color: var(--vp-code-copy-code-hover-bg);
   background-image: var(--vp-icon-copied);
 }
 
-.up-doc [class*='language-'] > button.copy.copied::before,
-.up-doc [class*='language-'] > button.copy:hover.copied::before {
+.up-doc [class*="language-"] > button.copy.copied::before,
+.up-doc [class*="language-"] > button.copy:hover.copied::before {
   position: relative;
   top: -1px;
   /*rtl:ignore*/
@@ -509,7 +518,7 @@
   content: var(--vp-code-copy-copied-text-content);
 }
 
-.up-doc [class*='language-'] > span.lang {
+.up-doc [class*="language-"] > span.lang {
   position: absolute;
   top: 2px;
   /*rtl:ignore*/
@@ -524,8 +533,8 @@
     opacity 0.4s;
 }
 
-.up-doc [class*='language-']:hover > button.copy + span.lang,
-.up-doc [class*='language-'] > button.copy:focus + span.lang {
+.up-doc [class*="language-"]:hover > button.copy + span.lang,
+.up-doc [class*="language-"] > button.copy:focus + span.lang {
   opacity: 0;
 }
 
@@ -573,7 +582,7 @@
 }
 
 .vp-external-link-icon::after {
-  content: '';
+  content: "";
 }
 
 /* prettier-ignore */

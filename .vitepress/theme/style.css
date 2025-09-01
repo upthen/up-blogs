@@ -20,11 +20,12 @@ html {
     margin: 60px 0 20px;
     padding-bottom: 10px;
     position: relative;
-    color: #444;
+    color: #616161;
+    cursor: pointer;
   }
 
   h2::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
