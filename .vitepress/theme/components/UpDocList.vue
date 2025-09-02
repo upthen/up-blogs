@@ -38,6 +38,12 @@ const docList = computed(() => {
 		return regex.test(item.url)
 	})
 })
+
+/**
+ * TODO
+ * 1. 主页时，文章列表需按照类别分类
+ * 2. 大类的文章，应禁止点击跳转，仅做标题
+ */
 </script>
 
 <style scoped>

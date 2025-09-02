@@ -49,18 +49,19 @@ const { site, frontmatter } = data
 	margin: auto;
 	width: 100%;
 	max-width: 800px;
-	min-width: 640px;
 }
 
 @media (max-width: 640px) {
 	.container {
 		padding: 0 32px;
+		width: auto;
 	}
 }
 
 @media (min-width: 640px) {
 	.container {
 		padding: 0 64px;
+		min-width: 640px;
 	}
 }
 </style>
