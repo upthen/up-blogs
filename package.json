@@ -44,6 +44,7 @@
 		"debug": "^4.4.1",
 		"globals": "^16.3.0",
 		"gray-matter": "^4.0.3",
+		"lunisolar": "^2.6.0",
 		"node-canvas": "^2.9.0",
 		"prettier": "^3.6.2",
 		"primevue": "^4.3.7",

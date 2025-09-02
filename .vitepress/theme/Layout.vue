@@ -19,7 +19,8 @@
 	</div>
 	<footer class="w-full h-80px flex items-center justify-center">
 		<p class="text-sm text-aux2 px-16px h-full flex items-center">
-			© 癸卯年 {{ site.title }}. 保留所有权利.
+			© {{ lunisolar(dayjs().format('YYYY')).format('cY') }} {{ site.title }}.
+			保留所有权利.
 		</p>
 	</footer>
 	<UpTools />
@@ -27,6 +28,8 @@
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import lunisolar from 'lunisolar' // 一个js农历库
+import dayjs from 'dayjs'
 import {
 	UpNav,
 	UpTools,
