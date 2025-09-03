@@ -1,48 +1,28 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
-layout: list
+layout: home
 title: 闻 · 斋
 description: 一个关于闻的博客
 ---
 
-# 关于我
+# Robert Zeng
 
 ## 个人简介
 
-我是张墨白，一名专注于极简设计与用户体验的设计师和前端开发者。我相信"少即是多"的设计哲学，致力于通过简约而富有深度的设计语言，创造流畅自然的数字体验。
+Hi！我是 **长风** / **CherishTheYouth** / **Robert Zeng**。
 
-在过去的十年里，我探索了设计与技术的交汇点，寻找能够平衡美学与功能的解决方案。我的工作不仅仅是创造界面，更是塑造体验，让技术成为人类生活的自然延伸。
+如你所见，我给自己起了很多的名字。
 
-## 专业经历
+在人生的不同阶段，每个人可能都会有不同的际遇，不同的心境，也会由此生发出不同的标签。在我高中时代，互联网初兴，我也是在高二的时候拥有了自己的 QQ，彼时大家都为起一个好听的网名而欣喜。我也一度起了一堆稀奇古怪的网名，但都觉得不甚满意。有一天，我脑海突然浮现一句古诗——“长风破浪会有时，直挂云帆济沧海”。在我学生时代，李白的这句诗一直激励着我，我因此取了 “长风” 二字作为各种社交平台的昵称，作为我个人的一个名片，一直沿用至今，并将一直持续下去。
 
-- 2020 - 至今
-  首席设计师 · 简素科技
-  负责公司核心产品的用户体验设计，建立并维护设计系统。主导设计语言从拟物化到极简风格的转型。
+> 还没写完...
 
-- 2017 - 2020
-  UI设计师 · 清韵设计工作室
-  参与10+个品牌视觉识别系统设计，专注于网页和移动端界面设计。开发了一套基于网格系统的设计方法论。
 
-- 2014 - 2017
-  视觉设计师 · 墨点创意
-  负责品牌视觉设计，将东方美学融入现代设计语言，探索传统与现代的融合之道。
-
-## 专业技能
-
-- 用户体验设计
-- 界面设计
-- HTML/CSS
-- JavaScript
-- 设计系统
-- 响应式设计
-- 设计理念
-  设计是解决问题的过程，而非单纯的装饰。我追求功能与美学的平衡，相信好的设计应该像空气一样自然存在——不可或缺却不引人注目。
-
-在数字产品设计中，我注重减少认知负荷，通过清晰的视觉层次引导用户，让复杂的技术变得简单易用。极简主义不仅是一种视觉风格，更是一种思维方式，它要求我们去除所有非必要的元素，专注于核心价值。
 
 ## 联系我
 
-- contact@moyun.com
-- +86 123 4567 8910
-- LinkedIn
-- Instagram
+- 📧 zyb.6616@icloud.com
+- <div flex items-center gap-x-1><div class="i-uil-github-alt inline-block" /> <a href="https://github.com/upthen" op:60 hover:op90>upthen</a></div>
+- <div flex items-center gap-x-1><div class="i-fa6-brands-github-alt inline-block" /> <a href="https://github.com/cherishtheyouth" op:60 hover:op90>CherishTheYouth</a></div>
+- <div flex items-center gap-x-1><div class="i-fa6-brands-blogger-b inline-block" /> <a href="https://juejin.cn/user/4248168662043367" op:60 hover:op90>掘金</a></div>
+- <div flex items-center gap-x-1><div class="i-simple-icons-wechat inline-block" /> <span  op:60 hover:op90 cursor-pointer class="underline-slide-in">changfeng6616</span></div>
