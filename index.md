@@ -7,17 +7,21 @@ description: Robert Zeng 的线上小书屋，我在这里敲一点代码，写�
 
 # Robert Zeng
 
-## 个人简介
+## 关于我
 
 Hi！我是 **长风** / **CherishTheYouth** / **Robert Zeng**。
 
-如你所见，我给自己起了很多的名字。
+我是一名前端开发工程师，目前就职于武汉一家医疗行业的公司，做一些前端开发相关工作。
 
-在人生的不同阶段，每个人可能都会有不同的际遇，不同的心境，也会由此生发出不同的标签。在我高中时代，互联网初兴，我也是在高二的时候拥有了自己的 QQ，彼时大家都为起一个好听的网名而欣喜。我也一度起了一堆稀奇古怪的网名，但都觉得不甚满意。有一天，我脑海突然浮现一句古诗——“长风破浪会有时，直挂云帆济沧海”。在我学生时代，李白的这句诗一直激励着我，我因此取了 “长风” 二字作为各种社交平台的昵称，作为我个人的一个名片，一直沿用至今，并将一直持续下去。
+编程之外，我喜欢写一写书法，读一些唐诗宋词，品一点各地的茗茶。除此之外，我也很喜欢摄影和旅行，每年会安排假期去全国各地走走看看，体味不同的风土人情。
 
-> 还没写完...
+在我从业5年后，我终于造了一间独属于自己的网络小屋。我在这里分享一些关于代码、关于生活、诗书、旅行、摄影方面的思考。
+
+期待与你在某个不经意的瞬间相遇。
 
 ## 联系我
+
+这些地方有我过往在网络上的一些痕迹，你可以通过以下方式找到我：
 
 - <div flex items-center gap-x-1><div class="i-ri-mail-add-line inline-block" /> <span  op:60 hover:op90 cursor-pointer class="underline-slide-in">zyb.6616@icloud.com</span></div>
 - <div flex items-center gap-x-1><div class="i-uil-github-alt inline-block" /> <a href="https://github.com/upthen" op:60 hover:op90>upthen</a></div>
