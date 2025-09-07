@@ -14,120 +14,72 @@
 				class="up-tools-item-icon cursor-pointer h-full w-full flex items-center justify-center"
 				hover:op90
 			>
+				<UpNavBarSearch v-if="item.type === 'search'" />
+				<el-popover
+					v-else-if="item.popover"
+					placement="left"
+					width="auto"
+				>
+					<template #reference>
+						<div
+							:class="item.icon"
+							text-accent
+							dark:text-accent
+						></div>
+					</template>
+					<UpContentToc
+						v-if="item.type === 'toc'"
+						:headers="headers"
+						root
+					/>
+					<UpFontSetter v-if="item.type === 'font'" />
+				</el-popover>
 				<div
+					v-else-if="item.type !== 'search'"
 					:class="item.icon"
 					text-accent
 					dark:text-accent
-					v-if="item.icon"
 				></div>
-				<span
-					class="text-lg select-none"
-					v-else
-					>{{ item.text }}</span
-				>
 			</div>
 		</div>
 	</div>
-	<popover ref="op">
-		<ul>
-			<li>目录</li>
-		</ul>
-	</popover>
-	<popover
-		ref="font"
-		class="px-0"
-		position="left"
-	>
-		<ul class="cursor-pointer select-none">
-			<li
-				v-for="(item, index) in fontFamilies"
-				:key="index"
-				@click="setFontFamily(item)"
-				class="underline-slide-in py-1"
-			>
-				{{ item.name }}
-			</li>
-		</ul>
-	</popover>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref } from 'vue'
 import { useDark } from '@vueuse/core'
-import Popover from 'primevue/popover'
+import { VPNavBarSearch as UpNavBarSearch } from 'vitepress/theme'
+import UpContentToc from './UpContentToc.vue'
+import UpFontSetter from './UpFontSetter.vue'
+import useToc from './useToc'
 
-const fontFamily = ref('')
 const theme = ref('light')
 const isDark = useDark()
-const opRef = ref<InstanceType<typeof Popover> | null>()
-const op = useTemplateRef('op')
-const font = useTemplateRef('font')
-const fontRef = ref<InstanceType<typeof Popover> | null>()
-
-const fontFamilies = [
-	{
-		key: Symbol(),
-		name: '中宋 (默认)',
-		value: "'STZhongsong', 'SimSun', serif"
-	},
-	{ key: Symbol(), name: '宋体', value: "'SimSun', '宋体', serif" },
-	{
-		key: Symbol(),
-		name: '微软雅黑',
-		value: "'Microsoft YaHei', '微软雅黑', sans-serif"
-	},
-	{ key: Symbol(), name: '苹方', value: "'PingFang SC', '苹方', sans-serif" },
-	{
-		key: Symbol(),
-		name: '冬青黑体',
-		value: "'Hiragino Sans GB', '冬青黑体', sans-serif"
-	},
-	{ key: Symbol(), name: '华文楷体', value: "'STKaiti', '华文楷体', serif" },
-	{ key: Symbol(), name: '华文行楷', value: "'STXingkai', '华文行楷', serif" },
-	{ key: Symbol(), name: '华文隶书', value: "'STLiti', '华文隶书', serif" },
-	{ key: Symbol(), name: '华文新魏', value: "'STXinwei', '华文新魏', serif" },
-	{ key: Symbol(), name: '华文琥珀', value: "'STHupo', '华文琥珀', serif" },
-	{ key: Symbol(), name: '华文宋体', value: "'STSong', '华文宋体', serif" },
-	{ key: Symbol(), name: '方正舒体', value: "'FZShuTi', '方正舒体', serif" },
-	{ key: Symbol(), name: '方正姚体', value: "'FZYaoti', '方正姚体', serif" },
-	{ key: Symbol(), name: '幼圆', value: "'YouYuan', '幼圆', sans-serif" },
-	{ key: Symbol(), name: '楷体', value: "'KaiTi', '楷体', serif" },
-	{ key: Symbol(), name: 'Arial', value: "'Arial', sans-serif" },
-	{ key: Symbol(), name: 'Helvetica', value: "'Helvetica', sans-serif" },
-	{ key: Symbol(), name: 'Times New Roman', value: "'Times New Roman', serif" },
-	{ key: Symbol(), name: 'Georgia', value: "'Georgia', serif" },
-	{ key: Symbol(), name: 'Courier New', value: "'Courier New', monospace" },
-	{ key: Symbol(), name: 'Verdana', value: "'Verdana', sans-serif" },
-	{ key: Symbol(), name: 'Tahoma', value: "'Tahoma', sans-serif" }
-]
-
-const setFontFamily = (family: { name: string; value: string }) => {
-	fontFamily.value = family.value
-	// 设置全局字体
-	// document.documentElement.style.fontFamily = family.value
-	document.body.style.fontFamily = family.value
-	console.log('字体切换', document.documentElement.style.fontFamily)
-}
+const { headers } = useToc()
 
 const tools = computed(() => [
 	{
 		key: Symbol(),
 		text: '目',
 		icon: 'i-tdesign-catalog',
+		type: 'toc',
 		popover: true,
-		func: (e) => {
-			console.log('目录')
-			op?.value?.show(e)
-		}
+		func: (e) => {}
+	},
+	{
+		key: Symbol(),
+		text: '搜',
+		type: 'search',
+		icon: 'i-ri-search-2-line',
+		func: () => {}
 	},
 	{
 		key: Symbol(),
 		text: 'A',
+		type: 'font',
+		popover: true,
 		icon: 'i-fa6-solid-a',
-		func: (e) => {
-			console.log('字体切换')
-			font?.value?.toggle(e)
-		}
+		func: (e) => {}
 	},
 	{
 		key: Symbol(),
@@ -139,21 +91,9 @@ const tools = computed(() => [
 	},
 	{
 		key: Symbol(),
-		text: '搜',
-		icon: 'i-ri-search-2-line',
-		func: () => {
-			console.log('搜索', searchRef.value)
-			if (searchRef.value) {
-				searchRef.value!.showSearch = true
-			}
-		}
-	},
-	{
-		key: Symbol(),
 		text: computed(() => (isDark.value ? '白' : '黑')),
 		icon: 'i-ri-sun-line dark:i-ri-moon-line',
 		func: (e) => {
-			console.log('主题切换')
 			isDark.value = !isDark.value
 			theme.value = isDark.value ? 'dark' : 'light'
 			if (isDark.value) {
@@ -168,7 +108,6 @@ const tools = computed(() => [
 		text: '顶',
 		icon: 'i-material-symbols-vertical-align-top',
 		func: () => {
-			console.log('返回顶部')
 			window.scrollTo({
 				top: 0,
 				behavior: 'smooth'
@@ -178,10 +117,50 @@ const tools = computed(() => [
 ])
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .up-tools-item-icon {
 	transition: opacity 0.2s ease;
 	opacity: 0.6;
 	outline: none;
+}
+
+:deep(.DocSearch-Button) {
+	padding: 0 !important;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+:deep(.DocSearch-Search-Icon) {
+	width: 18px;
+	height: 18px;
+}
+
+:deep(.DocSearch-Button-Keys) {
+	display: none !important;
+}
+
+:deep(.DocSearch-Button-Placeholder) {
+	display: none !important;
+}
+
+:deep(.DocSearch-Search-Icon) {
+	width: 18px !important;
+	height: 18px !important;
+}
+
+:deep(.VPNavBarSearch) {
+	width: 32px !important;
+	height: 32px !important;
+	padding: 0 !important;
+	display: flex !important;
+
+	&:first-child {
+		flex: 1 !important;
+		width: 32px !important;
+		height: 32px !important;
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center !important;
+	}
 }
 </style>

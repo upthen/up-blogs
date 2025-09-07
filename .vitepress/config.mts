@@ -1,16 +1,6 @@
 // import { defineConfig } from "vitepress";
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { defineConfig } from 'vitepress'
-import UnoCss from 'unocss/vite'
-import UnoConfig from '../uno.config'
-import { presetIcons } from 'unocss'
-import presetMini from '@unocss/preset-mini'
-import { presetTheme } from 'unocss-preset-theme'
-import type { Theme } from 'unocss/preset-uno'
-import { light, dark } from './theme/unoTheme'
-import path from 'path'
-import sysPreflights from './sysPreflights'
-
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
 	assetsDir: 'static',

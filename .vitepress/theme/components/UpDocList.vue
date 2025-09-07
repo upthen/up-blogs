@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { data } from './docList.data'
+import { data } from './posts.data'
 import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vitepress'
 

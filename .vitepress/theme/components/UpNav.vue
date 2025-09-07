@@ -9,7 +9,6 @@
 			>{{ site.title }}</a
 		>
 		<div class="flex items-center justify-center gap-x-5">
-			<VPNavBarSearch class="search" />
 			<up-nav-menu :config="navMenuConfig" />
 		</div>
 	</div>
@@ -19,10 +18,9 @@
 import { useData } from 'vitepress'
 import { computed, ref } from 'vue'
 import UpNavMenu from './UpNavMenu.vue'
-import { VPNavBarSearch } from 'vitepress/theme'
 
 defineOptions({
-	name: 'ComponentName'
+	name: 'UpNav'
 })
 
 const { site, theme } = useData()

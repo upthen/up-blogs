@@ -19,8 +19,8 @@ Hi！我是 **长风** / **CherishTheYouth** / **Robert Zeng**。
 
 ## 联系我
 
-- 📧 zyb.6616@icloud.com
+- <div flex items-center gap-x-1><div class="i-ri-mail-add-line inline-block" /> <span  op:60 hover:op90 cursor-pointer class="underline-slide-in">zyb.6616@icloud.com</span></div>
 - <div flex items-center gap-x-1><div class="i-uil-github-alt inline-block" /> <a href="https://github.com/upthen" op:60 hover:op90>upthen</a></div>
-- <div flex items-center gap-x-1><div class="i-fa6-brands-github-alt inline-block" /> <a href="https://github.com/cherishtheyouth" op:60 hover:op90>CherishTheYouth</a></div>
-- <div flex items-center gap-x-1><div class="i-fa6-brands-blogger-b inline-block" /> <a href="https://juejin.cn/user/4248168662043367" op:60 hover:op90>掘金</a></div>
-- <div flex items-center gap-x-1><div class="i-simple-icons-wechat inline-block" /> <span  op:60 hover:op90 cursor-pointer class="underline-slide-in">changfeng6616</span></div>
+- <div flex items-center gap-x-1><div class="i-ri-github-fill inline-block" /> <a href="https://github.com/cherishtheyouth" op:60 hover:op90>CherishTheYouth</a></div>
+- <div flex items-center gap-x-1><div class="i-ri-article-line inline-block" /> <a href="https://juejin.cn/user/4248168662043367" op:60 hover:op90>掘金</a></div>
+- <div flex items-center gap-x-1><div class="i-ri-wechat-2-line inline-block" /> <span  op:60 hover:op90 cursor-pointer class="underline-slide-in">changfeng6616</span></div>

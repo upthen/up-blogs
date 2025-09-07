@@ -1,3 +1,7 @@
+---
+title: Vibe Coding 技巧_2025_08_26
+---
+
 # Vibe Coding 技巧\_2025_08_26
 
 > 转载自： [AI 生成代码曾经一团糟……直到我悟出这 10 条铁律](https://mp.weixin.qq.com/s/3X4Ya4lXyLF1vC-94SJL8Q)
