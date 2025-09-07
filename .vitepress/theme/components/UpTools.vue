@@ -75,14 +75,6 @@ const tools = computed(() => [
 	},
 	{
 		key: Symbol(),
-		text: 'A',
-		type: 'font',
-		popover: true,
-		icon: 'i-fa6-solid-a',
-		func: (e) => {}
-	},
-	{
-		key: Symbol(),
 		text: 'Git',
 		icon: 'i-uil-github-alt',
 		func: (e) => {
@@ -102,6 +94,14 @@ const tools = computed(() => [
 				document.documentElement.classList.remove('dark')
 			}
 		}
+	},
+	{
+		key: Symbol(),
+		text: 'A',
+		type: 'font',
+		popover: true,
+		icon: 'i-fa6-solid-a',
+		func: (e) => {}
 	},
 	{
 		key: Symbol(),
