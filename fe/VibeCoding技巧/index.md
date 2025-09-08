@@ -1,5 +1,5 @@
 ---
-title: Vibe Coding 技巧_2025_08_26
+title: Vibe Coding 技巧
 ---
 
 # Vibe Coding 技巧\_2025_08_26

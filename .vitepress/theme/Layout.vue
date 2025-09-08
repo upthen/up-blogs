@@ -1,7 +1,8 @@
 <template>
   <div class="w-screen h-screen overflow-x-hidden">
     <UpNav />
-    <main class="container mx-auto min-h-[calc(100vh-140px)] px-8">
+    <!-- 100dvh - 200px nav 80px footer 60px 文章列表 h2 标题有 60px 的 margin-top -->
+    <main class="container mx-auto min-h-[calc(100dvh-200px)] px-8">
       <div class="up-body h-full w-full">
         <template v-if="['list', 'home'].includes(frontmatter.layout)">
           <UpContent>
