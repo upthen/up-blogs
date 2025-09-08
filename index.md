@@ -9,15 +9,20 @@ description: Robert Zeng 的线上小书屋，我在这里敲一点代码，写�
 
 ## 关于我
 
-Hi！我是 **长风** / **CherishTheYouth** / **Robert Zeng**。
+Hi！我是
+<strong class="underline-slide-in cursor-pointer">Robert Zeng<sup cursor-pointer px-1>前端开发</sup></strong> /
+<strong class="underline-slide-in cursor-pointer">长风<sup cursor-pointer>个人生活</sup></strong> /
+<strong class="underline-slide-in cursor-pointer">CherishTheYouth<sup cursor-pointer>曾用名</sup></strong>
 
-我是一名前端开发工程师，目前就职于武汉一家医疗行业的公司，做一些前端开发相关工作。
+我是一名前端开发工程师，目前就职于武汉一家医疗行业的公司，做一些前端开发相关工作，业余时间也参与一些开源项目，分享一些开发经验。
 
-编程之外，我喜欢写一写书法，读一些唐诗宋词，品一点各地的茗茶。除此之外，我也很喜欢摄影和旅行，每年会安排假期去全国各地走走看看，体味不同的风土人情。
+编程之外，我喜欢写一写书法，读一些唐诗宋词，品一点各地的茗茶。
 
-在我从业5年后，我终于造了一间独属于自己的网络小屋。我在这里分享一些关于代码、关于生活、诗书、旅行、摄影方面的思考。
+除此之外，我也很喜欢摄影和旅行，每年会安排假期去全国各地走走看看，体味不同的风土人情。今年国庆，我计划和爱人一起去北方走走。
 
-期待与你在某个不经意的瞬间相遇。
+在我从业5年后，我终于造了一间独属于自己的网络书斋。我在这里分享一些关于代码、关于生活、诗书、旅行、摄影方面的思考。
+
+期待相遇!
 
 ## 联系我
 
