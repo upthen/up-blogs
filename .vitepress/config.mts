@@ -3,7 +3,7 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 import { defineConfig } from "vitepress";
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
-  base: "/up/me", // 内网子路径
+  base: "/",
   assetsDir: "static",
   lang: "zh-CN",
   title: "闻 · 斋",
