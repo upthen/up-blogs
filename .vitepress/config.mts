@@ -1,24 +1,25 @@
 // import { defineConfig } from "vitepress";
-import { withMermaid } from 'vitepress-plugin-mermaid'
-import { defineConfig } from 'vitepress'
+import { withMermaid } from "vitepress-plugin-mermaid";
+import { defineConfig } from "vitepress";
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
-	assetsDir: 'static',
-	lang: 'zh-CN',
-	title: '闻 · 斋',
-	themeConfig: {
-		search: {
-			provider: 'local'
-		},
-		// https://vitepress.dev/reference/default-theme-config
-		nav: [
-			{ text: '我', link: '/' },
-			{ text: '前端', link: '/fe/' },
-			{ text: '历史', link: '/history/' },
-			{ text: '读诗', link: '/poetry/' }
-		],
-		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/upthen/up-blogs' }
-		]
-	}
-})
+  base: "/up/me", // 内网子路径
+  assetsDir: "static",
+  lang: "zh-CN",
+  title: "闻 · 斋",
+  themeConfig: {
+    search: {
+      provider: "local",
+    },
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: "我", link: "/" },
+      { text: "前端", link: "/fe/" },
+      { text: "历史", link: "/history/" },
+      { text: "读诗", link: "/poetry/" },
+    ],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/upthen/up-blogs" },
+    ],
+  },
+});
