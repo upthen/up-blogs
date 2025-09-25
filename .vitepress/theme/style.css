@@ -36,7 +36,7 @@ html {
 }
 
 :root {
-  --body-bg-opacity: 0.04;
+  --body-bg-opacity: 0.01;
   --body-bg-img: url("./assets/sangluan_light.JPG");
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen overflow-x-hidden">
+  <div class="overflow-x-hidden" id="up-layout">
     <UpNav />
     <!-- 100dvh - 200px nav 80px footer 60px 文章列表 h2 标题有 60px 的 margin-top -->
     <main class="container mx-auto min-h-[calc(100dvh-200px)] px-8">
@@ -20,7 +20,7 @@
     </main>
     <footer class="w-full h-80px flex items-center justify-center">
       <p class="text-sm text-aux2 px-16px h-full flex items-center">
-        © {{ lunisolar(dayjs().format("YYYY")).format("cY") }}
+        © {{ lunisolar(dayjs().format("YYYY-MM-DD")).format("cY") }}
         {{ site.title }}. 保留所有权利.
       </p>
     </footer>
