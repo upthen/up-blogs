@@ -15,8 +15,6 @@ export default withMermaid({
     nav: [
       { text: "我", link: "/" },
       { text: "前端", link: "/fe/" },
-      { text: "历史", link: "/history/" },
-      { text: "读诗", link: "/poetry/" },
       { text: "随笔", link: "/essay/" },
     ],
     socialLinks: [

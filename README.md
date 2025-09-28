@@ -17,3 +17,10 @@ TODO
 - [x] 移动端适配
 - [ ] 支持评论
 - [ ] Rss 订阅支持
+- [ ] 支持图片预览
+
+## 更新日志
+
+- 2025-0928 新增图片预览功能
+
+参考资料：[vitepress-plugin-image-viewer](https://www.shakecode.com/zh/blog/other/vitepress-plugin-image-viewer)
