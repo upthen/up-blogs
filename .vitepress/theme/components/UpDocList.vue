@@ -3,22 +3,19 @@
   <div class="up-doc-list">
     <h2>最新文章</h2>
     <ul v-if="docList.length > 0">
-      <li
-        v-for="doc in docList"
-        :key="doc.url"
-        class="up-list__item px-5 py-2 flex justify-start gap-col-lg"
-      >
-        <a
-          :href="doc.url"
-          class="op70 h-full text-l hover:op100"
+      <template v-for="doc in docList" :key="doc.url">
+        <li
+          class="up-list__item px-5 py-2 flex justify-start gap-col-lg"
           v-if="doc.title.toLocaleLowerCase() !== 'readme'"
         >
-          <span class="underline-slide-in">{{ doc.title }}</span>
-          <sup v-if="doc.date" class="text-aux2 text-sm px-2">
-            {{ doc.date }}
-          </sup>
-        </a>
-      </li>
+          <a :href="doc.url" class="op70 h-full text-l hover:op100">
+            <span class="underline-slide-in">{{ doc.title }}</span>
+            <sup v-if="doc.date" class="text-aux2 text-sm px-2">
+              {{ doc.date }}
+            </sup>
+          </a>
+        </li>
+      </template>
     </ul>
     <div v-else class="text-aux2">
       暂无文章, 快去找斋主
