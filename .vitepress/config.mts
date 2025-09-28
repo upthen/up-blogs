@@ -17,6 +17,7 @@ export default withMermaid({
       { text: "前端", link: "/fe/" },
       { text: "历史", link: "/history/" },
       { text: "读诗", link: "/poetry/" },
+      { text: "随笔", link: "/essay/" },
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/upthen/up-blogs" },
