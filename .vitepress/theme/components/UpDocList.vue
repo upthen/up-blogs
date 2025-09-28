@@ -8,7 +8,11 @@
         :key="doc.url"
         class="up-list__item px-5 py-2 flex justify-start gap-col-lg"
       >
-        <a :href="doc.url" class="op70 h-full text-l hover:op100">
+        <a
+          :href="doc.url"
+          class="op70 h-full text-l hover:op100"
+          v-if="doc.title.toLocaleLowerCase() !== 'readme'"
+        >
           <span class="underline-slide-in">{{ doc.title }}</span>
           <sup v-if="doc.date" class="text-aux2 text-sm px-2">
             {{ doc.date }}
