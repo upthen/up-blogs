@@ -1,27 +1,43 @@
 <!-- 文章列表 -->
 <template>
+  <!-- 文章列表项复用模板 -->
+  <DefineTemplate v-slot="{ data, status }">
+    <li
+      class="up-list__item px-5 py-2 flex justify-start gap-col-lg"
+      :key="data.url"
+    >
+      <a :href="data.url" class="op70 h-full text-l hover:op100">
+        <span class="underline-slide-in">{{ data.title }}</span>
+        <sup v-if="data.date" text-aux2 text-sm px-2>
+          <span>{{ data.date }}</span>
+
+          <template v-if="!isEmpty(data?.frontmatter?.tags)">
+            <span>·</span>
+            <span v-for="tag in data.frontmatter.tags" :key="tag">
+              {{ tag }}
+            </span>
+          </template>
+        </sup>
+      </a>
+    </li>
+  </DefineTemplate>
   <div class="up-doc-list">
     <h2>最新文章</h2>
-    <ul v-if="docList.length > 0">
-      <template v-for="doc in docList" :key="doc.url">
-        <li
-          class="up-list__item px-5 py-2 flex justify-start gap-col-lg"
-          v-if="doc.title.toLocaleLowerCase() !== 'readme'"
-        >
+    <ul v-if="classifyDocs.length > 0">
+      <template v-for="doc in classifyDocs" :key="doc.url">
+        <ul v-if="!isEmpty(doc.children)">
           <a :href="doc.url" class="op70 h-full text-l hover:op100">
             <span class="underline-slide-in">{{ doc.title }}</span>
-            <sup v-if="doc.date" text-aux2 text-sm px-2>
-              <span>{{ doc.date }}</span>
-
-              <template v-if="!isEmpty(doc?.frontmatter?.tags)">
-                <span>·</span>
-                <span v-for="tag in doc.frontmatter.tags" :key="tag">
-                  {{ tag }}
-                </span>
-              </template>
-            </sup>
           </a>
-        </li>
+          <ul px-5>
+            <ReuseTemplate
+              v-for="(item, index) in doc.children"
+              :data="item"
+              :key="item.key"
+            />
+          </ul>
+        </ul>
+        <ReuseTemplate :data="doc" v-else />
       </template>
     </ul>
     <div v-else class="text-aux2">
@@ -35,9 +51,19 @@
 import { data } from "./posts.data";
 import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vitepress";
-import { isEmpty } from "lodash-es";
+import {
+  isEmpty,
+  filter,
+  cloneDeep,
+  partition,
+  remove,
+  forEach,
+} from "lodash-es";
+import { createReusableTemplate } from "@vueuse/core";
 
 const route = useRoute();
+// 创建可复用模板
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate();
 const docList = computed(() => {
   console.log("data", data);
   return data.filter((item) => {
@@ -45,6 +71,43 @@ const docList = computed(() => {
     const regex = new RegExp(`^${route.path}(?!$)`);
     return regex.test(item.url);
   });
+});
+
+const classifyDocs = computed(() => {
+  // 使用 cloneDeep 深拷贝数据，避免修改原始数据
+  const docsData = cloneDeep(docList.value);
+
+  // 使用 partition 将数组按 layout === 'list' 拆分为两个数组
+  const [listDocs, docs] = partition(
+    docsData,
+    (item) => item.frontmatter?.layout === "list"
+  );
+
+  // 遍历 listDocs，为每个列表文档添加子文档
+  forEach(listDocs, (listDoc) => {
+    const parentUrl = listDoc.url;
+
+    // 使用 remove 函数从 docs 数组中提取匹配的子文档
+    const children = remove(
+      docs,
+      (doc) => doc?.url?.startsWith(parentUrl) && doc.url !== parentUrl
+    );
+
+    // 如果有子文档，添加到 listDoc 的 children 属性中
+    if (!isEmpty(children)) {
+      listDoc.children = children;
+    }
+  });
+
+  // 使用 concat 合并 listDocs 和处理后的 docs
+  const result = listDocs.concat(docs);
+
+  // 返回处理后的结果
+  return result;
+});
+
+onMounted(() => {
+  console.log("classifyDocs", classifyDocs.value);
 });
 
 /**

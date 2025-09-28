@@ -15,7 +15,6 @@
             <Content />
           </UpContent>
           <UpBack />
-          <UpTheme />
         </template>
       </div>
     </main>

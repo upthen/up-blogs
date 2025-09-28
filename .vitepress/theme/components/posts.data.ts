@@ -19,7 +19,10 @@ export default createContentLoader("**/**/*.md", {
           !item.url.includes(".vitepress") &&
           !item.frontmatter.draft &&
           item.url !== "/" &&
-          !item.url.includes("README") // 过滤 README 文件
+          item.url !== "/essay/" &&
+          item.url !== "/coding/" &&
+          !item.url.includes("README") && // 过滤 README 文件
+          !item.frontmatter.draft
         );
       })
       .map((item) => {
