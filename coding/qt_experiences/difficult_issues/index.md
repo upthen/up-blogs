@@ -1,9 +1,8 @@
 ---
 title: 我的 Qt 开发FAQ
 description: 我的 Qt 开发FAQ
+tags: [qt]
 ---
-
-
 
 # Qt 开发FAQ
 
@@ -24,7 +23,6 @@ description: 我的 Qt 开发FAQ
 - **关闭正在运行的程序**
 
 - **检查文件权限**
-
   - 右键`xxx.exe`文件，选择 "属性"
 
   - 切换到 "安全" 选项卡，确保当前用户有 "修改" 和 "写入" 权限
@@ -36,7 +34,6 @@ description: 我的 Qt 开发FAQ
 - **检查是否被其他程序占用**
 
 - **修改输出目录权限**
-
   - 右键`debug_x86`文件夹，选择 "属性"
 
   - 在 "安全" 选项卡中给当前用户添加完全控制权限
@@ -62,10 +59,8 @@ description: 我的 Qt 开发FAQ
 :warning:不添加会报这个错误：
 
 ```tex
-错误 LNK2019 无法解析的外部符号 "public: __thiscall AudioMeter::AudioMeter(class QWidget *)" (??0AudioMeter@@QAE@PAVQWidget@@@Z)，该符号在函数 "public: __thiscall MainWindow::MainWindow(class QWidget *)" (??0MainWindow@@QAE@PAVQWidget@@@Z) 中被引用 uai_clinical_aid 
+错误 LNK2019 无法解析的外部符号 "public: __thiscall AudioMeter::AudioMeter(class QWidget *)" (??0AudioMeter@@QAE@PAVQWidget@@@Z)，该符号在函数 "public: __thiscall MainWindow::MainWindow(class QWidget *)" (??0MainWindow@@QAE@PAVQWidget@@@Z) 中被引用 uai_clinical_aid
 ```
-
-
 
 ## 关于 qt 里 margin 的方向写法
 
@@ -78,8 +73,6 @@ mainLayout->setContentsMargins(16,40, 16, 24);
 方向依次为：`(left, top, right, bottom)`
 
 与 `css` 里的 `(top, right, bottom, left)` 不同
-
-
 
 ## QBoxVLayout 和 QBoxHLayout 中使用 **`addStretch()`** 的时机问题
 
@@ -144,13 +137,9 @@ play_panel->hide();
     )");
 ```
 
-
-
 ## 控件触发 hover 事件
 
 控件触发 `hover` 效果，需要结合 `QAction` 使用, `QPushButton` 不支持 `QAction`, 只有 `QToolButton` 支持 `QAction`
-
-
 
 ## Qt 中给控件添加阴影效果的实战技巧
 
@@ -161,7 +150,7 @@ play_panel->hide();
 
 顶层窗口的背景定死了，没办法在窗口之外的位置显示UI效果。技巧是将顶层窗口设为透明，然后在顶层窗口内部最外层设置一个 `shaowWidget` ，内部的这个 widget 可以使用 `QGraphicsDropShadowEffect ` 绘制阴影效果。shaowWidget 和 顶层 widget 之间一定要预留一些边距，因为超出顶层控件的范围是不会显示任何效果的。
 
-要实现比较自然的阴影效果， 那么  shdowWidget 和 顶层窗口之间的间距要保证不要小于阴影的模糊半径，不然这个阴影效果会有种突然被截断的感觉，不是那么自然。
+要实现比较自然的阴影效果， 那么 shdowWidget 和 顶层窗口之间的间距要保证不要小于阴影的模糊半径，不然这个阴影效果会有种突然被截断的感觉，不是那么自然。
 
 比如这个明显看到有一圈边沿
 

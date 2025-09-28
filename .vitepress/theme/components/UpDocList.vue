@@ -10,8 +10,15 @@
         >
           <a :href="doc.url" class="op70 h-full text-l hover:op100">
             <span class="underline-slide-in">{{ doc.title }}</span>
-            <sup v-if="doc.date" class="text-aux2 text-sm px-2">
-              {{ doc.date }}
+            <sup v-if="doc.date" text-aux2 text-sm px-2>
+              <span>{{ doc.date }}</span>
+
+              <template v-if="!isEmpty(doc?.frontmatter?.tags)">
+                <span>·</span>
+                <span v-for="tag in doc.frontmatter.tags" :key="tag">
+                  {{ tag }}
+                </span>
+              </template>
             </sup>
           </a>
         </li>
@@ -28,9 +35,11 @@
 import { data } from "./posts.data";
 import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vitepress";
+import { isEmpty } from "lodash-es";
 
 const route = useRoute();
 const docList = computed(() => {
+  console.log("data", data);
   return data.filter((item) => {
     // 正则表达式，匹配以 route.path 开头但不完全等于 route.path 的 URL
     const regex = new RegExp(`^${route.path}(?!$)`);

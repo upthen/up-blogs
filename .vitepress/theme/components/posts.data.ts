@@ -11,13 +11,15 @@ export default createContentLoader("**/**/*.md", {
   render: false,
   excerpt: true,
   transform(rawData) {
+    console.log("rawData", rawData);
     return rawData
       .filter((item) => {
         // 过滤掉不需要显示的文件
         return (
           !item.url.includes(".vitepress") &&
           !item.frontmatter.draft &&
-          item.url !== "/"
+          item.url !== "/" &&
+          !item.url.includes("README") // 过滤 README 文件
         );
       })
       .map((item) => {

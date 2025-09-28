@@ -1,6 +1,7 @@
 ---
 title: c++基础
 description: C++基础
+tags: [c++]
 ---
 
 # C++ 基础
@@ -27,75 +28,65 @@ description: C++基础
 
 - **访问全局变量**：当局部作用域有同名的变量时，用 `::`可访问全局变量。
 
-  
-
   ```c++
-  int value = 100; // 全局变量 
-  void func() {    
-      int value = 50; // 局部变量    
-      std::cout << value;    // 输出 50 (局部变量)    
-      std::cout << ::value;  // 输出 100 (全局变量) 
+  int value = 100; // 全局变量
+  void func() {
+      int value = 50; // 局部变量
+      std::cout << value;    // 输出 50 (局部变量)
+      std::cout << ::value;  // 输出 100 (全局变量)
   }
   ```
 
-  
-
 - **访问命名空间中的成员**：
 
-    ```c++
-    namespace MyNamespace {    
-    
-    int x = 10;    
-    void foo() {} 
-    } 
-    
-    int main() {    
-    	std::cout << MyNamespace::x; // 访问命名空间中的变量    	
-        MyNamespace::foo();          // 访问命名空间中的函数 
-    }
-    
-    ```
+  ```c++
+  namespace MyNamespace {
+
+  int x = 10;
+  void foo() {}
+  }
+
+  int main() {
+  	std::cout << MyNamespace::x; // 访问命名空间中的变量
+      MyNamespace::foo();          // 访问命名空间中的函数
+  }
+
+  ```
 
 - **访问类的静态成员**：静态成员属于类本身，而不是某个对象。
 
-    ````c++
-    class MyClass { 
-        public:    
-        	static int staticVar; 
-    }; 
-    int MyClass::staticVar = 20; // 在类外定义并初始化静态成员 
-    int main() {    
-        std::cout << MyClass::staticVar; // 通过类名和::访问静态成员 
-    }
-    ````
-
-    
+  ```c++
+  class MyClass {
+      public:
+      	static int staticVar;
+  };
+  int MyClass::staticVar = 20; // 在类外定义并初始化静态成员
+  int main() {
+      std::cout << MyClass::staticVar; // 通过类名和::访问静态成员
+  }
+  ```
 
 - **在类外定义成员函数**：
 
-    ```c++
-    class MyClass { 
-        public:    
-        	void myFunction(); // 声明 
-    }; 
-    // 在类外使用 :: 定义成员函数 
-    void MyClass::myFunction() {    
-        // 函数实现 
-    }
-    ```
-
-    
+  ```c++
+  class MyClass {
+      public:
+      	void myFunction(); // 声明
+  };
+  // 在类外使用 :: 定义成员函数
+  void MyClass::myFunction() {
+      // 函数实现
+  }
+  ```
 
 - **访问嵌套类或枚举类**：
 
-    ```c++
-    class Outer { 
-        public:    class Inner { ... }; // 嵌套类 
-    }; 
-    Outer::Inner innerObj; // 使用 :: 访问嵌套类
-    ```
-
-    
+  ```c++
+  class Outer {
+      public:    class Inner { ... }; // 嵌套类
+  };
+  Outer::Inner innerObj; // 使用 :: 访问嵌套类
+  ```
 
 ### 🔍 2. 箭头操作符 `->`
 
@@ -106,15 +97,14 @@ description: C++基础
 - **访问动态分配的对象成员**：通过 `new`在堆上创建的对象，需要通过指针来访问。
 
   ```c++
-  class MyClass { 
-      public:    int data;    
-      void print() { 
-          std::cout << data; 
-      } 
+  class MyClass {
+      public:    int data;
+      void print() {
+          std::cout << data;
+      }
   };
   MyClass* ptr = new MyClass(); // 动态分配，ptr是指针 ptr->data = 42;    // 通过 -> 访问成员变量 ptr->print();      // 通过 -> 调用成员函数 delete ptr;        // 记得释放内存
   ```
-
 
 - **访问智能指针指向的对象成员**：如 `std::unique_ptr`, `std::shared_ptr`等，它们重载了 `->`操作符，用法和原始指针类似。
 
@@ -125,8 +115,6 @@ description: C++基础
   smartPtr->print();
   ```
 
-  
-
 - **访问迭代器指向的元素成员**：标准库中的迭代器通常也重载了 `->`，方便访问所指对象的成员。
 
   ```c++
@@ -136,8 +124,6 @@ description: C++基础
       std::cout << it->data; // 通过迭代器的 -> 访问元素的成员
   }
   ```
-
-  
 
 **注意**：使用 `->`的前提是**指针必须有效**（例如不为 `nullptr`），否则可能导致未定义行为（如程序崩溃）。
 
@@ -160,8 +146,6 @@ description: C++基础
   obj.print();    // 通过 . 调用成员函数
   ```
 
-  
-
 - **通过引用访问对象成员**：
 
   ```c++
@@ -171,8 +155,6 @@ description: C++基础
   ref.print();
   ```
 
-  
-
 - **访问数组中的对象元素成员**：数组中的元素是对象本身，而不是指针。
 
   ```c++
@@ -181,8 +163,6 @@ description: C++基础
   arr[0].print();
   ```
 
-  
-
 ### 💡 常见错误与注意事项
 
 - **混淆 `->`和 `.`**：这是初学者常犯的错误。
@@ -190,14 +170,12 @@ description: C++基础
   ```c++
   MyClass obj;
   MyClass* ptr = &obj;
-  
+
   obj.data = 1;   // 正确，对象实例用 .
   ptr->data = 2;  // 正确，对象指针用 ->
   // ptr.data = 3; // 错误！指针不能直接用 . 访问成员
   // obj->data = 4; // 错误！对象实例不能直接用 -> 访问成员
   ```
-
-  
 
   记住：**对象或引用用 `.`，指针用 `->`**。
 
@@ -215,4 +193,3 @@ description: C++基础
 1. **`::`(作用域解析符)**：用于指明标识符所在的**作用域**，如命名空间、类、全局作用域。它操作的是**作用域本身**，而不是具体的对象实例。
 2. **`->`(箭头操作符)**：用于通过**指向对象的指针**来访问对象的成员。它要求左边是一个指针，并且可以重载。
 3. **`.`(点操作符)**：用于通过**对象实例或对象的引用**来直接访问对象的成员。它要求左边是一个对象或引用，且不能被重载。
-

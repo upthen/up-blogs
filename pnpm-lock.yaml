@@ -56,6 +56,9 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       lunisolar:
         specifier: ^2.6.0
         version: 2.6.0
