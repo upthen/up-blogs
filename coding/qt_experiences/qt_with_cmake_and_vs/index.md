@@ -1,7 +1,7 @@
 ---
 title: 如何使用 cmake 和 visual studio 2019 开发Qt应用
 description: 记录如何使用 QtCreator + cmake 创建一个 Qt 应用，然后转到 visual studio 2019 中进行开发
-tags: [qt]
+tags: [Qt]
 ---
 
 # 如何使用 cmake 和 visual studio 2019 开发Qt应用

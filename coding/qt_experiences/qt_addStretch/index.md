@@ -1,7 +1,7 @@
 ---
 title: 关于Qt中的 addStretch
 description: Qt widget 中 addStrech
-tags: [qt]
+tags: [Qt]
 ---
 
 # :pushpin:Qt widget 中 addStrech

@@ -1,7 +1,7 @@
 ---
 title: Vibe Coding 技巧
 description: Vibe Coding 技巧
-tags: [ai]
+tags: [AI]
 ---
 
 # Vibe Coding 技巧\_2025_08_26

@@ -1,7 +1,7 @@
 ---
 title: 我的 Qt 开发FAQ
 description: 我的 Qt 开发FAQ
-tags: [qt]
+tags: [Qt]
 ---
 
 # Qt 开发FAQ

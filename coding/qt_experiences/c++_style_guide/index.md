@@ -1,24 +1,18 @@
 ---
 title: C++ 编码规范
 description: 软件开发，没有规矩，不成方圆，个人的编码习惯需要通过团队统一的开发规范来约束，不然会给团队开发带来灾难。这里整理了一份 C++ 领域的编码规范。
-tag: [c++]
+tag: [C++]
 ---
 
 # :star2: C++编码规范
-
-
 
 软件开发，没有规矩，不成方圆，个人的编码习惯需要通过团队统一的开发规范来约束，不然会给团队开发带来灾难。
 
 这里整理了 C++ 领域的一些公认认可度较高的编码规范。
 
-
-
 ## 谷歌C++编码规范
 
-
-
-> [!NOTE] 
+> [!NOTE]
 >
 > 简称 GSG，谷歌的 C++ 编程规范，在国内有较大影响力，是企业级规范，对代码的具体样式有细致的规定，可直接采用。
 >
@@ -26,24 +20,17 @@ tag: [c++]
 >
 > GSG 是实践经验的总结，也在不断发展，目前已适应 C++17，对提升代码可维护性有很高的参考价值。
 
-
-
-
 1. 谷歌官方规范 github 仓库，不只有 c++，还有其他语言。
 
    [:book: google style guide](https://github.com/google/styleguide)
 
 2. 谷歌开发规范中文版（社区翻译）
 
-   [:book:  谷歌开发规范中文版_github](https://github.com/zh-google-styleguide/zh-google-styleguide)
+   [:book: 谷歌开发规范中文版\_github](https://github.com/zh-google-styleguide/zh-google-styleguide)
 
-   [:earth_africa: 谷歌开发规范中文版_网页版](https://zh-google-styleguide.readthedocs.io/en/latest/contents.html)
-
-
+   [:earth*africa: 谷歌开发规范中文版*网页版](https://zh-google-styleguide.readthedocs.io/en/latest/contents.html)
 
 ## C++ Core Guidelines
-
-
 
 > [!NOTE]
 >
@@ -55,22 +42,14 @@ tag: [c++]
 
    [:writing_hand: CppCoreGuidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
-
-
-
 ## C/C++ linter 工具
 
 1. C/C++ Advanced Lint
 
-   > 一个用于 c/c++ 开发的 linter  vscode 扩展
-   > 
-
+   > 一个用于 c/c++ 开发的 linter vscode 扩展
 
 ## 其他规范
 
 参考文章中热心网友总结的其他各类规范：
 
 [:earth_americas: 各大厂 C/C++ 编程规范详解](https://www.cnblogs.com/lucky-bubble/p/16037810.html)
-
-
-

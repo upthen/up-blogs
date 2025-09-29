@@ -1,7 +1,7 @@
 ---
-title: c++基础
+title: C++基础
 description: C++基础
-tags: [c++]
+tags: [C++]
 ---
 
 # C++ 基础

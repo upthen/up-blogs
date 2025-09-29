@@ -1,7 +1,7 @@
 ---
 title: Qt如何实现一个自定义组件
 description: 本文想记录一下定义一个自定义组件的一般方法和步骤
-tags: [qt]
+tags: [Qt]
 draft: true
 ---
 
