@@ -3,20 +3,15 @@ title: vitepress 中的 markdown 扩展
 description: 我的博客是基于 vitepress 实现的，因此有时使用 markdown 语法时要经常参考 vitepress 官方文档，多有不便，因此 fork 一份关于 vitepress 中的 markdown 章节中的内容，便于查阅。
 ---
 
-
 # Markdown 扩展 {#markdown-extensions}
 
 ---
-
-
 
 :::info TL, DR
 
 我的博客是基于 vitepress 实现的，因此有时使用 markdown 语法时要经常参考 vitepress 官方文档，多有不便，因此 fork 一份关于 vitepress 中的 markdown 章节中的内容，便于查阅。
 
 :::
-
-
 
 ## 标题锚点 {#header-anchors}
 
@@ -90,7 +85,7 @@ lang: en-US
 
 此数据将可用于页面的其余部分，以及所有自定义和主题组件。
 
-更多信息，参见 [frontmatter](../reference/frontmatter-config)。
+更多信息，参见 [frontmatter](https://vitepress.dev/zh/reference/frontmatter-config)。
 
 ## GitHub 风格的表格 {#github-style-tables}
 
@@ -204,9 +199,11 @@ This is a details block.
 :::
 
 ::: details 点我查看代码
+
 ```js
-console.log('Hello, VitePress!')
+console.log("Hello, VitePress!");
 ```
+
 :::
 ````
 
@@ -217,9 +214,11 @@ console.log('Hello, VitePress!')
 :::
 
 ::: details 点我查看代码
+
 ```js
-console.log('Hello, VitePress!')
+console.log("Hello, VitePress!");
 ```
+
 :::
 
 此外，可以通过在站点配置中添加以下内容来全局设置自定义标题，如果不是用英语书写，这会很有帮助：
@@ -230,15 +229,15 @@ export default defineConfig({
   // ...
   markdown: {
     container: {
-      tipLabel: '提示',
-      warningLabel: '警告',
-      dangerLabel: '危险',
-      infoLabel: '信息',
-      detailsLabel: '详细信息'
-    }
-  }
+      tipLabel: "提示",
+      warningLabel: "警告",
+      dangerLabel: "危险",
+      infoLabel: "信息",
+      detailsLabel: "详细信息",
+    },
+  },
   // ...
-})
+});
 ```
 
 ### `raw`
@@ -264,19 +263,19 @@ Wraps in a `<div class="vp-raw">`
 - 创建 `docs/postcss.config.mjs` 文件并将以下内容添加到其中：
 
   ```js
-  import { postcssIsolateStyles } from 'vitepress'
-  
+  import { postcssIsolateStyles } from "vitepress";
+
   export default {
-    plugins: [postcssIsolateStyles()]
-  }
+    plugins: [postcssIsolateStyles()],
+  };
   ```
 
   你可以像这样传递它的选项：
 
   ```js
   postcssIsolateStyles({
-    includeFiles: [/custom\.css/] // 默认为 [/vp-doc\.css/, /base\.css/]
-  })
+    includeFiles: [/custom\.css/], // 默认为 [/vp-doc\.css/, /base\.css/]
+  });
   ```
 
 ## GitHub 风格的警报 {#github-flavored-alerts}
@@ -344,22 +343,20 @@ export default {
 
 ```js
 export default {
-  name: 'MyComponent'
+  name: "MyComponent",
   // ...
-}
+};
 ```
 
 ```html
 <ul>
-  <li v-for="todo in todos" :key="todo.id">
-    {{ todo.text }}
-  </li>
+  <li v-for="todo in todos" :key="todo.id">{{ todo.text }}</li>
 </ul>
 ```
 
 在 Shiki 的代码仓库中，可以找到[合法的编程语言列表](https://shiki.style/languages)。
 
-还可以在全局配置中自定义语法高亮主题、配置语言别名和自定义语言标签。有关详细信息，参见 [`markdown` 选项](../reference/site-config#markdown)得到更多信息。
+还可以在全局配置中自定义语法高亮主题、配置语言别名和自定义语言标签。有关详细信息，参见 [`markdown` 选项](https://vitepress.dev/zh/reference/site-config#markdown)得到更多信息。
 
 ## 在代码块中实现行高亮 {#line-highlighting-in-code-blocks}
 
@@ -451,10 +448,10 @@ export default {
 export default {
   data() {
     return {
-      msg: 'Highlighted!' // [!code highlight]
-    }
-  }
-}
+      msg: "Highlighted!", // [!code highlight]
+    };
+  },
+};
 ```
 
 ## 代码块中聚焦 {#focus-in-code-blocks}
@@ -483,10 +480,10 @@ export default {
 export default {
   data() {
     return {
-      msg: 'Focused!' // [!code focus]
-    }
-  }
-}
+      msg: "Focused!", // [!code focus]
+    };
+  },
+};
 ```
 
 ## 代码块中的颜色差异 {#colored-diffs-in-code-blocks}
@@ -546,11 +543,11 @@ export default {
 export default {
   data() {
     return {
-      msg: 'Error', // [!code error]
-      msg: 'Warning' // [!code warning]
-    }
-  }
-}
+      msg: "Error", // [!code error]
+      msg: "Warning", // [!code warning]
+    };
+  },
+};
 ```
 
 ## 行号 {#line-numbers}
@@ -560,12 +557,12 @@ export default {
 ```js
 export default {
   markdown: {
-    lineNumbers: true
-  }
-}
+    lineNumbers: true,
+  },
+};
 ```
 
-查看 [`markdown` 选项](../reference/site-config#markdown) 获取更多信息。
+查看 [`markdown` 选项](https://vitepress.dev/zh/reference/site-config#markdown) 获取更多信息。
 
 可以在代码块中添加 `:line-numbers` / `:no-line-numbers` 标记来覆盖在配置中的设置。
 
@@ -576,8 +573,8 @@ export default {
 ````md
 ```ts {1}
 // 默认禁用行号
-const line2 = 'This is line 2'
-const line3 = 'This is line 3'
+const line2 = "This is line 2";
+const line3 = "This is line 3";
 ```
 
 ```ts:line-numbers {1}
@@ -597,8 +594,8 @@ const line4 = 'This is line 4'
 
 ```ts {1}
 // 默认禁用行号
-const line2 = 'This is line 2'
-const line3 = 'This is line 3'
+const line2 = "This is line 2";
+const line3 = "This is line 3";
 ```
 
 ```ts:line-numbers {1}
@@ -633,8 +630,6 @@ const line4 = 'This is line 4'
 <<< @/coding/markdown_in_vitepress/snippets/snippet.js{2}
 ```
 
-
-
 > [!Warning]
 >
 > 此部分查阅官方文档原文，博客内不会用到此语法
@@ -655,19 +650,19 @@ const line4 = 'This is line 4'
  */
 const config = {
   // ...
-}
+};
 
-export default config
+export default config;
 ```
 
 ```ts [config.ts]
-import type { UserConfig } from 'vitepress'
+import type { UserConfig } from "vitepress";
 
 const config: UserConfig = {
   // ...
-}
+};
 
-export default config
+export default config;
 ```
 
 :::
@@ -683,29 +678,27 @@ export default config
  */
 const config = {
   // ...
-}
+};
 
-export default config
+export default config;
 ```
 
 ```ts [config.ts]
-import type { UserConfig } from 'vitepress'
+import type { UserConfig } from "vitepress";
 
 const config: UserConfig = {
   // ...
-}
+};
 
-export default config
+export default config;
 ```
 
 :::
 
-> [!Warning] 
+> [!Warning]
 >
 > 此部分查阅官方文档原文，博客内不会用到此语法
 > [code-groups](https://vitepress.dev/zh/guide/markdown#code-groups)
-
-
 
 ## 包含 markdown 文件 {#markdown-file-inclusion}
 
@@ -802,9 +795,9 @@ npm add -D markdown-it-mathjax3
 ```ts [.vitepress/config.ts]
 export default {
   markdown: {
-    math: true
-  }
-}
+    math: true,
+  },
+};
 ```
 
 **输入**
@@ -829,11 +822,11 @@ $$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$
 
 **Maxwell's equations:**
 
-| equation                                                     | description                                                  |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| $\nabla \cdot \vec{\mathbf{B}}  = 0$                         | divergence of $\vec{\mathbf{B}}$ is zero                     |
-| $\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t}  = \vec{\mathbf{0}}$ | curl of $\vec{\mathbf{E}}$ is proportional to the rate of change of $\vec{\mathbf{B}}$ |
-| $\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} = \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} = 4 \pi \rho$ | _wha?_                                                       |
+| equation                                                                                                                                                                  | description                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| $\nabla \cdot \vec{\mathbf{B}}  = 0$                                                                                                                                      | divergence of $\vec{\mathbf{B}}$ is zero                                               |
+| $\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t}  = \vec{\mathbf{0}}$                                                          | curl of $\vec{\mathbf{E}}$ is proportional to the rate of change of $\vec{\mathbf{B}}$ |
+| $\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} = \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} = 4 \pi \rho$ | _wha?_                                                                                 |
 
 ## 图片懒加载 {#image-lazy-loading}
 
@@ -844,10 +837,10 @@ export default {
   markdown: {
     image: {
       // 默认禁用；设置为 true 可为所有图片启用懒加载。
-      lazyLoading: true
-    }
-  }
-}
+      lazyLoading: true,
+    },
+  },
+};
 ```
 
 ## 高级配置 {#advanced-configuration}
@@ -855,26 +848,26 @@ export default {
 VitePress 使用 [markdown-it](https://github.com/markdown-it/markdown-it) 作为 Markdown 渲染器。上面提到的很多扩展功能都是通过自定义插件实现的。可以使用 `.vitepress/config.js` 中的 `markdown` 选项来进一步自定义 `markdown-it` 实例。
 
 ```js
-import { defineConfig } from 'vitepress'
-import markdownItAnchor from 'markdown-it-anchor'
-import markdownItFoo from 'markdown-it-foo'
+import { defineConfig } from "vitepress";
+import markdownItAnchor from "markdown-it-anchor";
+import markdownItFoo from "markdown-it-foo";
 
 export default defineConfig({
   markdown: {
     // markdown-it-anchor 的选项
     // https://github.com/valeriangalliat/markdown-it-anchor#usage
     anchor: {
-      permalink: markdownItAnchor.permalink.headerLink()
+      permalink: markdownItAnchor.permalink.headerLink(),
     },
     // @mdit-vue/plugin-toc 的选项
     // https://github.com/mdit-vue/mdit-vue/tree/main/packages/plugin-toc#options
     toc: { level: [1, 2] },
     config: (md) => {
       // 使用更多的 Markdown-it 插件！
-      md.use(markdownItFoo)
-    }
-  }
-})
+      md.use(markdownItFoo);
+    },
+  },
+});
 ```
 
-请查看[配置参考：站点配置](../reference/site-config#markdown)来获取完整的可配置属性列表。
+请查看[配置参考：站点配置](https://vitepress.dev/zh/reference/site-config#markdown)来获取完整的可配置属性列表。

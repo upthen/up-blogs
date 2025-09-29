@@ -11,7 +11,6 @@ export default createContentLoader("**/**/*.md", {
   render: false,
   excerpt: true,
   transform(rawData) {
-    console.log("rawData", rawData);
     return rawData
       .filter((item) => {
         // 过滤掉不需要显示的文件
