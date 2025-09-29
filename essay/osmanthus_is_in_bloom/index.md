@@ -15,7 +15,7 @@ description: 桂花开了
 
 附一首写桂花的宋词以及近期摄图若干：
 
-<div text-center border-1px border-solid border-aux1 rounded p-5>
+<div  text-center border-1px border-solid border-aux1 rounded p-5>
 
 一剪梅 · 中秋无月 <sup style="color: green">辛弃疾 （南宋）</sup>
 
