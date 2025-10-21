@@ -682,5 +682,5 @@ https://github.com/vbenjs/vite-plugin-compression
 
 > [!important] 
 >
-> 文章首发于 `Robert Zeng` 的 [个人博客](https://upthen.me), 转载请注明出处
+> 文章首发于 `Robert Zeng` 的 [个人博客](https://upthen.me/coding/vite_based_fe_performance_optimization/), 转载请注明出处
 
