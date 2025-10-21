@@ -1,6 +1,6 @@
 ---
 title: 基于Vite 的前端首屏加载优化实践
-description: 基于Vite 的前端性能优化
+description: 本文主要记录和阐述了我在基于 `vue3 + vite` 的前端开发过程中对项目进行首屏加载优化的一些实践。
 tags: [fe, vite]
 ---
 

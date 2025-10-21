@@ -1,6 +1,6 @@
 ---
 title: 再游"古徽州"
-description: 2025年国庆节，我和夕月再游"古徽州"的旅程
+description: 本文记录了2025年国庆期间我在黄山市旅行时的见闻和感受，以及我拍摄的一些很 nice 的风景照
 tags: [旅行, 古徽州]
 ---
 
@@ -90,4 +90,56 @@ End
 
 ## 影集
 
-😁: 抱歉，我会尽快上传的...
+- 卢村
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+	<img  src="./image-20251021133959210.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134050608.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134103872.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134110980.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134119664.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134128398.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134137828.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134159856.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134236223.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134247380.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img  src="./image-20251021134254666.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134300935.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134310984.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134316555.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134330683.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134337517.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+     <img  src="./image-20251021134343855.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+     <img  src="./image-20251021134351466.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+     <img  src="./image-20251021134357522.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+     <img  src="./image-20251021134405107.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+     <img  src="./image-20251021134410042.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134417698.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134424303.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134429540.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+</div>
+
+- 美食
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+	<img  src="./image-20251021134146389.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134153248.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134205766.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+</div>
+
+- 徽州古城与西溪南
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+	<img  src="./image-20251021134435262.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134442056.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134447576.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134452679.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134457644.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134507729.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134513833.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134522769.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134530193.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134535623.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021134541215.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+    <img  src="./image-20251021142950461.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+</div>

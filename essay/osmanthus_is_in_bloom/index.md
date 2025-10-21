@@ -1,6 +1,6 @@
 ---
 title: 桂花开了
-description: 桂花开了
+description: 武汉的桂花开了
 ---
 
 # 桂花开了
@@ -28,19 +28,19 @@ description: 桂花开了
 <br/>
 
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-	<img  src="./image-20250928105343572.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105356549.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105402266.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105408603.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105415559.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105422414.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928105427845.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110340582.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110418406.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110426477.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110434368.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110442686.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928111158627.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110446777.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
-	<img src="./image-20250928110456259.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img  src="./image-20250928105343572.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105356549.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105402266.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105408603.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105415559.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105422414.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928105427845.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110340582.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110418406.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110426477.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110434368.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110442686.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928111158627.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110446777.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
+	<img src="./image-20250928110456259.webp" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" />
 </div>
