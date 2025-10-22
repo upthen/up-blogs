@@ -43,66 +43,70 @@ import useToc from "./useToc";
 
 const theme = ref("light");
 const isDark = useDark();
-const { headers } = useToc();
+const { headers, hasToc } = useToc();
 
-const tools = computed(() => [
-  {
-    key: Symbol(),
-    text: "目",
-    icon: "i-tdesign-catalog",
-    type: "toc",
-    popover: true,
-    func: (e) => {},
-  },
-  {
-    key: Symbol(),
-    text: "搜",
-    type: "search",
-    icon: "i-ri-search-2-line",
-    func: () => {},
-  },
-  {
-    key: Symbol(),
-    text: "Git",
-    icon: "i-uil-github-alt",
-    func: (e) => {
-      window.open("https://github.com/upthen");
+const tools = computed(() =>
+  [
+    {
+      key: Symbol(),
+      text: "目",
+      icon: "i-tdesign-catalog",
+      type: "toc",
+      popover: true,
+      func: (e) => {},
     },
-  },
-  {
-    key: Symbol(),
-    text: computed(() => (isDark.value ? "白" : "黑")),
-    icon: "i-ri-sun-line dark:i-ri-moon-line",
-    func: (e) => {
-      isDark.value = !isDark.value;
-      theme.value = isDark.value ? "dark" : "light";
-      if (isDark.value) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+    {
+      key: Symbol(),
+      text: "搜",
+      type: "search",
+      icon: "i-ri-search-2-line",
+      func: () => {},
     },
-  },
-  {
-    key: Symbol(),
-    text: "A",
-    type: "font",
-    popover: true,
-    icon: "i-fa6-solid-a",
-    func: (e) => {},
-  },
-  {
-    key: Symbol(),
-    text: "顶",
-    icon: "i-material-symbols-vertical-align-top",
-    func: () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+    {
+      key: Symbol(),
+      text: "Git",
+      icon: "i-uil-github-alt",
+      func: (e) => {
+        window.open("https://github.com/upthen");
+      },
     },
-  },
-]);
+    {
+      key: Symbol(),
+      text: computed(() => (isDark.value ? "白" : "黑")),
+      icon: "i-ri-sun-line dark:i-ri-moon-line",
+      func: (e) => {
+        isDark.value = !isDark.value;
+        theme.value = isDark.value ? "dark" : "light";
+        if (isDark.value) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      },
+    },
+    {
+      key: Symbol(),
+      text: "A",
+      type: "font",
+      popover: true,
+      icon: "i-fa6-solid-a",
+      func: (e) => {},
+    },
+    {
+      key: Symbol(),
+      text: "顶",
+      icon: "i-material-symbols-vertical-align-top",
+      func: () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      },
+    },
+  ].filter(
+    (item) => item.type !== "toc" || (item.type === "toc" && hasToc.value)
+  )
+);
 </script>
 
 <style scoped lang="scss">
