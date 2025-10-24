@@ -119,10 +119,10 @@
 
 .up-doc blockquote {
   margin: 16px 0;
-  border-left: 2px solid var(--vp-c-divider);
-  padding-left: 16px;
+  /* border-left: 2px solid var(--vp-c-divider); */
+  /* padding-left: 10px; */
   transition: border-color 0.5s;
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-3);
 }
 
 .up-doc blockquote > p {
