@@ -66,6 +66,7 @@ import {
   forEach,
 } from "lodash-es";
 import { createReusableTemplate } from "@vueuse/core";
+import dayjs from "dayjs";
 
 const route = useRoute();
 // 创建可复用模板
@@ -107,6 +108,10 @@ const classifyDocs = computed(() => {
 
   // 使用 concat 合并 listDocs 和处理后的 docs
   const result = listDocs.concat(docs);
+  // 对result按照时间顺序进行排序，时间需使用dayjs计算，排序需只用lodash-es
+  result.sort((a, b) => {
+    return dayjs(b.date).unix() - dayjs(a.date).unix();
+  });
 
   // 返回处理后的结果
   return result;

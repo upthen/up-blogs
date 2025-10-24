@@ -15,6 +15,7 @@ import "./font.css";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "viewerjs/dist/viewer.min.css";
+import LinkPrevue from "link-prevue";
 
 const theme = {
   extends: DefaultTheme,
@@ -22,6 +23,7 @@ const theme = {
   enhanceApp({ app, router, siteData }) {
     app.use(ElementPlus);
     app.component("vImageViewer", vImageViewer);
+    app.component("LinkPrevue", LinkPrevue);
 
     // 初始设置
     if (typeof window !== "undefined") {

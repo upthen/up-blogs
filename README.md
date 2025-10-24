@@ -1,4 +1,4 @@
-# up-blogs
+# [upthen.me](https://upthen.me)
 
 一套 **极简** 风格的自定义 `vitepress` 博客模板，遵循让阅读回归本源的宗旨和极简的理念。
 
@@ -21,9 +21,16 @@ TODO
 - [ ] 支持图片预览
 - [ ] seo优化
 - [ ] 大模型检索优化
+- [ ] 文章列表支持单独展示最新文章
+- [ ] 文章列表支持置顶
+- [ ] 一个个人常用编程导航页，包含个人常用工具的快捷入口
+- [ ] 一个个人旅游分布图，包含一个地图，地图标注地点，点击查看图片
 
 ## 更新日志
 
 - 2025-0928 新增图片预览功能
 
 参考资料：[vitepress-plugin-image-viewer](https://www.shakecode.com/zh/blog/other/vitepress-plugin-image-viewer)
+
+代码遵循 MIT 许可证授权，
+文字和图片遵循 CC BY-NC-SA 4.0 许可证授权。

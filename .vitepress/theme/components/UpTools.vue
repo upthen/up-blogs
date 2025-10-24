@@ -31,19 +31,38 @@
       </div>
     </div>
   </aside>
+  <el-drawer
+    v-model="showDrawer"
+    title="评论"
+    append-to-body
+    :direction="popDirection"
+    resizable
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :modal="false"
+    :lock-scroll="false"
+    show-close
+  >
+    <div h-full w-full flex-col items-center justify-center text-center>
+      功能正在开发中, 敬请期待! <br />您也可以通过Email或微信与我联系！
+    </div>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, h, onMounted, ref } from "vue";
 import { useDark } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
 import UpFontSetter from "./UpFontSetter.vue";
 import useToc from "./useToc";
+import { ElNotification } from "element-plus";
 
 const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
+const showDrawer = ref(false);
+const popDirection = ref("rtl");
 
 const tools = computed(() =>
   [
@@ -73,7 +92,7 @@ const tools = computed(() =>
     {
       key: Symbol(),
       text: computed(() => (isDark.value ? "白" : "黑")),
-      icon: "i-ri-sun-line dark:i-ri-moon-line",
+      icon: "i-mynaui:sun dark:i-mynaui:moon",
       func: (e) => {
         isDark.value = !isDark.value;
         theme.value = isDark.value ? "dark" : "light";
@@ -89,8 +108,20 @@ const tools = computed(() =>
       text: "A",
       type: "font",
       popover: true,
-      icon: "i-fa6-solid-a",
+      icon: "i-mynaui:type-text",
       func: (e) => {},
+    },
+    {
+      key: Symbol(),
+      text: "评",
+      icon: "i-mynaui:brand-twitch",
+      func: () => {
+        // ElNotification({
+        //   title: "提示",
+        //   message: h("span", "开发中，敬请期待"),
+        // });
+        showDrawer.value = true;
+      },
     },
     {
       key: Symbol(),
@@ -107,6 +138,14 @@ const tools = computed(() =>
     (item) => item.type !== "toc" || (item.type === "toc" && hasToc.value)
   )
 );
+// 监听窗口尺寸变化，实时改变抽屉弹出方向
+const updatePopDirection = () => {
+  popDirection.value = window.innerWidth <= 640 ? "btt" : "rtl";
+};
+onMounted(() => {
+  updatePopDirection();
+  window.addEventListener("resize", updatePopDirection);
+});
 </script>
 
 <style scoped lang="scss">
