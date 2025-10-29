@@ -32,7 +32,7 @@
       <template v-for="doc in classifyDocs" :key="doc.url">
         <ul v-if="!isEmpty(doc.children)">
           <a :href="doc.url" class="op70 h-full text-l hover:op100">
-            <span class="underline-slide-in">{{ doc.title }}</span>
+            <span class="underline-slide-in py-1">{{ doc.title }}</span>
           </a>
           <ul px-5>
             <ReuseTemplate
