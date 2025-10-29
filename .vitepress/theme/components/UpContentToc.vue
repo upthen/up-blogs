@@ -2,7 +2,7 @@
   <ul class="VPDocOutlineItem" :class="root ? 'root' : 'nested'">
     <li v-for="{ children, link, title } in headers">
       <a class="outline-link" :href="link" @click="onClick" :title>
-        <span class="underline-slide-in">{{ title }}</span>
+        <span class="underline-slide-in py-1">{{ title }}</span>
       </a>
       <template v-if="children?.length">
         <UpContentToc :headers="children" />

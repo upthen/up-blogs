@@ -7,7 +7,7 @@
       :key="data.url"
     >
       <a :href="data.url" class="op70 h-full text-l hover:op100">
-        <span class="underline-slide-in">{{ data.title }}</span>
+        <span class="underline-slide-in py-1">{{ data.title }}</span>
         <sup v-if="data.date" text-aux2 text-xs px-2>
           <span>{{ data.date }}</span>
 
