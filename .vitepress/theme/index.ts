@@ -16,6 +16,7 @@ import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "viewerjs/dist/viewer.min.css";
 import LinkPrevue from "link-prevue";
+import Giscus from "@giscus/vue";
 
 const theme = {
   extends: DefaultTheme,
@@ -24,6 +25,7 @@ const theme = {
     app.use(ElementPlus);
     app.component("vImageViewer", vImageViewer);
     app.component("LinkPrevue", LinkPrevue);
+    app.component("Giscus", Giscus);
 
     // 初始设置
     if (typeof window !== "undefined") {

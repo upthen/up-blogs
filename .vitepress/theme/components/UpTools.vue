@@ -42,9 +42,26 @@
     :modal="false"
     :lock-scroll="false"
     show-close
+    destroy-on-close
   >
     <div h-full w-full flex-col items-center justify-center text-center>
-      功能正在开发中, 敬请期待! <br />您也可以通过Email或微信与我联系！
+      <!-- 功能正在开发中, 敬请期待! <br />您也可以通过Email或微信与我联系！ -->
+      <Giscus
+        id="comments"
+        repo="upthen/up-blogs"
+        repoId="R_kgDOPkQz3Q"
+        category="General"
+        categoryId="DIC_kwDOPkQz3c4Cxosy"
+        mapping="pathname"
+        strict="0"
+        reactionsEnabled="1"
+        emitMetadata="1"
+        inputPosition="top"
+        :theme="`noborder_${isDark ? 'dark' : 'light'}`"
+        lang="zh-CN"
+        loading="lazy"
+        crossorigin="anonymous"
+      />
     </div>
   </el-drawer>
 </template>
