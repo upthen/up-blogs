@@ -19,7 +19,7 @@ const RSS: RSSOptions = {
     link: "https://upthen.me",
   },
   icon: false,
-  filename: "feed.rss",
+  filename: "feed.xml",
 };
 
 // https://vitepress.dev/reference/site-config

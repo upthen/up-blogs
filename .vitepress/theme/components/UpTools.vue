@@ -149,7 +149,7 @@ const tools = computed(() =>
       text: "Rss",
       icon: "i-mdi-light:rss",
       func: () => {
-        window.open("./feed.rss");
+        window.open("./feed.xml");
       },
     },
     {
