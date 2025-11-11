@@ -43,6 +43,7 @@
     :lock-scroll="false"
     show-close
     destroy-on-close
+    :size="size"
   >
     <div h-full w-full flex-col items-center justify-center text-center>
       <!-- 功能正在开发中, 敬请期待! <br />您也可以通过Email或微信与我联系！ -->
@@ -68,7 +69,7 @@
 
 <script setup lang="ts">
 import { computed, h, onMounted, ref } from "vue";
-import { useDark } from "@vueuse/core";
+import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
 import UpFontSetter from "./UpFontSetter.vue";
@@ -79,7 +80,13 @@ const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
 const showDrawer = ref(false);
-const popDirection = ref("rtl");
+
+// 检测是否在移动端，如果时，则 size 设为 90%
+const windowSize = useWindowSize();
+const size = computed(() => (windowSize.width.value <= 640 ? "90%" : "30%"));
+const popDirection = computed(() =>
+  windowSize.width.value <= 640 ? "btt" : "rtl"
+);
 
 const tools = computed(() =>
   [
@@ -155,14 +162,6 @@ const tools = computed(() =>
     (item) => item.type !== "toc" || (item.type === "toc" && hasToc.value)
   )
 );
-// 监听窗口尺寸变化，实时改变抽屉弹出方向
-const updatePopDirection = () => {
-  popDirection.value = window.innerWidth <= 640 ? "btt" : "rtl";
-};
-onMounted(() => {
-  updatePopDirection();
-  window.addEventListener("resize", updatePopDirection);
-});
 </script>
 
 <style scoped lang="scss">
