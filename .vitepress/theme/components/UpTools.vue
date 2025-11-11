@@ -20,7 +20,9 @@
             <div :class="item.icon" text-accent dark:text-accent></div>
           </template>
           <UpContentToc v-if="item.type === 'toc'" :headers="headers" root />
-          <UpFontSetter v-if="item.type === 'font'" />
+          <ClientOnly v-else-if="item.type === 'font'">
+            <UpFontSetter />
+          </ClientOnly>
         </el-popover>
         <div
           v-else-if="item.type !== 'search'"
@@ -68,13 +70,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
 import UpFontSetter from "./UpFontSetter.vue";
 import useToc from "./useToc";
-import { ElNotification } from "element-plus";
 
 const theme = ref("light");
 const isDark = useDark();
@@ -96,7 +97,7 @@ const tools = computed(() =>
       icon: "i-tdesign-catalog",
       type: "toc",
       popover: true,
-      func: (e) => {},
+      func: () => {},
     },
     {
       key: Symbol(),
@@ -109,7 +110,7 @@ const tools = computed(() =>
       key: Symbol(),
       text: "Git",
       icon: "i-uil-github-alt",
-      func: (e) => {
+      func: () => {
         window.open("https://github.com/upthen");
       },
     },
@@ -117,7 +118,7 @@ const tools = computed(() =>
       key: Symbol(),
       text: computed(() => (isDark.value ? "白" : "黑")),
       icon: "i-mynaui:sun dark:i-mynaui:moon",
-      func: (e) => {
+      func: () => {
         isDark.value = !isDark.value;
         theme.value = isDark.value ? "dark" : "light";
         if (isDark.value) {
@@ -133,18 +134,22 @@ const tools = computed(() =>
       type: "font",
       popover: true,
       icon: "i-mynaui:type-text",
-      func: (e) => {},
+      func: () => {},
     },
     {
       key: Symbol(),
       text: "评",
       icon: "i-mynaui:brand-twitch",
       func: () => {
-        // ElNotification({
-        //   title: "提示",
-        //   message: h("span", "开发中，敬请期待"),
-        // });
         showDrawer.value = true;
+      },
+    },
+    {
+      key: Symbol(),
+      text: "Rss",
+      icon: "i-mdi-light:rss",
+      func: () => {
+        window.open("./feed.rss");
       },
     },
     {

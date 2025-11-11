@@ -19,14 +19,22 @@ defineOptions({
 });
 
 const fontFamily = ref(
-  localStorage?.getItem("fontFamily") || fontFamilies[0].value
+  (() => {
+    if (window !== undefined && window.localStorage) {
+      return localStorage?.getItem("fontFamily") || fontFamilies[0].value;
+    }
+    return fontFamilies[0].value;
+  })()
 );
 
 const setFontFamily = (family: { name: string; value: string }) => {
   // 设置全局字体
   document.body.style.fontFamily = family.value;
   fontFamily.value = family.value;
-  localStorage?.setItem("fontFamily", family.value);
+  if (window !== undefined && window.localStorage) {
+    // 检查是否支持 localStorage
+    localStorage?.setItem("fontFamily", family.value);
+  }
 };
 
 onMounted(() => {
