@@ -15,14 +15,20 @@
         hover:op90
       >
         <UpNavBarSearch v-if="item.type === 'search'" />
-        <el-popover v-else-if="item.popover" placement="left" width="auto">
+        <el-popover
+          v-else-if="item.popover"
+          placement="left-start"
+          :width="!isMobile ? 'auto' : '80%'"
+        >
           <template #reference>
             <div :class="item.icon" text-accent dark:text-accent></div>
           </template>
-          <UpContentToc v-if="item.type === 'toc'" :headers="headers" root />
-          <ClientOnly v-else-if="item.type === 'font'">
-            <UpFontSetter />
-          </ClientOnly>
+          <el-scrollbar max-height="80dvh">
+            <UpContentToc v-if="item.type === 'toc'" :headers="headers" root />
+            <ClientOnly v-else-if="item.type === 'font'">
+              <UpFontSetter />
+            </ClientOnly>
+          </el-scrollbar>
         </el-popover>
         <div
           v-else-if="item.type !== 'search'"
@@ -88,6 +94,7 @@ const size = computed(() => (windowSize.width.value <= 640 ? "90%" : "30%"));
 const popDirection = computed(() =>
   windowSize.width.value <= 640 ? "btt" : "rtl"
 );
+const isMobile = computed(() => windowSize.width.value <= 640);
 
 const tools = computed(() =>
   [
@@ -214,5 +221,10 @@ const tools = computed(() =>
     justify-content: center !important;
     align-items: center !important;
   }
+}
+
+:deep(.el-scrollbar__wrap) {
+  // 防止目录滚动时，页面也触发滚动
+  overscroll-behavior: contain;
 }
 </style>
