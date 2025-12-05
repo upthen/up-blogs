@@ -47,6 +47,7 @@
     "@unocss/preset-mini": "^66.5.0",
     "@unocss/preset-wind4": "^66.5.0",
     "@vueuse/core": "^13.8.0",
+    "@zumer/snapdom": "^2.0.1",
     "canvas": "^3.2.0",
     "cytoscape": "^3.33.1",
     "cytoscape-cose-bilkent": "^4.1.0",
