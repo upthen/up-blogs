@@ -39,6 +39,7 @@
               :title="value.url"
               target="_blank"
               class="text-sm"
+              :style="{ color: item?.color || 'none' }"
               >{{ value.name }}</a
             >
           </div>

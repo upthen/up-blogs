@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["mynaui"]
+  "cSpell.words": ["mynaui"],
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

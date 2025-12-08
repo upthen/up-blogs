@@ -171,7 +171,25 @@ const toolNavConfigs = [
       },
     ],
     desc: "图标库",
-  }
+  },
+  // mdn
+  {
+    key: Symbol("mdn"),
+    name: "MDN",
+    color: "#0069c2",
+    icon: "i-simple-icons:mdnwebdocs",
+    links: [
+      {
+        name: "官方",
+        url: "https://developer.mozilla.org/en-US/",
+      },
+      {
+        name: "中文",
+        url: "https://developer.mozilla.org/zh-CN/",
+      },
+    ],
+    desc: "MDN Web Docs",
+  },
 ];
 
 
