@@ -4,8 +4,6 @@ description: 现代 Web 应用的用户体验很大程度上取决于页面的�
 tags: [fe]
 ---
 
-
-
 # Chromium 浏览器渲染机制深度剖析：从 HTML 解析到性能优化
 
 ## 引言
@@ -20,7 +18,7 @@ Chromium 作为 Google 开发的开源浏览器项目，是 Chrome、Microsoft E
 
 Chromium 浏览器的 HTML 解析是一个**增量式**的过程，采用状态机模型实现。当网络进程接收到 HTML 字节流后，会立即将其交给渲染进程，渲染进程内的主线程开始解析 HTML。整个解析过程可以分为三个核心阶段：
 
-1. **字节流转换为字符**：浏览器首先根据 HTTP 响应头中的Content-Type字段（如charset=utf-8）或 HTML 文档内部的<meta charset="UTF-8">标签确定字符编码，将网络接收到的原始字节流转换为 Unicode 字符流。
+1. **字节流转换为字符**：浏览器首先根据 HTTP 响应头中的Content-Type字段（如charset=utf-8）或 HTML 文档内部的`<meta charset="UTF-8">`标签确定字符编码，将网络接收到的原始字节流转换为 Unicode 字符流。
 
 2. **词法分析（Tokenization）**：分词器（Tokenizer）将字符流根据 HTML 语法规则分解成一个个独立的、有意义的原子单元 —— 令牌（Tokens）。这些令牌包括文档类型声明（DOCTYPE tokens）、开始和结束标签标记、属性、注释和字符数据等。
 
@@ -36,20 +34,20 @@ HTML 规范定义了约**80 个词法状态**，这是少见把 "实现方式" �
 
 ```ts
 function data(c) {
-  if (c === '<') return tagOpen;
-  if (c === '&') return charRefInData;
-  emitToken({ type: 'Text', value: c });
+  if (c === "<") return tagOpen;
+  if (c === "&") return charRefInData;
+  emitToken({ type: "Text", value: c });
   return data;
 }
 
 function tagOpen(c) {
-  if (c === '/') return endTagOpen;
+  if (c === "/") return endTagOpen;
   if (/[A-Za-z]/.test(c)) {
-    currentToken = { type: 'StartTag', name: c.toLowerCase(), attrs: [] };
+    currentToken = { type: "StartTag", name: c.toLowerCase(), attrs: [] };
     return tagName;
   }
-  if (c === '!') return markupDeclOpen;
-  emitToken({ type: 'error' });
+  if (c === "!") return markupDeclOpen;
+  emitToken({ type: "error" });
   return data;
 }
 
@@ -80,7 +78,7 @@ function lex(input) {
 
 ### 1.4 预解析机制的优化作用
 
-现代 Chromium 浏览器实现了  **预解析（Preload Scanner）** 技术来加速资源加载。当主 HTML 解析器开始处理 HTML 数据时，预加载扫描器同步启动，基于主解析器通过编码检测解码为字符流或词法分析生成的 Token 序列进行扫描。
+现代 Chromium 浏览器实现了 **预解析（Preload Scanner）** 技术来加速资源加载。当主 HTML 解析器开始处理 HTML 数据时，预加载扫描器同步启动，基于主解析器通过编码检测解码为字符流或词法分析生成的 Token 序列进行扫描。
 
 预解析的主要作用包括：
 
@@ -94,7 +92,7 @@ function lex(input) {
 
 DOCTYPE 声明是 HTML 文档的第一行，它告诉浏览器使用哪个 HTML 版本标准来解析文档。DOCTYPE 声明对浏览器的渲染模式有重要影响：
 
-- **标准模式（Standards Mode）**：使用 DOCTYPE 声明（如<!DOCTYPE html>）会触发标准模式，浏览器按照最新的 HTML 和 CSS 规范进行渲染
+- **标准模式（Standards Mode）**：使用 DOCTYPE 声明（如`<!DOCTYPE html>`）会触发标准模式，浏览器按照最新的 HTML 和 CSS 规范进行渲染
 
 - **混杂模式（Quirks Mode）**：缺少 DOCTYPE 声明或使用不被识别的 DOCTYPE 会触发混杂模式，浏览器会模拟老版本的渲染行为
 
@@ -143,7 +141,7 @@ CSS 解析器的工作原理与 HTML 解析器类似，也是基于**状态机**
 | ID 选择器                  | 100    |
 | 类选择器、属性选择器、伪类 | 10     |
 | 标签选择器、伪元素         | 1      |
-| 通配符（*）                | 0      |
+| 通配符（\*）               | 0      |
 
 例如，选择器#nav .item.active的优先级计算为：1 个 ID（100）+ 2 个类（20）= 120。
 
@@ -154,9 +152,9 @@ CSS 解析器的工作原理与 HTML 解析器类似，也是基于**状态机**
 Blink 渲染引擎采用了多种优化策略来提高样式计算性能：
 
 1. **样式共享树优化**：Blink 采用样式共享树策略，对相同视觉特征的节点复用计算结果，实测可减少**30% 的样式计算时间**
-2. *规则分区和索引**：Blink 将每个样式表中的规则进行分区和索引，能够避免为当前元素考虑许多不相关的规则。具体实现是在RuleSet对象内部对每个样式表中的规则进行分区和索引**
+2. \*规则分区和索引**：Blink 将每个样式表中的规则进行分区和索引，能够避免为当前元素考虑许多不相关的规则。具体实现是在RuleSet对象内部对每个样式表中的规则进行分区和索引**
 3. 高效的数据结构**：使用TreeScope表示文档或影子根的元素树，提供对树内各种内容的快速访问；ScopedStyleResolver负责特定范围内的样式解析**
-4. 缓存机制**：对于复杂的样式计算任务（如计算网页上所有样式），Chrome 的缓存现在得到了更有效的利用
+4. 缓存机制\*\*：对于复杂的样式计算任务（如计算网页上所有样式），Chrome 的缓存现在得到了更有效的利用
 
 ### 2.5 CSS 解析的阻塞行为
 
@@ -166,7 +164,7 @@ CSS 的加载和解析会对渲染流程产生重要影响：
 
 1. **阻塞 DOM 渲染**：页面直到 CSS 下载并解析完成后才会 "真正" 渲染出来，否则会出现白屏，这是为了避免 "无样式内容闪烁（FOUC）"
 
-1. **阻塞后续 JS 执行**：在<link>标签后面的 JS 脚本会等待 CSS 下载完后再执行，因为很多 JS 依赖于元素的最终样式（如获取宽高、计算位置）
+1. **阻塞后续 JS 执行**：在`<link>`标签后面的 JS 脚本会等待 CSS 下载完后再执行，因为很多 JS 依赖于元素的最终样式（如获取宽高、计算位置）
 
 ## 三、JavaScript 执行时机与渲染流程交互
 
@@ -174,17 +172,18 @@ CSS 的加载和解析会对渲染流程产生重要影响：
 
 JavaScript 在浏览器渲染流程中扮演着重要角色，但其执行机制会对渲染性能产生显著影响：
 
-1. **阻塞 DOM 解析**：浏览器遇到<script>标签时会暂停 DOM 构建，直到脚本下载并执行完成。这是因为 JavaScript 经常需要读取和操作前面的 DOM 元素，如果 DOM 还没解析好，JS 行为就会出错
+1. **阻塞 DOM 解析**：浏览器遇到`<script>`标签时会暂停 DOM 构建，直到脚本下载并执行完成。这是因为 JavaScript 经常需要读取和操作前面的 DOM 元素，如果 DOM 还没解析好，JS 行为就会出错
 
-1. **阻塞渲染树构建**：由于渲染树需要 DOM 和 CSSOM，而 JS 可能访问或修改这两者，因此浏览器必须等待脚本执行完毕才能继续构建渲染树
+2. **阻塞渲染树构建**：由于渲染树需要 DOM 和 CSSOM，而 JS 可能访问或修改这两者，因此浏览器必须等待脚本执行完毕才能继续构建渲染树.
 
-1. **阻塞后续资源加载**：同步脚本会阻塞后续资源（包括 CSS 和其他 JS）的加载和解析
+3. **阻塞后续资源加载**：同步脚本会阻塞后续资源（包括 CSS 和其他 JS）的加载和解析.
 
 JavaScript 与 DOM 解析**共享同一个主线程**，这意味着 JavaScript 的执行会直接干扰渲染流程。当 JavaScript 引擎执行时，GUI 线程会被挂起，所有需要更新的 GUI 操作会被暂存到一个队列中，只有当 JavaScript 引擎空闲时，这些操作才会被执行。
 
 ### 3.2 事件循环与渲染的关系
 
-浏览器的事件循环（Event Loop）是理解 JavaScript 执行时机的关键。在 W3C 标准中称为Event loops，而在 Chromium 中称为Message Loop，源码中具体的实现方法是MessagePumpDefault::Run。
+浏览器的事件循环(Event Loop)是理解 JavaScript 执行时机的关键。
+在 W3C 标准中称为Event loops，而在 Chromium 中称为 Message Loop，源码中具体的实现方法是 `MessagePumpDefault::Run`。
 
 事件循环与渲染的关系体现在以下几个方面：
 
@@ -198,15 +197,13 @@ JavaScript 与 DOM 解析**共享同一个主线程**，这意味着 JavaScript 
 浏览器对不同类型的 JavaScript 脚本有不同的处理策略：
 
 1. **同步脚本（无 defer、async）**：
-
-   - 在<head>中会阻塞整个渲染流程
+   - 在`<head>`中会阻塞整个渲染流程
 
    - 按顺序下载和执行
 
    - 常用于需要立即执行的关键脚本
 
 2. **defer 脚本**：
-
    - 异步下载，不阻塞 HTML 解析
 
    - 在 DOMContentLoaded 事件前执行
@@ -214,7 +211,6 @@ JavaScript 与 DOM 解析**共享同一个主线程**，这意味着 JavaScript 
    - 保持脚本执行顺序
 
 3. **async 脚本**：
-
    - 异步下载，不阻塞 HTML 解析
 
    - 下载完成后立即执行，不保证顺序
@@ -222,7 +218,6 @@ JavaScript 与 DOM 解析**共享同一个主线程**，这意味着 JavaScript 
    - 适用于独立的第三方脚本
 
 4. **动态插入的脚本**：
-
    - 使用document.createElement('script')插入的脚本默认是 async 的
 
    - 可以通过设置async或defer属性来控制执行时机
@@ -240,19 +235,19 @@ JavaScript 通过多种方式影响浏览器的渲染流程：
 
 ```ts
 // 低效：强制同步重排
-const box = document.getElementById('box');
+const box = document.getElementById("box");
 for (let i = 0; i < 100; i++) {
-  box.style.width = '100px'; 
+  box.style.width = "100px";
   const height = box.offsetHeight; // 读取属性，强制触发重排
 }
 
 // 优化：先读再改
-const box = document.getElementById('box');
+const box = document.getElementById("box");
 // 先集中读取（仅触发1次重排）
-const height = box.offsetHeight; 
+const height = box.offsetHeight;
 // 再集中修改（仅触发1次重排）
 for (let i = 0; i < 100; i++) {
-  box.style.width = '100px';
+  box.style.width = "100px";
 }
 ```
 
@@ -345,7 +340,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
 现代 Chromium 浏览器在渲染流水线方面实现了多项优化：
 
 1. **并行处理**：
-
    - 布局和绘制可以在不同的线程中进行
 
    - 合成器线程独立于主线程，支持流畅的动画
@@ -371,7 +365,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
 重排（也称为回流）是当 DOM 元素的几何属性发生变化时，浏览器重新计算元素位置和大小的过程。触发重排的常见操作包括：
 
 1. **几何属性修改**：
-
    - 修改元素的宽高（width、height）
 
    - 修改边距（margin、padding）
@@ -383,7 +376,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
    - 修改元素的尺寸或位置
 
 2. **DOM 结构变化**：
-
    - 添加或删除 DOM 元素
 
    - 改变元素的 display 属性（如设置为 none）
@@ -391,7 +383,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
    - 改变元素的内容（文本量增减、图片加载完成导致尺寸变化）
 
 3. **窗口操作**：
-
    - 窗口大小变化（resize 事件）
 
    - 页面滚动
@@ -406,7 +397,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
 重绘是当元素的外观属性变化但几何属性不变时，浏览器重新绘制元素视觉表现的过程。触发重绘的常见操作包括：
 
 1. **颜色相关修改**：
-
    - 修改颜色（color、background-color、border-color 等）
 
    - 修改透明度（opacity）
@@ -414,13 +404,11 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
    - 修改阴影（box-shadow、text-shadow）
 
 2. **可见性修改**：
-
    - 修改 visibility 属性（仅触发重绘，不触发重排）
 
    - 修改 outline、visibility 等不影响布局的属性
 
 3. **其他外观属性**：
-
    - 修改背景图片
 
    - 修改渐变
@@ -434,7 +422,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
 某些 CSS 属性的修改可以**只触发合成阶段**，而不涉及布局和绘制，这是性能优化的重要手段：
 
 1. **transform 属性**：
-
    - 位移、缩放、旋转等变换
 
    - 只触发合成，不影响布局和绘制
@@ -442,7 +429,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
    - 性能开销最小
 
 2. **opacity 属性**：
-
    - 修改透明度
 
    - 在现代浏览器中仅触发合成
@@ -450,7 +436,6 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
    - 早期浏览器可能触发重绘
 
 3. **filter 属性**：
-
    - 某些滤镜效果可以在合成阶段处理
 
    - 需要 GPU 支持
@@ -467,18 +452,18 @@ Chromium 维护着**三层树结构**，每一层都有特定的功能：
 
 1. **使用 DocumentFragment**：
 
-```
+```ts
 // 低效：多次触发重排
-const list = document.getElementById('list');
+const list = document.getElementById("list");
 for (let i = 0; i < 100; i++) {
-  const item = document.createElement('li');
+  const item = document.createElement("li");
   list.appendChild(item);
 }
 
 // 优化：批量操作
 const fragment = document.createDocumentFragment();
 for (let i = 0; i < 100; i++) {
-  const item = document.createElement('li');
+  const item = document.createElement("li");
   fragment.appendChild(item);
 }
 list.appendChild(fragment);
@@ -492,21 +477,21 @@ list.appendChild(fragment);
 
 浏览器会将多次重排操作放入队列，批量执行。但如果在修改 DOM 后立即读取布局属性，会强制浏览器立即执行队列中的重排，破坏批量优化：
 
-```
+```ts
 // 低效：强制同步重排
-const box = document.getElementById('box');
+const box = document.getElementById("box");
 for (let i = 0; i < 100; i++) {
-  box.style.width = '100px'; 
+  box.style.width = "100px";
   const height = box.offsetHeight; // 读取属性，强制触发重排
 }
 
 // 优化：先读再改
-const box = document.getElementById('box');
+const box = document.getElementById("box");
 // 先集中读取（仅触发1次重排）
-const height = box.offsetHeight; 
+const height = box.offsetHeight;
 // 再集中修改（仅触发1次重排）
 for (let i = 0; i < 100; i++) {
-  box.style.width = '100px';
+  box.style.width = "100px";
 }
 ```
 
@@ -516,7 +501,7 @@ for (let i = 0; i < 100; i++) {
 
 1. **使用 transform 和 opacity 实现动画**：
 
-```
+```css
 /* 优化前：触发重排 */
 .animate {
   transition: left 0.3s;
@@ -536,7 +521,7 @@ for (let i = 0; i < 100; i++) {
 
 2. **合理使用 will-change 属性**：
 
-```
+```css
 .box {
   will-change: transform; /* 提示浏览器优化transform操作 */
 }
@@ -544,17 +529,16 @@ for (let i = 0; i < 100; i++) {
 
 3. **使用 contain 属性限制重排范围**：
 
-```
+```css
 .container {
   contain: layout paint size; /* 限制重排/重绘范围 */
 }
 ```
 
 4. **避免使用昂贵的 CSS 属性**：
-
    - 减少使用 box-shadow、gradient 等绘制成本高的属性
 
-   - 避免在高频变化的属性中使用 calc () 
+   - 避免在高频变化的属性中使用 calc ()
 
    - 减少使用 filter 效果
 
@@ -564,19 +548,16 @@ for (let i = 0; i < 100; i++) {
    - 使用绝对定位（position: absolute）或固定定位（position: fixed）的元素，其布局变化不会影响其他元素，重排范围仅限于自身和子元素
 
 2. **减少 DOM 嵌套层级**：
-
    - 深层嵌套的 DOM 结构会导致重排时连锁计算成本增加
 
    - 合理扁平化 DOM（如用 flex/grid 替代复杂嵌套）
 
 3. **虚拟列表技术**：
-
    - 长列表场景只渲染可视区域内的元素
 
    - 减少 DOM 节点数量，降低重排成本
 
 4. **样式合并**：
-
    - 使用 class 批量修改样式，避免多次单独修改
 
    - 使用 cssText 一次性设置所有样式
@@ -593,7 +574,7 @@ for (let i = 0; i < 100; i++) {
 
 - **异步加载非关键资源**：使用 async 或 defer 属性加载非关键 JS
 
-- **预加载关键资源**：使用<link rel="preload">预加载关键资源
+- **预加载关键资源**：使用`<link rel="preload">`预加载关键资源
 
 - **使用媒体查询**：通过 media 属性让非关键 CSS 不阻塞渲染
 
@@ -620,13 +601,11 @@ for (let i = 0; i < 100; i++) {
 动画性能优化的核心是**使用合成层属性**（transform 和 opacity），避免触发重排：
 
 1. **优先使用 transform 和 opacity**：
-
    - 这些属性只触发合成，不触发重排和绘制
 
    - 动画效果更流畅，性能更好
 
 2. **合理使用 will-change 属性**：
-
    - 提前告知浏览器元素可能发生的变化
 
    - 浏览器可以进行预优化（如创建独立合成层）
@@ -634,13 +613,11 @@ for (let i = 0; i < 100; i++) {
    - 避免滥用，否则会占用额外内存
 
 3. **控制动画帧率**：
-
    - 使用 requestAnimationFrame 控制动画更新频率
 
    - 避免不必要的动画更新
 
 4. **硬件加速优化**：
-
    - 启用 GPU 硬件加速，减少 CPU 负担
 
    - 合理使用合成层，利用 GPU 并行处理能力
@@ -650,25 +627,21 @@ for (let i = 0; i < 100; i++) {
 内存管理对渲染性能有重要影响，现代 Chromium 在这方面做了大量优化：
 
 1. **内存结构优化**：
-
    - 优化 DOM、CSS 和布局系统的内部数据结构，减少不必要的内存访问
 
-   - 使用更高效的数据结构，如用 heap array 替代 unique_ptr，用 cstring_view 替代 const char*
+   - 使用更高效的数据结构，如用 heap array 替代 unique_ptr，用 cstring_view 替代 const char\*
 
 2. **垃圾回收优化**：
-
    - V8 引擎的垃圾回收机制优化
 
    - 减少垃圾回收对渲染的影响
 
 3. **内存缓存优化**：
-
    - 对复杂的样式计算使用更有效的缓存
 
    - 优化 LRU 缓存策略
 
 4. **内存节省模式**：
-
    - 调整内存节省模式的激进程度，平衡性能与内存占用
 
    - 对后台标签页应用更严格的内存限制
@@ -684,7 +657,6 @@ Performance 面板是分析页面运行时性能的核心工具：
 - **打开方式**：按 F12 或右键选择 "检查" 打开 DevTools，然后点击 "Performance" 标签
 
 - **基本使用流程**：
-
   - 点击 Record（圆形按钮）开始记录
 
   - 在页面上执行需要分析的操作
@@ -694,7 +666,6 @@ Performance 面板是分析页面运行时性能的核心工具：
   - 分析生成的性能报告
 
 - **监控指标**：
-
   - **LCP（Largest Contentful Paint）**：最大内容绘制时间
 
   - **CLS（Cumulative Layout Shift）**：累计布局偏移
@@ -728,7 +699,6 @@ Performance 面板是分析页面运行时性能的核心工具：
 Chromium 浏览器提供了许多实验性功能和优化选项：
 
 1. **实验性功能（Flags）**：
-
    - 开启 "Lazy Frame Loading" 延迟加载非可视区域的内容，提升页面滚动流畅度
 
    - 启用 "Optimize Rendering for Speed" 实验功能
@@ -736,19 +706,16 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
    - 注意：实验性功能可能存在不稳定风险，建议逐一测试后开启
 
 2. **启动优化**：
-
    - 通过优化编译配置和启动参数，显著提升启动速度
 
    - 启用并行下载功能，加速文件下载过程
 
 3. **网络协议优化**：
-
    - 启用 QUIC 协议：比传统 HTTP 更快，适合视频、大文件网站
 
    - 在 chrome://flags 中搜索 "Experimental QUIC protocol"，设置为 "Enabled"
 
 4. **缓存优化**：
-
    - 强制启用浏览器缓存
 
    - 配置 LRU 缓存策略
@@ -760,7 +727,6 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
 基于以上分析，以下是综合的性能优化策略：
 
 1. **编码规范**：
-
    - 遵循 "先读再改" 原则，避免强制同步布局
 
    - 使用批量 DOM 操作，减少重排次数
@@ -768,7 +734,6 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
    - 合理使用 CSS，优先使用合成层属性
 
 2. **资源优化**：
-
    - 优化关键渲染路径，减少阻塞资源
 
    - 实施资源优先级管理
@@ -776,7 +741,6 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
    - 使用代码分割和按需加载
 
 3. **渲染优化**：
-
    - 减少 DOM 嵌套层级，简化渲染树结构
 
    - 合理使用合成层，利用 GPU 加速
@@ -784,7 +748,6 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
    - 优化动画和过渡效果
 
 4. **监控与调优**：
-
    - 建立 "监控→分析→调优→验证" 的闭环
 
    - 使用 Performance 面板进行性能分析
@@ -792,7 +755,6 @@ Chromium 浏览器提供了许多实验性功能和优化选项：
    - 定期进行性能审计和优化
 
 5. **浏览器特性利用**：
-
    - 充分利用 Chromium 的新特性和优化
 
    - 合理使用实验性功能
