@@ -22,7 +22,7 @@ tags: [fe, css]
     height: auto;
     padding: 50px;
     box-sizing: border-box;
-    border: 1px solid #797979;
+    border: 1px solid var(--color-auxGray1);
     border-radius: 4px;
   }
 
@@ -59,6 +59,8 @@ tags: [fe, css]
 
 }
 </style>
+
+::: details 点我查看代码
 
 ```html
 <html>
@@ -110,3 +112,5 @@ tags: [fe, css]
   </style>
 </html>
 ```
+
+:::
