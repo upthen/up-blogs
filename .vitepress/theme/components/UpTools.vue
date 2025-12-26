@@ -77,6 +77,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useRouter } from "vitepress";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
@@ -85,6 +86,7 @@ import useToc from "./useToc";
 import { snapdom } from "@zumer/snapdom";
 import { ElNotification } from "element-plus";
 
+const router = useRouter();
 const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
@@ -180,6 +182,15 @@ const tools = computed(() =>
             message: "图片已保存到本地",
           });
         }
+      },
+    },
+    {
+      // 工具导航
+      key: Symbol(),
+      text: "工具",
+      icon: "i-ri:tools-fill",
+      func: () => {
+        router.go("/coding/tools_nav");
       },
     },
     {
