@@ -26,24 +26,28 @@ const theme = {
     app.component("Giscus", Giscus);
 
     // 初始设置
-    if (typeof window !== "undefined") {
-      const favicon = document.querySelector('link[rel="icon"]');
-      if (favicon) {
-        // favicon.href = generateHanziSVG('闻')
-        Object.assign(favicon, {
-          href: generateHanziSVG("闻"),
-        });
-      }
-      setTimeout(() => {
-        const defaultFavicon = document.createElement("link");
-        defaultFavicon.rel = "icon";
-        defaultFavicon.href = generateHanziSVG("闻");
-        document.head.appendChild(defaultFavicon);
-        if (typeof document !== "undefined" && document.body) {
-          document.body.click();
-        }
-      }, 100);
-    }
+    // if (typeof window !== "undefined") {
+    // const favicon = document.querySelector('link[rel="icon"]');
+    // if (favicon) {
+    //   // favicon.href = generateHanziSVG('闻')
+    //   Object.assign(favicon, {
+    //     href: generateHanziSVG("闻"),
+    //   });
+    // }
+    // setTimeout(() => {
+    //   const defaultFavicon = document.createElement("link");
+    //   defaultFavicon.rel = "icon";
+    //   defaultFavicon.href = generateHanziSVG("闻");
+    //   document.head.appendChild(defaultFavicon);
+    //   if (typeof document !== "undefined" && document.body) {
+    //     document.body.click();
+    //   }
+    // }, 100);
+    // const defaultFavicon = document.createElement("link");
+    // defaultFavicon.rel = "icon";
+    // defaultFavicon.href = "@/favicon.ico";
+    // document.head.appendChild(defaultFavicon);
+    // }
   },
   setup() {
     const route = useRoute();

@@ -18,7 +18,7 @@ const RSS: RSSOptions = {
     email: "zyb.6616@icloud.com",
     link: "https://upthen.me",
   },
-  icon: false,
+  icon: true,
   filename: "feed.xml",
 };
 
@@ -28,6 +28,9 @@ export default withMermaid({
   assetsDir: "static",
   lang: "zh-CN",
   title: "闻 · 斋",
+  head: [
+    ["link", { rel: "icon", href: "/favicon.png" }], // 设置网站图标
+  ],
   themeConfig: {
     search: {
       provider: "local",
