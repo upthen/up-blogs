@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "user-prompt-submit-hook": {
+      "bashCommands": {
+        "allow": [
+          "git add *",
+          "git add .*",
+          "git add -A*",
+          "git add -u*",
+          "git add --all*",
+          "git commit*",
+          "git stash*",
+          "git checkout*",
+          "git fetch*",
+          "git branch*",
+          "git status",
+          "git diff*",
+          "git log*",
+          "git show*",
+          "git rev-parse*",
+          "git config --get*",
+          "git remote*",
+          "git switch*",
+          "git restore*",
+          "git ls-files*",
+          "git merge-base*",
+          "npm install*",
+          "npm ci",
+          "npm run*",
+          "npm ls",
+          "npm list",
+          "npm info*",
+          "npm view*",
+          "npm outdated",
+          "npm --version",
+          "npm --help",
+          "pnpm install*",
+          "pnpm add*",
+          "pnpm update*",
+          "pnpm remove*",
+          "pnpm run*",
+          "pnpm ls",
+          "pnpm list",
+          "pnpm info*",
+          "pnpm view*",
+          "pnpm outdated",
+          "pnpm --version",
+          "pnpm --help",
+          "pnpm approve-builds*"
+        ]
+      }
+    }
+  }
+}

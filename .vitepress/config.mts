@@ -28,6 +28,7 @@ export default withMermaid({
   assetsDir: "static",
   lang: "zh-CN",
   title: "闻 · 斋",
+  ignoreDeadLinks: true, // 忽略死链接检查（本地开发链接）
   head: [
     ["link", { rel: "icon", href: "/favicon.png" }], // 设置网站图标
   ],
