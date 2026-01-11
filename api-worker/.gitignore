@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.wrangler/
+
+# Environment files
+.env
+.dev.vars
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

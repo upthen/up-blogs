@@ -1,0 +1,6 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - canvas
+  - esbuild
+  - sharp
+  - vue-demi
