@@ -21,6 +21,7 @@ export default createContentLoader("**/**/*.md", {
           item.url !== "/essay/" &&
           item.url !== "/coding/" &&
           !item.url.includes("README") && // 过滤 README 文件
+          !item.url.includes("CLAUDE") &&
           !item.frontmatter.draft
         );
       })
