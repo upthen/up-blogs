@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "essay/my_dreaming_mackbook/index.md",
+                "file": "essay/lakeside_book_lover_chance_encounter/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -180,7 +180,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 408.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -196,8 +196,13 @@
   },
   "active": "19b05ed76602a1c8",
   "lastOpenFiles": [
-    "coding/commonly_used_vscode_exts/index.md",
     "essay/my_dreaming_mackbook/index.md",
+    "essay/lakeside_book_lover_chance_encounter/index.md",
+    "().md",
+    "essay/lakeside_book_lover_chance_encounter/index.md.md",
+    "essay/lakeside_book_lover_chance_encounter",
+    "未命名",
+    "coding/commonly_used_vscode_exts/index.md",
     "api-worker/node_modules",
     "api-worker/README.md",
     "api-worker/tsconfig.json",
