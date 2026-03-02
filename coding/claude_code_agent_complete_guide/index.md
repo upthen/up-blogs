@@ -2,9 +2,6 @@
 title: Claude Code Agent 完全指南 - 从零开始学会使用 AI 专业助手
 tags:
   - AI
-  - Claude Code
-  - Agent
-  - 开发工具
 descrition: 深入浅出地讲解 Claude Code Agent 的概念、配置和使用，包含 7 个实战案例和最佳实践
 ---
 
@@ -381,7 +378,8 @@ permissions:
 
 ### ✅ 做得好的地方
 [哪些地方做得好]
-```
+
+
 
 ## 工作规则
 
@@ -391,18 +389,18 @@ permissions:
 - 考虑项目上下文和现有模式
 - 在反馈中要具有建设性和教育性
 - 永远不要直接修改代码，只提供建议
-```
+
 
 **使用方法：**
-```bash
+
 # 审查当前更改
 /agent code-reviewer 请审查我当前的代码更改
 
 # 审查特定文件
 /agent code-reviewer 请审查 src/components/ChatComponent.vue
 ```
-
 ---
+
 
 ### 案例 2: 重构专家 🛠️
 
@@ -593,7 +591,7 @@ describe('functionName', () => {
     // ...
   })
 })
-```
+
 
 ### 组件测试模板
 ```typescript
@@ -618,7 +616,7 @@ describe('MyComponent', () => {
     expect(wrapper.emitted()).toHaveProperty('my-event')
   })
 })
-```
+
 
 ## 测试覆盖率目标
 
@@ -657,6 +655,7 @@ describe('MyComponent', () => {
 - 所有测试：✅ 通过
 ```
 ```
+
 
 **使用方法：**
 ```bash
@@ -737,7 +736,7 @@ const result = functionName(param1, param2)
 ## 注意事项
 - [注意事项1]
 - [注意事项2]
-```
+
 
 ## 文档生成流程
 
@@ -764,7 +763,7 @@ const result = functionName(param1, param2)
 ## 输出格式
 
 直接生成符合模板的 Markdown 文档。
-```
+
 
 **使用方法：**
 ```bash
@@ -877,7 +876,7 @@ permissions:
 ### 实施步骤
 1. [步骤1]
 2. [步骤2]
-```
+
 
 ## 工作规则
 
@@ -887,7 +886,7 @@ permissions:
 - ✅ 提供可执行的步骤
 - ❌ 不要过早优化
 - ❌ 不要为了优化牺牲可读性
-```
+
 
 **使用方法：**
 ```bash
@@ -964,7 +963,7 @@ permissions:
 
 <!-- ✅ 安全：使用 v-text 或转义 -->
 <div v-text="userInput"></div>
-```
+
 
 ### 2. 敏感数据泄露
 ```javascript
@@ -973,7 +972,7 @@ const API_KEY = 'sk-1234567890'
 
 // ✅ 安全：使用环境变量
 const API_KEY = import.meta.env.VITE_API_KEY
-```
+
 
 ### 3. 不安全的存储
 ```javascript
@@ -982,7 +981,7 @@ localStorage.setItem('token', userToken)
 
 // ✅ 安全：使用 httpOnly cookie
 // (由后端设置)
-```
+
 
 ## 输出格式
 
@@ -1012,7 +1011,7 @@ localStorage.setItem('token', userToken)
 ### 安全最佳实践建议
 1. [建议1]
 2. [建议2]
-```
+
 
 ## 工作规则
 
@@ -1022,7 +1021,7 @@ localStorage.setItem('token', userToken)
 - ✅ 推荐安全最佳实践
 - ❌ 不要制造恐慌
 - ❌ 不要过度安全（影响可用性）
-```
+
 
 **使用方法：**
 ```bash
@@ -1124,7 +1123,7 @@ console.log('步骤2：参数是', param)
 
 // 打印对象
 console.table({ key1: value1, key2: value2 })
-```
+
 
 ### 2. 使用 debugger
 ```javascript
@@ -1133,7 +1132,7 @@ function buggyFunction(param) {
   const result = param + 1
   return result
 }
-```
+
 
 ### 3. 使用错误处理
 ```javascript
@@ -1143,7 +1142,7 @@ try {
   console.error('错误详情:', error)
   console.error('错误堆栈:', error.stack)
 }
-```
+
 
 ## 输出格式
 
@@ -1176,7 +1175,7 @@ try {
 
 ### 预防措施
 - 如何防止类似问题再次出现
-```
+
 
 ## 工作规则
 
@@ -1298,11 +1297,11 @@ name: doc-reader
 ## 分析报告
 ### 问题
 ...
-```
+
 
 # ❌ 差：没有格式要求
 随便输出
-```
+
 
 ### ❌ DON'T（避免做法）
 
@@ -1312,7 +1311,7 @@ name: doc-reader
 # ❌ 差：什么都做，什么都不精
 name: super-agent
 description: 我可以做任何事情：审查、重构、测试、写文档...
-```
+
 
 **原因：** 专精的 Agent 更可靠、更高效
 
@@ -1327,7 +1326,7 @@ permissions:
   deny:
     - Write
     - Edit
-```
+
 
 **原因：** 写作 Agent 需要写文件的权限
 
@@ -1339,7 +1338,7 @@ name: helper
 permissions:
   allow:
     - Bash(*)  # 危险！可能删除文件
-```
+
 
 **原因：** 应该只允许运行特定的安全命令
 
@@ -1697,16 +1696,10 @@ permissions:
 ```markdown
 ## 结果
 [输出内容]
-```
+
 
 ## 工作规则
 - ✅ [规则1]
 - ✅ [规则2]
 - ❌ [禁止事项]
 ```
-
----
-
-**祝你使用 Agent 愉快！** 🎉
-
-有问题？参考上面的案例，或者创建一个 Agent 让它帮你写 Agent！😄
