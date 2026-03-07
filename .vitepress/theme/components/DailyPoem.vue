@@ -186,6 +186,18 @@ onMounted(() => {
   transition: opacity 0.3s;
 }
 
+/* 移动端关闭按钮优化 */
+@media (max-width: 640px) {
+  :deep(.el-dialog__headerbtn) {
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 :deep(.el-dialog__headerbtn:hover) {
   opacity: 0.6;
 }
@@ -283,6 +295,96 @@ onMounted(() => {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* ==================== 移动端响应式适配 ==================== */
+
+@media (max-width: 640px) {
+  :deep(.el-dialog) {
+    width: 90vw !important;
+    margin: 0 auto;
+  }
+
+  .poem-card {
+    border-radius: 6px;
+  }
+
+  .poem-header {
+    padding: 20px 16px 16px 16px;
+  }
+
+  .poem-title {
+    font-size: 24px;
+  }
+
+  .poem-author-dynasty {
+    font-size: 14px;
+  }
+
+  .poem-content {
+    padding: 24px 16px;
+  }
+
+  .poem-content p {
+    font-size: 15px;
+    margin: 12px 0;
+  }
+
+  .poem-notes {
+    padding: 0 16px 16px 24px;
+    font-size: 13px;
+  }
+
+  .loading-container {
+    padding: 32px 16px;
+  }
+
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  :deep(.el-dialog) {
+    width: 95vw !important;
+  }
+
+  .poem-header {
+    padding: 16px 12px 12px 12px;
+  }
+
+  .poem-title {
+    font-size: 22px;
+  }
+
+  .poem-author-dynasty {
+    font-size: 13px;
+  }
+
+  .poem-content {
+    padding: 20px 12px;
+  }
+
+  .poem-content p {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .poem-notes {
+    padding: 0 12px 12px 20px;
+    font-size: 12px;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  :deep(.el-dialog__headerbtn) {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 </style>
