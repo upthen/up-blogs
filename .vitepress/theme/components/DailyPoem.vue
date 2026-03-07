@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { ElDialog, ElCard, ElIcon } from 'element-plus';
+import { ElDialog, ElIcon } from 'element-plus';
 import { Close } from '@element-plus/icons-vue';
 import { poems } from '../../../data/poems';
-import dayjs from 'dayjs';
 
 // 状态
 const visible = ref(false);
@@ -11,7 +10,7 @@ const currentPoem = ref<InstanceType<typeof poems>[0] | null>(null);
 const loading = ref(true);
 
 // 今日日期
-const today = computed(() => dayjs().format('YYYY-MM-DD'));
+const today = computed(() => new Date().toISOString().split('T')[0]);
 
 // 存储键
 const STORAGE_KEY = 'daily-poem-storage';
@@ -107,8 +106,8 @@ onMounted(() => {
     align-center
     @close="handleClose"
   >
-    <!-- 卡片内容 -->
-    <el-card v-if="currentPoem" class="poem-card">
+    <!-- 卡片内容 - 使用原生 div，无阴影 -->
+    <div v-if="currentPoem" class="poem-card">
       <!-- 标题区 -->
       <div class="poem-header">
         <div class="poem-title">
@@ -126,7 +125,7 @@ onMounted(() => {
       <div v-if="currentPoem.notes" class="poem-notes">
         {{ currentPoem.notes }}
       </div>
-    </el-card>
+    </div>
 
     <!-- 加载中 -->
     <div v-else class="loading-container">
@@ -144,8 +143,6 @@ onMounted(() => {
   --poem-text-dark: #ffffff;
   --poem-border-light: #e5e7eb;
   --poem-border-dark: #424242;
-  --poem-shadow-light: rgba(0, 0, 0, 0.1);
-  --poem-shadow-dark: rgba(255, 255, 255, 0.1);
   --poem-aux-text-light: #666666;
   --poem-aux-text-dark: #999999;
 }
@@ -155,7 +152,6 @@ onMounted(() => {
   --poem-bg: var(--poem-bg-light);
   --poem-text: var(--poem-text-light);
   --poem-border: var(--poem-border-light);
-  --poem-shadow: var(--poem-shadow-light);
   --poem-aux-text: var(--poem-aux-text-light);
 }
 
@@ -164,7 +160,6 @@ onMounted(() => {
   --poem-bg: var(--poem-bg-dark);
   --poem-text: var(--poem-text-dark);
   --poem-border: var(--poem-border-dark);
-  --poem-shadow: var(--poem-shadow-dark);
   --poem-aux-text: var(--poem-aux-text-dark);
 }
 
@@ -204,12 +199,14 @@ onMounted(() => {
   padding: 0 !important;
 }
 
+/* 使用原生 div，完全控制样式，无任何阴影 */
 .poem-card {
   background-color: var(--poem-bg);
   color: var(--poem-text);
   border: 1px solid var(--poem-border);
   border-radius: 8px;
   overflow: hidden;
+  /* 无任何阴影效果 */
 }
 
 .poem-header {
