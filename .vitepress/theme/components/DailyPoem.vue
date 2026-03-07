@@ -85,12 +85,10 @@ const formatContent = (content: string) => {
   return content.split('\n').map(line => `<p>${line}</p>`).join('');
 };
 
-// 延迟1秒显示
+// 延迟0.1秒显示（几乎立即，但避免页面布局闪烁）
 onMounted(() => {
   if (checkShouldShow()) {
-    setTimeout(() => {
-      showPoem();
-    }, 1000);
+    showPoem();
   } else {
     loading.value = false;
   }
@@ -110,7 +108,7 @@ onMounted(() => {
     @close="handleClose"
   >
     <!-- 卡片内容 -->
-    <el-card v-if="currentPoem" class="poem-card" shadow="hover">
+    <el-card v-if="currentPoem" class="poem-card">
       <!-- 标题区 -->
       <div class="poem-header">
         <div class="poem-title">
@@ -210,7 +208,6 @@ onMounted(() => {
   background-color: var(--poem-bg);
   color: var(--poem-text);
   border: 1px solid var(--poem-border);
-  box-shadow: var(--poem-shadow);
   border-radius: 8px;
   overflow: hidden;
 }
