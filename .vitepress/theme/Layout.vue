@@ -29,6 +29,9 @@
       </p>
     </footer>
     <UpTools />
+    
+    <!-- 每日一诗弹窗 -->
+    <DailyPoem v-if="frontmatter.layout === 'home'" />
   </div>
 </template>
 
@@ -43,6 +46,7 @@ import {
   UpDocList,
   UpTheme,
   UpBack,
+  DailyPoem,
 } from "./components";
 
 // https://vitepress.dev/reference/runtime-api#usedata
