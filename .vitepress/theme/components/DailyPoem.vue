@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { ElDialog, ElButton, ElCard, ElTag, ElIcon } from 'element-plus';
-import { Close, Share } from '@element-plus/icons-vue';
+import { ElDialog, ElCard, ElIcon } from 'element-plus';
+import { Close } from '@element-plus/icons-vue';
 import { poems } from '../../../data/poems';
 import dayjs from 'dayjs';
 
@@ -24,7 +24,7 @@ const checkShouldShow = () => {
 
     const data = JSON.parse(storage);
     // 如果是今天，不显示
-    return data.lastDate !== today;
+    return data.lastDate !== today.value;
   } catch (e) {
     console.error('Failed to read storage:', e);
     return true;
@@ -80,26 +80,10 @@ const handleClose = () => {
   visible.value = false;
 };
 
-// 分享功能（预留）
-const handleShare = () => {
-  if (navigator.share && currentPoem.value) {
-    navigator.share({
-      title: `【${currentPoem.value.title}】${currentPoem.value.author}`,
-      text: currentPoem.value.content,
-      url: window.location.href
-    }).catch(console.error);
-  }
-};
-
 // 格式化内容（将换行符转换为 <br>）
 const formatContent = (content: string) => {
   return content.split('\n').map(line => `<p>${line}</p>`).join('');
 };
-
-// 朝代标签颜色
-const dynastyColor = computed(() => {
-  return currentPoem.value?.dynasty === '北宋' ? 'danger' : 'warning';
-});
 
 // 延迟1秒显示
 onMounted(() => {
@@ -116,13 +100,14 @@ onMounted(() => {
 <template>
   <el-dialog
     v-model="visible"
-    :show-close="false"
+    :show-close="true"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
+    :close-on-press-escape="true"
     :destroy-on-close="false"
     width="600px"
     class="daily-poem-dialog"
     align-center
+    @close="handleClose"
   >
     <!-- 卡片内容 -->
     <el-card v-if="currentPoem" class="poem-card" shadow="hover">
@@ -131,11 +116,8 @@ onMounted(() => {
         <div class="poem-title">
           {{ currentPoem.title }}
         </div>
-        <el-tag :type="dynastyColor" size="small">
-          {{ currentPoem.dynasty }}
-        </el-tag>
-        <div class="poem-author">
-          {{ currentPoem.author }}
+        <div class="poem-author-dynasty">
+          {{ currentPoem.author }} · {{ currentPoem.dynasty }}
         </div>
       </div>
 
@@ -145,18 +127,6 @@ onMounted(() => {
       <!-- 注释区（可选） -->
       <div v-if="currentPoem.notes" class="poem-notes">
         {{ currentPoem.notes }}
-      </div>
-
-      <!-- 按钮区 -->
-      <div class="poem-footer">
-        <el-button type="primary" @click="handleClose">
-          <el-icon><Close /></el-icon>
-          关闭
-        </el-button>
-        <el-button @click="handleShare" :disabled="!navigator.share">
-          <el-icon><Share /></el-icon>
-          分享
-        </el-button>
       </div>
     </el-card>
 
@@ -178,6 +148,8 @@ onMounted(() => {
   --poem-border-dark: #424242;
   --poem-shadow-light: rgba(0, 0, 0, 0.1);
   --poem-shadow-dark: rgba(255, 255, 255, 0.1);
+  --poem-aux-text-light: #666666;
+  --poem-aux-text-dark: #999999;
 }
 
 /* 亮色模式 */
@@ -186,6 +158,7 @@ onMounted(() => {
   --poem-text: var(--poem-text-light);
   --poem-border: var(--poem-border-light);
   --poem-shadow: var(--poem-shadow-light);
+  --poem-aux-text: var(--poem-aux-text-light);
 }
 
 /* 暗色模式 */
@@ -194,11 +167,27 @@ onMounted(() => {
   --poem-text: var(--poem-text-dark);
   --poem-border: var(--poem-border-dark);
   --poem-shadow: var(--poem-shadow-dark);
+  --poem-aux-text: var(--poem-aux-text-dark);
 }
 
 :deep(.el-dialog) {
   background-color: transparent;
   padding: 0;
+}
+
+:deep(.el-dialog__header) {
+  padding: 0;
+  border: none;
+}
+
+:deep(.el-dialog__headerbtn) {
+  color: var(--poem-text) !important;
+  font-size: 20px;
+  transition: opacity 0.3s;
+}
+
+:deep(.el-dialog__headerbtn:hover) {
+  opacity: 0.6;
 }
 
 :deep(.el-dialog__body) {
@@ -216,55 +205,47 @@ onMounted(() => {
 
 .poem-header {
   text-align: center;
-  padding: 24px 24px 12px 24px;
+  padding: 24px 24px 20px 24px;
   border-bottom: 1px solid var(--poem-border);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .poem-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 600;
   color: var(--poem-text);
 }
 
-.poem-author {
-  font-size: 14px;
-  color: var(--poem-text);
-  opacity: 0.8;
-  font-style: italic;
+.poem-author-dynasty {
+  font-size: 15px;
+  color: var(--poem-aux-text);
+  font-style: normal;
+  letter-spacing: 0.5px;
 }
 
 .poem-content {
   padding: 32px;
-  line-height: 2;
+  line-height: 2.2;
   text-align: center;
 }
 
 .poem-content p {
-  margin: 12px 0;
+  margin: 14px 0;
   font-size: 16px;
   color: var(--poem-text);
 }
 
 .poem-notes {
-  padding: 0 32px 16px 32px;
+  padding: 0 32px 20px 32px;
   font-size: 14px;
-  color: var(--poem-text);
-  opacity: 0.7;
+  color: var(--poem-aux-text);
   text-align: center;
   border-top: 1px solid var(--poem-border);
   margin-top: 8px;
-  padding-top: 16px;
-}
-
-.poem-footer {
-  padding: 16px 32px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  border-top: 1px solid var(--poem-border);
+  padding-top: 20px;
+  font-style: italic;
 }
 
 .loading-container {
