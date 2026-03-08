@@ -1,11 +1,11 @@
 export interface Env {
-  // 环境变量类型定义
+  DB: D1Database;
 }
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
-    
+
     // 处理 CORS
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
@@ -22,15 +22,23 @@ export default {
     if (url.pathname === '/api/hello') {
       return handleHello(request, corsHeaders);
     }
-    
+
     if (url.pathname === '/api/time') {
       return handleTime(corsHeaders);
+    }
+
+    if (url.pathname === '/api/poems/daily') {
+      return handleDailyPoem(url, env, corsHeaders);
+    }
+
+    if (url.pathname === '/api/poems/random') {
+      return handleRandomPoem(url, env, corsHeaders);
     }
 
     // 默认响应
     return new Response(JSON.stringify({
       message: 'API Worker is running!',
-      endpoints: ['/api/hello', '/api/time']
+      endpoints: ['/api/hello', '/api/time', '/api/poems/daily', '/api/poems/random']
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -57,4 +65,138 @@ function handleTime(headers: HeadersInit): Response {
   }), {
     headers: { ...headers, 'Content-Type': 'application/json' }
   });
+}
+
+// 处理 /api/poems/daily
+async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promise<Response> {
+  try {
+    // 获取参数
+    const type = url.searchParams.get('type') || '词';
+    const dateParam = url.searchParams.get('date');
+
+    // 确定日期
+    const today = dateParam ? new Date(dateParam) : new Date();
+    const dateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+
+    // 根据日期计算 seed
+    const seed = dateStr.split('-').reduce((acc, val) => acc + parseInt(val), 0);
+
+    // 获取该类型的总数量
+    const totalResult = await env.DB.prepare(
+      "SELECT COUNT(*) as total FROM poems WHERE type = ?"
+    ).bind(type).first();
+
+    if (!totalResult || !totalResult.total) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'No poems found for the specified type'
+      }), {
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        status: 404
+      });
+    }
+
+    const total = totalResult.total as number;
+
+    // 计算偏移量
+    const offset = seed % total;
+
+    // 获取诗词
+    const poem = await env.DB.prepare(
+      "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
+    ).bind(type, offset).first();
+
+    if (!poem) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Failed to retrieve poem'
+      }), {
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        status: 500
+      });
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      data: poem,
+      meta: {
+        date: dateStr,
+        seed,
+        type,
+        total
+      }
+    }), {
+      headers: { ...headers, 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }), {
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      status: 500
+    });
+  }
+}
+
+// 处理 /api/poems/random
+async function handleRandomPoem(url: URL, env: Env, headers: HeadersInit): Promise<Response> {
+  try {
+    // 获取参数
+    const type = url.searchParams.get('type') || '词';
+
+    // 获取该类型的总数量
+    const totalResult = await env.DB.prepare(
+      "SELECT COUNT(*) as total FROM poems WHERE type = ?"
+    ).bind(type).first();
+
+    if (!totalResult || !totalResult.total) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'No poems found for the specified type'
+      }), {
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        status: 404
+      });
+    }
+
+    const total = totalResult.total as number;
+
+    // 随机偏移量
+    const offset = Math.floor(Math.random() * total);
+
+    // 获取诗词
+    const poem = await env.DB.prepare(
+      "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
+    ).bind(type, offset).first();
+
+    if (!poem) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Failed to retrieve poem'
+      }), {
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        status: 500
+      });
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      data: poem,
+      meta: {
+        type,
+        total
+      }
+    }), {
+      headers: { ...headers, 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }), {
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      status: 500
+    });
+  }
 }

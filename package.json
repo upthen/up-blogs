@@ -17,7 +17,8 @@
     "compress:webp": "node scripts/compress.js . 85 --webp",
     "compress:webp-high": "node scripts/compress.js . 95 --webp",
     "compress:webp-mid": "node scripts/compress.js --webp",
-    "compress:webp-low": "node scripts/compress.js . 75 --webp"
+    "compress:webp-low": "node scripts/compress.js . 75 --webp",
+    "git:commit": "bash scripts/git-commit-push.sh"
   },
   "keywords": [],
   "author": "",

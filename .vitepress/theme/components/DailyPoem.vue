@@ -2,12 +2,25 @@
 import { ref, onMounted, computed } from 'vue';
 import { ElDialog, ElIcon } from 'element-plus';
 import { Close } from '@element-plus/icons-vue';
-import { poems } from '../../../data/poems';
+
+// API 配置
+const API_BASE_URL = 'https://api-worker.zyb-6616.workers.dev';
+
+// 诗词数据类型
+interface Poem {
+  id: number;
+  title: string;
+  author: string;
+  dynasty: string;
+  type: string;
+  content: string;
+}
 
 // 状态
 const visible = ref(false);
-const currentPoem = ref<InstanceType<typeof poems>[0] | null>(null);
+const currentPoem = ref<Poem | null>(null);
 const loading = ref(true);
+const error = ref<string | null>(null);
 
 // 今日日期
 const today = computed(() => new Date().toISOString().split('T')[0]);
@@ -31,11 +44,10 @@ const checkShouldShow = () => {
 };
 
 // 保存弹窗状态
-const saveStorage = (poem: InstanceType<typeof poems>[0], index: number) => {
+const saveStorage = (poem: Poem) => {
   try {
     const data = {
       lastDate: today.value,
-      poemIndex: index,
       poemId: poem.id,
       viewed: true
     };
@@ -45,32 +57,44 @@ const saveStorage = (poem: InstanceType<typeof poems>[0], index: number) => {
   }
 };
 
-// 获取今天的词
-const getTodayPoem = () => {
+// 从 API 获取今天的诗词
+const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
   try {
-    const storage = localStorage.getItem(STORAGE_KEY);
-    if (storage) {
-      const data = JSON.parse(storage);
-      // 如果有记录，使用上次的索引 + 1
-      const nextIndex = (data.poemIndex + 1) % poems.length;
-      currentPoem.value = poems[nextIndex];
-      saveStorage(poems[nextIndex], nextIndex);
-    } else {
-      // 首次访问，使用第一首
-      currentPoem.value = poems[0];
-      saveStorage(poems[0], 0);
+    const response = await fetch(`${API_BASE_URL}/api/poems/daily?type=${encodeURIComponent(poemType)}`);
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status}`);
     }
+
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error(result.error || 'API returned error');
+    }
+
+    currentPoem.value = result.data;
+    saveStorage(result.data);
   } catch (e) {
-    console.error('Failed to get today poem:', e);
-    currentPoem.value = poems[0];
+    console.error('Failed to fetch poem:', e);
+    error.value = e instanceof Error ? e.message : 'Unknown error';
+    // 失败时使用备用诗词
+    currentPoem.value = {
+      id: -1,
+      title: '加载失败',
+      author: '未知',
+      dynasty: '',
+      type: poemType,
+      content: '无法从服务器获取诗词，请稍后重试。'
+    };
   }
 };
 
 // 显示弹窗
-const showPoem = () => {
+const showPoem = async () => {
   loading.value = true;
-  getTodayPoem();
-  visible.value = true;
+  error.value = null;
+  await fetchTodayPoem('词'); // 默认显示宋词
+  if (!error.value) {
+    visible.value = true;
+  }
   loading.value = false;
 };
 
@@ -128,9 +152,15 @@ onMounted(() => {
     </div>
 
     <!-- 加载中 -->
-    <div v-else class="loading-container">
+    <div v-else-if="loading" class="loading-container">
       <div class="loading-spinner"></div>
       <p>正在加载诗词...</p>
+    </div>
+
+    <!-- 错误状态 -->
+    <div v-else-if="error" class="error-container">
+      <p class="error-message">{{ error }}</p>
+      <el-button @click="showPoem" type="primary" plain>重试</el-button>
     </div>
   </el-dialog>
 </template>
@@ -258,6 +288,17 @@ onMounted(() => {
   padding: 48px;
   text-align: center;
   color: var(--poem-text);
+}
+
+.error-container {
+  padding: 48px;
+  text-align: center;
+  color: var(--poem-text);
+}
+
+.error-message {
+  margin-bottom: 16px;
+  color: #f56c6c;
 }
 
 .loading-spinner {
