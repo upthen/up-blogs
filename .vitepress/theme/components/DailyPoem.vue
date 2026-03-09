@@ -16,6 +16,14 @@ interface Poem {
   content: string;
 }
 
+// 英文枚举值映射
+const poemTypeMapping: Record<'ci' | 'shi' | 'qu' | 'fu', '诗' | '词' | '曲' | '赋'> = {
+  'ci': '词',
+  'shi': '诗',
+  'qu': '曲',
+  'fu': '赋'
+};
+
 // 状态
 const visible = ref(false);
 const currentPoem = ref<Poem | null>(null);
@@ -58,7 +66,7 @@ const saveStorage = (poem: Poem) => {
 };
 
 // 从 API 获取今天的诗词
-const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
+const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/poems/daily`, {
       method: 'POST',
@@ -90,7 +98,7 @@ const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
       title: '加载失败',
       author: '未知',
       dynasty: '',
-      type: poemType,
+      type: poemTypeMapping[poemType],
       content: '无法从服务器获取诗词，请稍后重试。'
     };
   }
@@ -100,7 +108,7 @@ const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
 const showPoem = async () => {
   loading.value = true;
   error.value = null;
-  await fetchTodayPoem('词'); // 默认显示宋词
+  await fetchTodayPoem('ci'); // 默认显示宋词
   if (!error.value) {
     visible.value = true;
   }
@@ -126,7 +134,7 @@ defineExpose({
     // 刷新功能：获取新的诗词并显示，不受每日限制
     loading.value = true;
     error.value = null;
-    fetchTodayPoem('词').then(() => {
+    fetchTodayPoem('ci').then(() => {
       if (!error.value) {
         visible.value = true;
       }

@@ -88,6 +88,16 @@ async function handleDailyPoem(request: Request, env: Env, headers: HeadersInit)
       dateParam = url.searchParams.get('date');
     }
 
+    // 英文枚举值映射到中文类型
+    const typeMapping: Record<string, string> = {
+      'ci': '词',
+      'shi': '诗',
+      'qu': '曲',
+      'fu': '赋'
+    };
+
+    const mappedType = typeMapping[type] || type;
+
     // 确定日期
     const today = dateParam ? new Date(dateParam) : new Date();
     const dateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
@@ -98,7 +108,7 @@ async function handleDailyPoem(request: Request, env: Env, headers: HeadersInit)
     // 获取该类型的总数量
     const totalResult = await env.DB.prepare(
       "SELECT COUNT(*) as total FROM poems WHERE type = ?"
-    ).bind(type).first();
+    ).bind(mappedType).first();
 
     if (!totalResult || !totalResult.total) {
       return new Response(JSON.stringify({
@@ -118,7 +128,7 @@ async function handleDailyPoem(request: Request, env: Env, headers: HeadersInit)
     // 获取诗词
     const poem = await env.DB.prepare(
       "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
-    ).bind(type, offset).first();
+    ).bind(mappedType, offset).first();
 
     if (!poem) {
       return new Response(JSON.stringify({
@@ -136,7 +146,7 @@ async function handleDailyPoem(request: Request, env: Env, headers: HeadersInit)
       meta: {
         date: dateStr,
         seed,
-        type,
+        type: mappedType,
         total
       }
     }), {
@@ -171,10 +181,20 @@ async function handleRandomPoem(request: Request, env: Env, headers: HeadersInit
       type = url.searchParams.get('type') || type;
     }
 
+    // 英文枚举值映射到中文类型
+    const typeMapping: Record<string, string> = {
+      'ci': '词',
+      'shi': '诗',
+      'qu': '曲',
+      'fu': '赋'
+    };
+
+    const mappedType = typeMapping[type] || type;
+
     // 获取该类型的总数量
     const totalResult = await env.DB.prepare(
       "SELECT COUNT(*) as total FROM poems WHERE type = ?"
-    ).bind(type).first();
+    ).bind(mappedType).first();
 
     if (!totalResult || !totalResult.total) {
       return new Response(JSON.stringify({
@@ -194,7 +214,7 @@ async function handleRandomPoem(request: Request, env: Env, headers: HeadersInit
     // 获取诗词
     const poem = await env.DB.prepare(
       "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
-    ).bind(type, offset).first();
+    ).bind(mappedType, offset).first();
 
     if (!poem) {
       return new Response(JSON.stringify({
@@ -210,7 +230,7 @@ async function handleRandomPoem(request: Request, env: Env, headers: HeadersInit
       success: true,
       data: poem,
       meta: {
-        type,
+        type: mappedType,
         total
       }
     }), {
