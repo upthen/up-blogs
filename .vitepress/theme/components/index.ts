@@ -6,6 +6,7 @@ import UpDocList from "./UpDocList.vue";
 import UpNav from "./UpNav.vue";
 import UpBack from "./UpBack.vue";
 import UpTheme from "./UpTheme.vue";
+import DailyPoem from "./DailyPoem.vue";
 
 export {
   UpNavMenu,
@@ -16,4 +17,5 @@ export {
   UpNav,
   UpBack,
   UpTheme,
+  DailyPoem,
 };

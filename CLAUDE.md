@@ -67,6 +67,72 @@ git commit -m "更新内容"
 git push              # 推送到 GitHub，Netlify 自动部署
 ```
 
+### Git Hooks
+
+项目配置了 pre-commit hook，会自动检测并阻止图片文件的提交：
+
+**检测机制：**
+
+- 自动检测暂存区中的图片文件（支持 jpg, jpeg, png, gif, webp, svg, bmp, ico, tiff）
+- 如果发现图片文件，阻止提交并提示使用图床上传
+
+**跳过检测（如确实需要提交图片）：**
+
+```bash
+# 方法1：使用环境变量跳过（推荐）
+SKIP_IMAGE_CHECK=true git commit -m "提交图片"
+
+# 方法2：使用 git 的 --no-verify 参数
+git commit --no-verify -m "提交图片"
+```
+
+**图床上传：**
+
+- 使用 PicGo + 腾讯云 COS 自动上传图片
+- 在 Obsidian 中粘贴图片（Cmd + V）自动上传
+- 获得图床 URL 替换本地图片路径
+
+### Git 自动提交脚本
+
+项目提供了自动化提交脚本 `git-commit-push`，简化 Git 工作流程：
+
+**使用方式：**
+
+```bash
+# 方式1：使用 npm script（推荐）
+pnpm git:commit
+
+# 方式2：直接运行脚本
+bash scripts/git-commit-push.sh
+
+# 方式3：指定提交信息
+pnpm git:commit "feat: 添加新功能"
+```
+
+**工作流程：**
+
+1. 显示当前 Git 状态
+2. 自动执行 `git add .`
+3. 显示暂存的更改
+4. 分析更改内容，生成提交信息建议
+5. 提示用户输入或确认提交信息
+6. **询问是否推送到远程仓库**
+7. 如果确认，执行推送
+
+**提交信息生成规则：**
+
+- Vue/TS/JS 文件：`feat:` / `fix:` / `refactor:`
+- Markdown 文档：`docs:` / `chore:`
+- 样式文件：`style:`
+- 配置文件：`chore:`
+
+**优势：**
+
+- 自动化繁琐的 Git 操作
+- 智能生成提交信息
+- Push 前必须确认，避免误推送
+- 支持自定义提交信息
+
 ## 架构
 
 ### 主题系统

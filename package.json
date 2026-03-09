@@ -17,7 +17,8 @@
     "compress:webp": "node scripts/compress.js . 85 --webp",
     "compress:webp-high": "node scripts/compress.js . 95 --webp",
     "compress:webp-mid": "node scripts/compress.js --webp",
-    "compress:webp-low": "node scripts/compress.js . 75 --webp"
+    "compress:webp-low": "node scripts/compress.js . 75 --webp",
+    "git:commit": "bash scripts/git-commit-push.sh"
   },
   "keywords": [],
   "author": "",
@@ -70,7 +71,7 @@
     "vite": "^7.1.3",
     "vite-plugin-svg-icons": "^2.0.1",
     "vitepress-plugin-image-viewer": "^1.1.6",
-    "vitepress-plugin-rss": "^0.3.2",
+    "vitepress-plugin-rss": "^0.2.10",
     "vue": "^3.5.20"
   }
 }

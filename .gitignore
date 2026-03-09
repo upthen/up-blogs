@@ -141,3 +141,7 @@ vite.config.ts.timestamp-*
 .vitepress/cache
 .DS_Store
 .vitepress/.cache
+
+# Obsidian workspace config
+.obsidian/
+.material/

@@ -2,6 +2,12 @@ name = "api-worker"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
+# D1 数据库配置
+[[d1_databases]]
+binding = "DB"
+database_name = "up-blogs-db"
+database_id = "ca64b6ca-20fa-491a-ab43-0aad4d801aff"
+
 [vars]
 ENVIRONMENT = "development"
 
