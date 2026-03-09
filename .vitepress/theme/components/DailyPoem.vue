@@ -60,7 +60,16 @@ const saveStorage = (poem: Poem) => {
 // 从 API 获取今天的诗词
 const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/poems/daily?type=${encodeURIComponent(poemType)}`);
+    const response = await fetch(`${API_BASE_URL}/api/poems/daily`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: poemType
+      })
+    });
+
     if (!response.ok) {
       throw new Error(`API request failed: ${response.status}`);
     }
