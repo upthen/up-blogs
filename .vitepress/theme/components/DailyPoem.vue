@@ -108,6 +108,24 @@ const formatContent = (content: string) => {
   return content.split('\n').map(line => `<p>${line}</p>`).join('');
 };
 
+// 暴露方法给外部调用
+defineExpose({
+  show: () => {
+    showPoem();
+  },
+  refresh: () => {
+    // 刷新功能：获取新的诗词并显示，不受每日限制
+    loading.value = true;
+    error.value = null;
+    fetchTodayPoem('词').then(() => {
+      if (!error.value) {
+        visible.value = true;
+      }
+      loading.value = false;
+    });
+  }
+});
+
 // 延迟0.1秒显示（几乎立即，但避免页面布局闪烁）
 onMounted(() => {
   if (checkShouldShow()) {
