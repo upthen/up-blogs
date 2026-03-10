@@ -18,8 +18,8 @@ interface Poem {
   notes?: string; // 本地数据有 notes 字段
 }
 
-// 英文枚举值映射
-const poemTypeMapping: Record<'ci' | 'shi' | 'qu' | 'fu', '诗' | '词' | '曲' | '赋'> = {
+// 英文枚举值映射（扩展支持更多类型）
+const poemTypeMapping: Record<'ci' | 'shi' | 'qu' | 'fu', '诗' | '词' | '曲' | '赋' | '乐府'> = {
   'ci': '词',
   'shi': '诗',
   'qu': '曲',
@@ -68,14 +68,24 @@ const saveStorage = (poem: Poem) => {
 };
 
 // 从本地数据获取随机诗词（兜底方案）
-const getFallbackPoem = (): Poem => {
+const getFallbackPoem = (requestedType: 'ci' | 'shi' = 'ci'): Poem => {
   const localPoem = getRandomPoem();
+
+  // 根据请求的类型映射到实际类型
+  // 本地数据只有：诗（295首）、乐府（5首）
+  const typeMap: Record<string, '诗' | '乐府'> = {
+    'ci': '诗',      // 请求词时返回诗
+    'shi': '诗',     // 请求诗时返回诗
+    'qu': '诗',      // 请求曲时返回诗
+    'fu': '诗',      // 请求赋时返回诗
+  };
+
   return {
     id: localPoem.id,
     title: localPoem.title,
     author: localPoem.author,
     dynasty: localPoem.dynasty,
-    type: '词', // 本地数据都是词
+    type: typeMap[requestedType] || localPoem.type,
     content: localPoem.content,
     notes: localPoem.notes
   };
@@ -109,7 +119,7 @@ const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
     console.error('Failed to fetch poem from API, using fallback:', e);
 
     // 📦 兜底方案：从本地 data/poems.ts 加载诗词
-    const fallbackPoem = getFallbackPoem();
+    const fallbackPoem = getFallbackPoem(poemType);
     currentPoem.value = fallbackPoem;
 
     // 本地数据不保存到 storage，确保下次仍会尝试 API
