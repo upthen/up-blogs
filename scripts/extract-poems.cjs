@@ -177,9 +177,17 @@ export const poems: Poem[] = [
 `;
 
   const body = poems.map(poem => {
-    // 转义单引号
-    const content = poem.content.replace(/'/g, "\\'");
-    const notes = poem.notes ? poem.notes.replace(/'/g, "\\'") : '';
+    // 潬义特殊字符
+    const escapeString = (str) => {
+      return str
+        .replace(/\\/g, '\\\\')  // 转义反斜杠
+        .replace(/"/g, '\\"')   // 转义双引号
+        .replace(/\n/g, '\\n')   // 转义换行符
+        .replace(/\r/g, '\\r');  // 转义回车符
+    };
+
+    const content = escapeString(poem.content);
+    const notes = poem.notes ? escapeString(poem.notes) : '';
 
     return `  {
     id: "${poem.id}",
