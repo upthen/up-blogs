@@ -2,18 +2,20 @@
 import { ref, onMounted, computed } from 'vue';
 import { ElDialog, ElIcon } from 'element-plus';
 import { Close } from '@element-plus/icons-vue';
+import { poems as localPoems, getRandomPoem, type Poem as LocalPoem } from '../../../data/poems';
 
 // API 配置
 const API_BASE_URL = 'https://api-worker.zyb-6616.workers.dev';
 
-// 诗词数据类型
+// 诗词数据类型（支持 API 返回和本地数据两种格式）
 interface Poem {
-  id: number;
+  id: number | string;
   title: string;
   author: string;
   dynasty: string;
   type: string;
   content: string;
+  notes?: string; // 本地数据有 notes 字段
 }
 
 // 英文枚举值映射
@@ -65,6 +67,20 @@ const saveStorage = (poem: Poem) => {
   }
 };
 
+// 从本地数据获取随机诗词（兜底方案）
+const getFallbackPoem = (): Poem => {
+  const localPoem = getRandomPoem();
+  return {
+    id: localPoem.id,
+    title: localPoem.title,
+    author: localPoem.author,
+    dynasty: localPoem.dynasty,
+    type: '词', // 本地数据都是词
+    content: localPoem.content,
+    notes: localPoem.notes
+  };
+};
+
 // 从 API 获取今天的诗词
 const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
   try {
@@ -90,17 +106,15 @@ const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
     currentPoem.value = result.data;
     saveStorage(result.data);
   } catch (e) {
-    console.error('Failed to fetch poem:', e);
-    error.value = e instanceof Error ? e.message : 'Unknown error';
-    // 失败时使用备用诗词
-    currentPoem.value = {
-      id: -1,
-      title: '加载失败',
-      author: '未知',
-      dynasty: '',
-      type: poemTypeMapping[poemType],
-      content: '无法从服务器获取诗词，请稍后重试。'
-    };
+    console.error('Failed to fetch poem from API, using fallback:', e);
+
+    // 📦 兜底方案：从本地 data/poems.ts 加载诗词
+    const fallbackPoem = getFallbackPoem();
+    currentPoem.value = fallbackPoem;
+
+    // 本地数据不保存到 storage，确保下次仍会尝试 API
+    // 如果需要保存，可以取消下面的注释
+    // saveStorage(fallbackPoem);
   }
 };
 
@@ -108,10 +122,11 @@ const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
 const showPoem = async () => {
   loading.value = true;
   error.value = null;
+
   await fetchTodayPoem('ci'); // 默认显示宋词
-  if (!error.value) {
-    visible.value = true;
-  }
+
+  // 现在有兜底方案，总是显示诗词
+  visible.value = true;
   loading.value = false;
 };
 
@@ -135,9 +150,7 @@ defineExpose({
     loading.value = true;
     error.value = null;
     fetchTodayPoem('ci').then(() => {
-      if (!error.value) {
-        visible.value = true;
-      }
+      visible.value = true;
       loading.value = false;
     });
   }
