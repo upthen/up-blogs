@@ -3,6 +3,7 @@ import Layout from "./Layout.vue";
 import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import ElementPlus from "element-plus";
+import { ID_INJECTION_KEY } from "element-plus";
 import { generateHanziSVG } from "../faviconGene";
 
 import imageViewer from "vitepress-plugin-image-viewer";
@@ -21,6 +22,12 @@ const theme = {
   extends: DefaultTheme,
   Layout,
   enhanceApp({ app, router, siteData }) {
+    // SSR 支持：提供 Element Plus 需要的 ID injection
+    app.provide(ID_INJECTION_KEY, {
+      prefix: 0,
+      current: 0,
+    });
+
     app.use(ElementPlus);
     app.component("vImageViewer", vImageViewer);
     app.component("Giscus", Giscus);
