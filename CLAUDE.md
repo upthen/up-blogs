@@ -412,6 +412,8 @@ test: 测试相关
 chore: 构建/工具更新
 ```
 
+**重要：** 提交信息中**不要添加** AI 工具的版权声明，如 "Co-Authored-By: Claude Sonnet" 或类似内容。
+
 **示例：**
 ```bash
 git commit -m "feat: 添加图片预览功能"
