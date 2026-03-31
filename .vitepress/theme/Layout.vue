@@ -11,7 +11,9 @@
           <UpContent>
             <Content />
           </UpContent>
-          <UpDocList />
+          <!-- 归档页面使用专门的列表组件 -->
+          <UpArchiveList v-if="isArchivePage" />
+          <UpDocList v-else />
         </template>
         <template v-else>
           <UpContent>
@@ -36,8 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from 'vue';
-import { useData } from "vitepress";
+import { ref, provide, computed } from 'vue';
+import { useData, useRoute } from "vitepress";
 import lunisolar from "lunisolar"; // 一个js农历库
 import dayjs from "dayjs";
 import {
@@ -45,14 +47,18 @@ import {
   UpTools,
   UpContent,
   UpDocList,
-  UpTheme,
   UpBack,
   DailyPoem,
 } from "./components";
+import UpArchiveList from "./components/UpArchiveList.vue";
 
 // https://vitepress.dev/reference/runtime-api#usedata
 const data = useData();
+const route = useRoute();
 const { site, frontmatter } = data;
+
+// 判断是否为归档页面
+const isArchivePage = computed(() => route.path.startsWith('/archive/') || route.path === '/archive');
 
 // 每日诗词组件引用
 const dailyPoemRef = ref<InstanceType<typeof DailyPoem> | null>(null);

@@ -41,6 +41,7 @@ export default withMermaid({
       { text: "我", link: "/" },
       { text: "编程人生", link: "/coding/" },
       { text: "随笔", link: "/essay/" },
+      { text: "归档", link: "/archive/" },
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/upthen/up-blogs" },

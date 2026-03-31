@@ -1,8 +1,7 @@
 import { createContentLoader } from "vitepress";
-import gitlog from "gitlog";
 import dayjs from "dayjs";
 import { normalizePath } from "vite";
-import { getFileBirthTime, getFileLastUpdateTime } from "./content.data";
+import { getFileLastUpdateTime } from "./content.data";
 
 const config = (globalThis as any).VITEPRESS_CONFIG;
 
@@ -13,18 +12,12 @@ export default createContentLoader("**/**/*.md", {
   transform(rawData) {
     return rawData
       .filter((item) => {
-        // 过滤掉不需要显示的文件
+        // 只显示 archive 目录下的文章
         return (
           !item.url.includes(".vitepress") &&
           !item.frontmatter.draft &&
-          item.url !== "/" &&
-          item.url !== "/essay/" &&
-          item.url !== "/coding/" &&
-          item.url !== "/archive/" && // 过滤归档目录首页
-          !item.url.includes("/archive/") && // 过滤归档目录下的所有文章
-          !item.url.includes("README") && // 过滤 README 文件
-          !item.url.includes("CLAUDE") &&
-          !item.frontmatter.draft
+          item.url.includes("/archive/") &&
+          item.url !== "/archive/" // 过滤归档目录首页
         );
       })
       .map((item) => {
