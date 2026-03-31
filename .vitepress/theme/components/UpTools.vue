@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import { useRouter } from "vitepress";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
@@ -91,6 +91,9 @@ const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
 const showDrawer = ref(false);
+
+// 注入显示诗词的方法
+const showDailyPoem = inject<() => void>('showDailyPoem');
 
 // 检测是否在移动端，如果时，则 size 设为 90%
 const windowSize = useWindowSize();
@@ -146,6 +149,16 @@ const tools = computed(() =>
       popover: true,
       icon: "i-mynaui:type-text",
       func: () => {},
+    },
+    {
+      key: Symbol(),
+      text: "诗",
+      icon: "i-lucide:book-open",
+      func: () => {
+        if (showDailyPoem) {
+          showDailyPoem();
+        }
+      },
     },
     {
       key: Symbol(),

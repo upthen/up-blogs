@@ -29,13 +29,14 @@
       </p>
     </footer>
     <UpTools />
-    
-    <!-- 每日一诗弹窗 -->
-    <DailyPoem v-if="frontmatter.layout === 'home'" />
   </div>
+
+  <!-- 每日一诗弹窗 - 移到 layout 外层以便全局访问 -->
+  <DailyPoem ref="dailyPoemRef" />
 </template>
 
 <script setup lang="ts">
+import { ref, provide } from 'vue';
 import { useData } from "vitepress";
 import lunisolar from "lunisolar"; // 一个js农历库
 import dayjs from "dayjs";
@@ -52,6 +53,19 @@ import {
 // https://vitepress.dev/reference/runtime-api#usedata
 const data = useData();
 const { site, frontmatter } = data;
+
+// 每日诗词组件引用
+const dailyPoemRef = ref<InstanceType<typeof DailyPoem> | null>(null);
+
+// 提供显示诗词的方法给子组件
+const showDailyPoem = () => {
+  if (dailyPoemRef.value) {
+    dailyPoemRef.value.refresh();
+  }
+};
+
+// 使用 provide 将方法提供给所有子组件
+provide('showDailyPoem', showDailyPoem);
 </script>
 
 <style scoped>

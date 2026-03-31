@@ -28,11 +28,11 @@ export default {
     }
 
     if (url.pathname === '/api/poems/daily') {
-      return handleDailyPoem(url, env, corsHeaders);
+      return handleDailyPoem(request, env, corsHeaders);
     }
 
     if (url.pathname === '/api/poems/random') {
-      return handleRandomPoem(url, env, corsHeaders);
+      return handleRandomPoem(request, env, corsHeaders);
     }
 
     // 默认响应
@@ -68,11 +68,35 @@ function handleTime(headers: HeadersInit): Response {
 }
 
 // 处理 /api/poems/daily
-async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promise<Response> {
+async function handleDailyPoem(request: Request, env: Env, headers: HeadersInit): Promise<Response> {
   try {
-    // 获取参数
-    const type = url.searchParams.get('type') || '词';
-    const dateParam = url.searchParams.get('date');
+    // 获取参数 - 支持 POST body 或 URL query
+    let type = '词';
+    let dateParam = null;
+
+    if (request.method === 'POST') {
+      try {
+        const body = await request.json();
+        type = body.type || type;
+        dateParam = body.date || null;
+      } catch (e) {
+        // JSON 解析失败，忽略
+      }
+    } else {
+      const url = new URL(request.url);
+      type = url.searchParams.get('type') || type;
+      dateParam = url.searchParams.get('date');
+    }
+
+    // 英文枚举值映射到中文类型
+    const typeMapping: Record<string, string> = {
+      'ci': '词',
+      'shi': '诗',
+      'qu': '曲',
+      'fu': '赋'
+    };
+
+    const mappedType = typeMapping[type] || type;
 
     // 确定日期
     const today = dateParam ? new Date(dateParam) : new Date();
@@ -84,7 +108,7 @@ async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promis
     // 获取该类型的总数量
     const totalResult = await env.DB.prepare(
       "SELECT COUNT(*) as total FROM poems WHERE type = ?"
-    ).bind(type).first();
+    ).bind(mappedType).first();
 
     if (!totalResult || !totalResult.total) {
       return new Response(JSON.stringify({
@@ -104,7 +128,7 @@ async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promis
     // 获取诗词
     const poem = await env.DB.prepare(
       "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
-    ).bind(type, offset).first();
+    ).bind(mappedType, offset).first();
 
     if (!poem) {
       return new Response(JSON.stringify({
@@ -122,7 +146,7 @@ async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promis
       meta: {
         date: dateStr,
         seed,
-        type,
+        type: mappedType,
         total
       }
     }), {
@@ -140,15 +164,37 @@ async function handleDailyPoem(url: URL, env: Env, headers: HeadersInit): Promis
 }
 
 // 处理 /api/poems/random
-async function handleRandomPoem(url: URL, env: Env, headers: HeadersInit): Promise<Response> {
+async function handleRandomPoem(request: Request, env: Env, headers: HeadersInit): Promise<Response> {
   try {
-    // 获取参数
-    const type = url.searchParams.get('type') || '词';
+    // 获取参数 - 支持 POST body 或 URL query
+    let type = '词';
+
+    if (request.method === 'POST') {
+      try {
+        const body = await request.json();
+        type = body.type || type;
+      } catch (e) {
+        // JSON 解析失败，忽略
+      }
+    } else {
+      const url = new URL(request.url);
+      type = url.searchParams.get('type') || type;
+    }
+
+    // 英文枚举值映射到中文类型
+    const typeMapping: Record<string, string> = {
+      'ci': '词',
+      'shi': '诗',
+      'qu': '曲',
+      'fu': '赋'
+    };
+
+    const mappedType = typeMapping[type] || type;
 
     // 获取该类型的总数量
     const totalResult = await env.DB.prepare(
       "SELECT COUNT(*) as total FROM poems WHERE type = ?"
-    ).bind(type).first();
+    ).bind(mappedType).first();
 
     if (!totalResult || !totalResult.total) {
       return new Response(JSON.stringify({
@@ -168,7 +214,7 @@ async function handleRandomPoem(url: URL, env: Env, headers: HeadersInit): Promi
     // 获取诗词
     const poem = await env.DB.prepare(
       "SELECT id, title, author, dynasty, type, content FROM poems WHERE type = ? LIMIT 1 OFFSET ?"
-    ).bind(type, offset).first();
+    ).bind(mappedType, offset).first();
 
     if (!poem) {
       return new Response(JSON.stringify({
@@ -184,7 +230,7 @@ async function handleRandomPoem(url: URL, env: Env, headers: HeadersInit): Promi
       success: true,
       data: poem,
       meta: {
-        type,
+        type: mappedType,
         total
       }
     }), {

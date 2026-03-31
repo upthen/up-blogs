@@ -2,19 +2,29 @@
 import { ref, onMounted, computed } from 'vue';
 import { ElDialog, ElIcon } from 'element-plus';
 import { Close } from '@element-plus/icons-vue';
+import { poems as localPoems, getRandomPoem, type Poem as LocalPoem } from '../../../data/poems';
 
 // API 配置
 const API_BASE_URL = 'https://api-worker.zyb-6616.workers.dev';
 
-// 诗词数据类型
+// 诗词数据类型（支持 API 返回和本地数据两种格式）
 interface Poem {
-  id: number;
+  id: number | string;
   title: string;
   author: string;
   dynasty: string;
   type: string;
   content: string;
+  notes?: string; // 本地数据有 notes 字段
 }
+
+// 英文枚举值映射（扩展支持更多类型）
+const poemTypeMapping: Record<'ci' | 'shi' | 'qu' | 'fu', '诗' | '词' | '曲' | '赋' | '乐府'> = {
+  'ci': '词',
+  'shi': '诗',
+  'qu': '曲',
+  'fu': '赋'
+};
 
 // 状态
 const visible = ref(false);
@@ -57,10 +67,43 @@ const saveStorage = (poem: Poem) => {
   }
 };
 
+// 从本地数据获取随机诗词（兜底方案）
+const getFallbackPoem = (requestedType: 'ci' | 'shi' = 'ci'): Poem => {
+  const localPoem = getRandomPoem();
+
+  // 根据请求的类型映射到实际类型
+  // 本地数据只有：诗（295首）、乐府（5首）
+  const typeMap: Record<string, '诗' | '乐府'> = {
+    'ci': '诗',      // 请求词时返回诗
+    'shi': '诗',     // 请求诗时返回诗
+    'qu': '诗',      // 请求曲时返回诗
+    'fu': '诗',      // 请求赋时返回诗
+  };
+
+  return {
+    id: localPoem.id,
+    title: localPoem.title,
+    author: localPoem.author,
+    dynasty: localPoem.dynasty,
+    type: typeMap[requestedType] || localPoem.type,
+    content: localPoem.content,
+    notes: localPoem.notes
+  };
+};
+
 // 从 API 获取今天的诗词
-const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
+const fetchTodayPoem = async (poemType: 'ci' | 'shi' = 'ci') => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/poems/daily?type=${encodeURIComponent(poemType)}`);
+    const response = await fetch(`${API_BASE_URL}/api/poems/daily`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: poemType
+      })
+    });
+
     if (!response.ok) {
       throw new Error(`API request failed: ${response.status}`);
     }
@@ -73,17 +116,15 @@ const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
     currentPoem.value = result.data;
     saveStorage(result.data);
   } catch (e) {
-    console.error('Failed to fetch poem:', e);
-    error.value = e instanceof Error ? e.message : 'Unknown error';
-    // 失败时使用备用诗词
-    currentPoem.value = {
-      id: -1,
-      title: '加载失败',
-      author: '未知',
-      dynasty: '',
-      type: poemType,
-      content: '无法从服务器获取诗词，请稍后重试。'
-    };
+    console.error('Failed to fetch poem from API, using fallback:', e);
+
+    // 📦 兜底方案：从本地 data/poems.ts 加载诗词
+    const fallbackPoem = getFallbackPoem(poemType);
+    currentPoem.value = fallbackPoem;
+
+    // 本地数据不保存到 storage，确保下次仍会尝试 API
+    // 如果需要保存，可以取消下面的注释
+    // saveStorage(fallbackPoem);
   }
 };
 
@@ -91,10 +132,11 @@ const fetchTodayPoem = async (poemType: '诗' | '词' = '词') => {
 const showPoem = async () => {
   loading.value = true;
   error.value = null;
-  await fetchTodayPoem('词'); // 默认显示宋词
-  if (!error.value) {
-    visible.value = true;
-  }
+
+  await fetchTodayPoem('ci'); // 默认显示宋词
+
+  // 现在有兜底方案，总是显示诗词
+  visible.value = true;
   loading.value = false;
 };
 
@@ -107,6 +149,22 @@ const handleClose = () => {
 const formatContent = (content: string) => {
   return content.split('\n').map(line => `<p>${line}</p>`).join('');
 };
+
+// 暴露方法给外部调用
+defineExpose({
+  show: () => {
+    showPoem();
+  },
+  refresh: () => {
+    // 刷新功能：获取新的诗词并显示，不受每日限制
+    loading.value = true;
+    error.value = null;
+    fetchTodayPoem('ci').then(() => {
+      visible.value = true;
+      loading.value = false;
+    });
+  }
+});
 
 // 延迟0.1秒显示（几乎立即，但避免页面布局闪烁）
 onMounted(() => {
