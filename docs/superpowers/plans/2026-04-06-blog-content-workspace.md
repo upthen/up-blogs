@@ -495,24 +495,7 @@ After:
 - `blog/index.md` - 首页
 ```
 
-- [ ] **Step 2: 更新 Obsidian 工作流说明**
-
-In `CLAUDE.md`, update the Obsidian workflow section:
-
-Before (approximate):
-```markdown
-**推荐工作流：**
-1. 使用 Obsidian 打开项目目录：`~/Dev/up-blogs`
-```
-
-After:
-```markdown
-**推荐工作流：**
-1. 使用 Obsidian 打开项目目录：`~/Dev/up-blogs/blog`
-   或保持现有 Vault，在 `blog/` 子目录下创建内容
-```
-
-- [ ] **Step 3: 验证文档更新**
+- [ ] **Step 2: 验证文档更新**
 
 ```bash
 grep -n "blog/" CLAUDE.md | head -10
@@ -585,183 +568,6 @@ rm blog/test-post.md
 ```bash
 git add -A
 git commit -m "test: verify git hooks work with blog/ directory"
-```
-
----
-
-## Task 13: 创建 Obsidian 迁移指南
-
-**Files:**
-- Create: `docs/obsidian-migration-guide.md`
-- Modify: 无
-- Test: 无
-
-- [ ] **Step 1: 创建迁移指南文档**
-
-```bash
-cat > docs/obsidian-migration-guide.md << 'EOF'
-# Obsidian 迁移指南
-
-## 概述
-
-博客内容已迁移到 `blog/` 目录。本文档说明如何调整 Obsidian 工作流。
-
-## 选项 A：保持现有 Vault（推荐用于快速过渡）
-
-### 配置步骤
-
-1. **保持现有 Vault 路径**
-   - Vault 路径：`~/Dev/up-blogs`
-   - 无需更改
-
-2. **在 blog/ 子目录下创建内容**
-   - 所有新文章放在 `blog/coding/` 或 `blog/essay/` 下
-   - 首页：`blog/index.md`
-
-3. **调整 Obsidian 插件配置**
-   - Obsidian Git：确保包含 `blog/` 目录
-   - Image auto upload：工作目录仍是根目录
-
-### 优点
-
-- 无需重新配置插件
-- Git hooks 自动生效
-- 工作流变化最小
-
-### 缺点
-
-- 根目录仍有项目文件
-- 文件列表包含非内容文件
-
-## 选项 B：创建新的 Vault（推荐用于纯净环境）
-
-### 配置步骤
-
-1. **创建新 Vault**
-   - 打开 Obsidian
-   - 点击"打开文件夹作为 Vault"
-   - 选择：`~/Dev/up-blogs/blog`
-
-2. **重新配置 Obsidian Git 插件**
-   - 设置 Git 仓库路径：`~/Dev/up-blogs`
-   - 自动提交目录：`blog/`
-   - 提交信息格式保持不变
-
-3. **重新配置图片上传插件**
-   - PicGo 路径：`/Applications/PicGo.app/Contents/MacOS/picgo`
-   - 工作目录：`~/Dev/up-blogs/blog`
-
-### 优点
-
-- 纯净的内容环境
-- 只看到博客相关文件
-- 更清晰的工作空间
-
-### 缺点
-
-- 需要重新配置所有插件
-- 首次配置较复杂
-
-## 推荐配置（选项 A 示例）
-
-### Obsidian Git 插件配置
-
-```json
-{
-  "commitMessage": "auto commit from obsidian",
-  "autoCommitInterval": 30,
-  "autoPushInterval": 0,
-  "commitDateFormat": "YYYY-MM-DD HH:mm:ss",
-  "autoCommitMessage": "Obsidian auto commit",
-  "disablePush": false,
-  "pullOnStartup": true,
-  "pullBeforePush": true,
-  "setRepoPath": true,
-  "repoPath": "/Users/zyb/Dev/up-blogs",
-  "basePath": "blog"
-}
-```
-
-### Image Auto Upload Plugin 配置
-
-```json
-{
-  "workSrcDir": "/Users/zyb/Dev/up-blogs/blog"
-}
-```
-
-## 验证步骤
-
-1. **创建测试文章**
-   - 在 `blog/coding/` 下创建 `test.md`
-   - 添加内容和图片
-
-2. **验证图片上传**
-   - 粘贴图片到文章
-   - 确认自动上传到图床
-
-3. **验证 Git 提交**
-   - Obsidian Git 自动提交
-   - 检查 GitHub 仓库
-
-4. **验证本地预览**
-   - 运行 `pnpm dev`
-   - 访问 `http://localhost:5173/coding/test`
-
-## 迁移检查清单
-
-- [ ] 选择迁移方案（A 或 B）
-- [ ] 更新 Obsidian Vault 路径
-- [ ] 重新配置 Obsidian Git 插件
-- [ ] 重新配置图片上传插件
-- [ ] 创建测试文章验证工作流
-- [ ] 确认 Git hooks 正常工作
-- [ ] 确认本地预览正常
-
-## 故障排除
-
-### 图片上传失败
-
-**问题**: 图片无法自动上传到图床
-
-**解决方案**:
-1. 检查 PicGo 配置：打开 PicGo 应用
-2. 验证图床配置是否正确
-3. 检查图片上传插件的工作目录设置
-
-### Git 提交失败
-
-**问题**: Obsidian Git 无法提交
-
-**解决方案**:
-1. 检查 Git 仓库路径：`~/Dev/up-blogs`
-2. 确认 `basePath` 设置为 `blog`
-3. 查看 Obsidian Git 日志
-
-### 本地预览 404
-
-**问题**: 文章在本地预览时显示 404
-
-**解决方案**:
-1. 确认文件在 `blog/` 目录下
-2. 检查文件名是否正确
-3. 重启开发服务器：`pnpm dev`
-EOF
-```
-
-- [ ] **Step 2: 验证文件创建**
-
-```bash
-cat docs/obsidian-migration-guide.md | head -20
-```
-
-Expected output: Should show the beginning of the migration guide
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add docs/obsidian-migration-guide.md
-git commit -m "docs: add Obsidian migration guide for blog/ workspace"
 ```
 
 ---
@@ -876,7 +682,6 @@ cat > docs/migration-summary.md << 'EOF'
 ### 维护
 - 保持 `CLAUDE.md` 文档更新
 - 新文章创建在 `blog/` 目录下
-- Obsidian 工作流参考迁移指南
 
 ## 回滚方案
 
@@ -897,7 +702,6 @@ git log --oneline | grep "refactor: move"
 如有问题，请参考：
 - 设计文档: `docs/superpowers/specs/2026-04-06-blog-content-workspace-design.md`
 - 实施计划: `docs/superpowers/plans/2026-04-06-blog-content-workspace.md`
-- Obsidian 迁移: `docs/obsidian-migration-guide.md`
 EOF
 ```
 
@@ -991,7 +795,7 @@ git commit -m "chore: complete blog content workspace migration"
 - [ ] 生产构建成功
 - [ ] URL 结构保持不变（无 `/blog/` 前缀）
 - [ ] Git hooks 正常工作
-- [ ] 文档已更新（CLAUDE.md、迁移指南）
+- [ ] 文档已更新（CLAUDE.md）
 - [ ] 代码已推送到远程仓库
 - [ ] Netlify 自动部署成功
 - [ ] 线上站点验证通过
@@ -1052,5 +856,4 @@ git commit -m "chore: complete blog content workspace migration"
 ## 参考资料
 
 - 设计文档: `docs/superpowers/specs/2026-04-06-blog-content-workspace-design.md`
-- Obsidian 迁移指南: `docs/obsidian-migration-guide.md`
 - VitePress 文档: https://vitepress.dev/guide/routing#rewriting-redirects
