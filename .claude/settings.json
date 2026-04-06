@@ -1,7 +1,14 @@
 {
   "permissions": {
+    "defaultMode": "bypassPermissions",
     "allow": [
-      "Bash(pnpm dev:*)"
-    ]
+      "Bash(pnpm dev:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(pnpm build:*)",
+      "Read(//Users/zyb/.claude/skills/subagent-driven-development/**)"
+    ],
+    "additionalDirectories": ["/Users/zyb/Dev/up-blogs/docs/superpowers"]
   }
 }
