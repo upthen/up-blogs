@@ -24,6 +24,7 @@ const RSS: RSSOptions = {
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
+  srcDir: "blog",
   base: "/",
   assetsDir: "static",
   lang: "zh-CN",
