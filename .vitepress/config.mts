@@ -2,6 +2,7 @@
 import { withMermaid } from "vitepress-plugin-mermaid";
 import { RSSOptions, RssPlugin } from "vitepress-plugin-rss";
 import { defineConfig } from "vitepress";
+import UnoCss from "unocss/vite";
 import dayjs from "dayjs";
 import lunisolar from "lunisolar";
 
@@ -49,6 +50,6 @@ export default withMermaid({
     ],
   },
   vite: {
-    plugins: [RssPlugin(RSS)],
+    plugins: [UnoCss(), RssPlugin(RSS)],
   },
 });
