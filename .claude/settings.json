@@ -1,14 +1,24 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash(pnpm dev:*)",
       "Bash(git commit:*)",
       "Bash(git add:*)",
       "Bash(git push:*)",
       "Bash(pnpm build:*)",
-      "Read(//Users/zyb/.claude/skills/subagent-driven-development/**)"
+      "Read(//Users/zyb/.claude/skills/subagent-driven-development/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/coding/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/essay/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/archive/)",
+      "Bash(git mv:*)",
+      "Bash(for dir:*)",
+      "Bash(do basename:*)",
+      "Bash(done)",
+      "Bash(git merge:*)"
     ],
-    "additionalDirectories": ["/Users/zyb/Dev/up-blogs/docs/superpowers"]
+    "defaultMode": "dontAsk",
+    "additionalDirectories": [
+      "/Users/zyb/Dev/up-blogs/docs/superpowers"
+    ]
   }
 }

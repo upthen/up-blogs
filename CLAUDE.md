@@ -2,11 +2,16 @@
 
 本文件为 Claude Code (claude.ai/code) 在此仓库中工作时提供指导。
 
+## 最重要
+
+必须始终用中文回答问题
+
 ## 项目概述
 
 这是一个名为"闻 · 斋"的极简个人博客，基于 **VitePress** 构建——一个由 Vue 驱动的静态站点生成器。网站致力于让阅读回归本源，采用简洁朴素的设计理念。
 
 **技术栈：**
+
 - **VitePress 2.0.0-alpha.12** - 静态站点生成器
 - **Vue 3.5.20** - 前端框架（使用 Composition API）
 - **UnoCSS** - 原子化 CSS 框架（预设：attributify、icons、wind4）
@@ -140,6 +145,7 @@ pnpm git:commit "feat: 添加新功能"
 自定义主题通过 Vue 3 组件扩展 VitePress 默认主题：
 
 **布局结构** (`.vitepress/theme/Layout.vue:1`)：
+
 - `UpNav` - 导航栏
 - `UpContent` - 主内容包装器，根据布局条件渲染
 - `UpDocList` - 文章列表（在 `list`/`home` 布局页面显示）
@@ -148,6 +154,7 @@ pnpm git:commit "feat: 添加新功能"
 - 页脚，使用中国农历显示版权信息
 
 **布局模式：**
+
 - `list`/`home` - 通过 `UpDocList` 组件显示文章列表
 - 默认模式 - 显示 `UpBack` 组件用于导航
 
@@ -155,16 +162,16 @@ pnpm git:commit "feat: 添加新功能"
 
 使用 CSS 自定义属性实现亮色/暗色主题切换（定义于 `uno.config.ts:85-106`）：
 
-| Token | 亮色模式 | 暗色模式 | 用途 |
-|-------|---------|---------|------|
-| `--color-primaryGray` | #F5F5F7 | #121212 | 主页面背景 |
-| `--color-accentBlack` | #212121 | #E0E0E0 | 标题、重要文本 |
-| `--color-auxGray1` | #E0E0E0 | #424242 | 边框、分隔线、按钮背景 |
-| `--color-auxGray2` | #9E9E9E | #9E9E9E | 次要文本、图标 |
-| `--color-dynamicGray` | #616161 | #BDBDBD | H3 标题、中等重要性元素 |
-| `--color-hoverGray` | #BDBDBD | #616161 | 悬停状态 |
-| `--color-white` | #FFFFFF | #1F1F1F | 卡片/内容区块背景 |
-| `--color-deepGray` | #424242 | #E0E0E0 | 特殊强调 |
+| Token                 | 亮色模式 | 暗色模式 | 用途                    |
+| --------------------- | -------- | -------- | ----------------------- |
+| `--color-primaryGray` | #F5F5F7  | #121212  | 主页面背景              |
+| `--color-accentBlack` | #212121  | #E0E0E0  | 标题、重要文本          |
+| `--color-auxGray1`    | #E0E0E0  | #424242  | 边框、分隔线、按钮背景  |
+| `--color-auxGray2`    | #9E9E9E  | #9E9E9E  | 次要文本、图标          |
+| `--color-dynamicGray` | #616161  | #BDBDBD  | H3 标题、中等重要性元素 |
+| `--color-hoverGray`   | #BDBDBD  | #616161  | 悬停状态                |
+| `--color-white`       | #FFFFFF  | #1F1F1F  | 卡片/内容区块背景       |
+| `--color-deepGray`    | #424242  | #E0E0E0  | 特殊强调                |
 
 UnoCSS 将这些映射到语义化名称：`primary`、`accent`、`aux1`、`aux2`、`dynamic`、`hover`、`white`、`deep`。
 
@@ -175,9 +182,10 @@ UnoCSS 将这些映射到语义化名称：`primary`、`accent`、`aux1`、`aux2
 - `index.md` - 首页
 
 页面通过 frontmatter 的 `layout` 属性控制渲染：
+
 ```yaml
 ---
-layout: list  # 或 'home' 显示文章列表，默认为单篇文章
+layout: list # 或 'home' 显示文章列表，默认为单篇文章
 ---
 ```
 
@@ -201,6 +209,7 @@ layout: list  # 或 'home' 显示文章列表，默认为单篇文章
 项目包含一个独立的 API 服务，位于 `api-worker/` 目录：
 
 **项目结构：**
+
 ```
 api-worker/
 ├── src/
@@ -211,17 +220,20 @@ api-worker/
 ```
 
 **当前 API 端点：**
+
 - `GET /` - API 服务状态和可用端点列表
 - `POST /api/hello` - Hello 接口（测试用）
 - `GET /api/time` - 获取服务器时间（含时区信息）
 
 **技术特性：**
+
 - TypeScript + Cloudflare Workers
 - 边缘计算，全球低延迟
 - 支持 CORS 跨域请求
 - 可扩展 D1 数据库、KV 存储
 
 **部署信息：**
+
 - 本地开发：`http://localhost:8787`
 - 生产环境：部署后获得 `*.workers.dev` 域名
 - 免费额度：每天 100,000 次请求
@@ -229,20 +241,24 @@ api-worker/
 ### 图床服务（PicGo + 腾讯云 COS）
 
 **配置工具：**
+
 - **PicGo** (v2.4.2) - 图片上传工具
 - **腾讯云 COS** - 对象存储服务
 
 **Obsidian 集成：**
+
 - 插件：Image auto upload Plugin
 - 配置文件：`.obsidian/plugins/obsidian-image-auto-upload-plugin/data.json`
 - PicGo 路径：`/Applications/PicGo.app/Contents/MacOS/picgo`
 
 **使用方式：**
+
 1. 在 Obsidian 中粘贴图片（`Cmd + V`）
 2. 插件自动调用 PicGo 上传到腾讯云 COS
 3. 自动替换为图床 URL
 
 **PicGo 配置：**
+
 - 图床设置：腾讯云 COS
 - 存储路径：`img/`
 - 自动重命名：开启
@@ -259,6 +275,7 @@ api-worker/
 ### 内容创作（Obsidian）
 
 **推荐工作流：**
+
 1. 使用 Obsidian 打开项目目录：`~/Dev/up-blogs`
 2. 在 Obsidian 中编写 Markdown 内容
 3. 粘贴图片自动上传到腾讯云 COS
@@ -266,6 +283,7 @@ api-worker/
 5. Netlify 自动构建并部署
 
 **Obsidian 配置：**
+
 - Vault: `~/Dev/up-blogs`
 - 实时预览：已启用
 - Git 插件：已安装并配置
@@ -317,12 +335,14 @@ pnpm deploy
 ### 前端部署（Netlify）
 
 **连接信息：**
+
 - 仓库：https://github.com/upthen/up-blogs.git
 - 分支：`main`
 - 构建命令：`pnpm build`
 - 发布目录：`.vitepress/dist`
 
 **自动部署：**
+
 - 推送到 `main` 分支触发自动部署
 - Pull Request 合并后触发自动部署
 - Netlify 提供 HTTPS + CDN
@@ -330,6 +350,7 @@ pnpm deploy
 ### API 部署（Cloudflare Workers）
 
 **部署命令：**
+
 ```bash
 cd api-worker
 pnpm deploy           # 开发环境
@@ -337,6 +358,7 @@ pnpm deploy:prod      # 生产环境
 ```
 
 **部署后获得的 URL：**
+
 - 格式：`https://api-worker.YOUR_SUBDOMAIN.workers.dev`
 - 支持自定义域名绑定
 
@@ -349,6 +371,7 @@ pnpm deploy:prod      # 生产环境
    - 或使用 `/public/` 目录：`/public/images/image.jpg`
 
 2. **图片压缩（提交前）**
+
    ```bash
    # 压缩当前目录的所有图片
    pnpm compress:webp-mid
@@ -363,6 +386,7 @@ pnpm deploy:prod      # 生产环境
    - 获得图床 URL：`https://YOUR_BUCKET.cos.ap-guangzhou.myqcloud.com/img/xxx.webp`
 
 **图片规范：**
+
 - 优先使用 WebP 格式
 - 头图质量：95%（`compress:webp-high`）
 - 内容图片质量：85%（`compress:webp-mid`）
@@ -373,6 +397,7 @@ pnpm deploy:prod      # 生产环境
 ### 依赖管理
 
 **始终使用 pnpm 安装依赖：**
+
 ```bash
 # ✅ 正确
 pnpm install
@@ -386,15 +411,18 @@ npm install -g wrangler
 ### 代码规范
 
 **Vue 组件：**
+
 - 使用 `Up` 前缀命名组件（如 `UpNav`、`UpTools`）
 - 使用 Composition API (`<script setup>`)
 - TypeScript 类型定义优先
 
 **样式：**
+
 - 优先使用 UnoCSS attributify 模式
 - 示例：`<div flex items-center gap-2>` 而不是 `<div class="flex items-center gap-2">`
 
 **Markdown 内容：**
+
 - 使用 frontmatter 定义元数据
 - 图片路径建议使用相对路径
 - 代码块指定语言以启用语法高亮
@@ -402,6 +430,7 @@ npm install -g wrangler
 ### Git 提交规范
 
 **提交信息格式：**
+
 ```
 feat: 新功能
 fix: 修复 bug
@@ -415,6 +444,7 @@ chore: 构建/工具更新
 **重要：** 提交信息中**不要添加** AI 工具的版权声明，如 "Co-Authored-By: Claude Sonnet" 或类似内容。
 
 **示例：**
+
 ```bash
 git commit -m "feat: 添加图片预览功能"
 git commit -m "fix: 修复暗色模式下的颜色问题"
@@ -426,6 +456,7 @@ git commit -m "docs: 更新 README 文档"
 ### 常见问题
 
 **VitePress 构建失败：**
+
 ```bash
 # 清除缓存并重新安装
 rm -rf node_modules .vitepress/cache
@@ -434,6 +465,7 @@ pnpm build
 ```
 
 **PicGo 上传失败：**
+
 ```bash
 # 检查 PicGo 配置
 open -a PicGo
@@ -443,6 +475,7 @@ open -a PicGo
 ```
 
 **Wrangler 部署失败：**
+
 ```bash
 # 重新登录
 wrangler logout
@@ -455,12 +488,14 @@ cat api-worker/wrangler.toml
 ### 日志查看
 
 **Cloudflare Workers：**
+
 ```bash
 cd api-worker
 pnpm tail              # 实时查看日志
 ```
 
 **Netlify 构建：**
+
 - 访问：https://app.netlify.com/sites/YOUR_SITE/deploys
 - 查看构建日志和错误信息
 
