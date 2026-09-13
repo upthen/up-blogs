@@ -1,6 +1,6 @@
 <!-- @description -->
 <template>
-	<div class="w-full h-40px flex items-center justify-start">
+	<div class="up-back w-full h-40px flex items-center justify-start">
 		>
 		<a
 			href="#"

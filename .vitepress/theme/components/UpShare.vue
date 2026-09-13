@@ -163,11 +163,8 @@ const generateImage = async () => {
     const mount = docEle.querySelector(".up-body") ?? docEle;
     const header = makeHeaderCard();
     const footer = makeFooterCard(qrDataUrl);
-    // 捕获期间隐藏"返回"按钮
-    const backBoxes = [...docEle.querySelectorAll("a")]
-      .filter((a) => a.textContent?.trim() === "cd ..")
-      .map((a) => a.parentElement)
-      .filter(Boolean) as HTMLElement[];
+    // 捕获期间隐藏"返回"按钮（UpBack 根节点带 .up-back 标记）
+    const backBoxes = [...docEle.querySelectorAll(".up-back")];
     backBoxes.forEach((el) => (el.style.display = "none"));
     mount.insertBefore(header, mount.firstChild);
     mount.appendChild(footer);
