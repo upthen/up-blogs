@@ -35,20 +35,18 @@
         ></div>
       </div>
     </div>
+    <UpShare />
   </aside>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, inject } from "vue";
-import { useRouter } from "vitepress";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
+import UpShare from "./UpShare.vue";
 import useToc from "./useToc";
-import { snapdom } from "@zumer/snapdom";
-import { ElNotification } from "element-plus";
 
-const router = useRouter();
 const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
@@ -115,36 +113,6 @@ const tools = computed(() =>
       icon: "i-mdi-light:rss",
       func: () => {
         window.open("./feed.xml");
-      },
-    },
-    {
-      key: Symbol(),
-      text: "Share",
-      icon: "i-material-symbols-light:share",
-      func: async () => {
-        const docEle = document.getElementById("up-content");
-        const snapdomResult = await snapdom(docEle, {
-          backgroundColor: "#ffffff",
-          format: "png",
-          quality: 1,
-          scale: 1,
-        });
-        if (snapdomResult) {
-          await snapdomResult.download(`up-content.png`);
-          ElNotification.success({
-            title: "分享成功",
-            message: "图片已保存到本地",
-          });
-        }
-      },
-    },
-    {
-      // 工具导航
-      key: Symbol(),
-      text: "工具",
-      icon: "i-ri:tools-fill",
-      func: () => {
-        router.go("/archive/tools_nav");
       },
     },
     {

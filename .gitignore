@@ -147,3 +147,5 @@ vite.config.ts.timestamp-*
 **/.obsidian/
 .obsidian/**/*
 .material/
+# 本地 issue tracker（skills）
+.scratch/
