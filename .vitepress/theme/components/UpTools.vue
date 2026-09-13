@@ -25,9 +25,6 @@
           </template>
           <el-scrollbar max-height="80dvh">
             <UpContentToc v-if="item.type === 'toc'" :headers="headers" root />
-            <ClientOnly v-else-if="item.type === 'font'">
-              <UpFontSetter />
-            </ClientOnly>
           </el-scrollbar>
         </el-popover>
         <div
@@ -39,40 +36,6 @@
       </div>
     </div>
   </aside>
-  <el-drawer
-    v-model="showDrawer"
-    title="评论"
-    append-to-body
-    :direction="popDirection"
-    resizable
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
-    :modal="false"
-    :lock-scroll="false"
-    show-close
-    destroy-on-close
-    :size="size"
-  >
-    <div h-full w-full flex-col items-center justify-center text-center>
-      <!-- 功能正在开发中, 敬请期待! <br />您也可以通过Email或微信与我联系！ -->
-      <Giscus
-        id="comments"
-        repo="upthen/up-blogs"
-        repoId="R_kgDOPkQz3Q"
-        category="General"
-        categoryId="DIC_kwDOPkQz3c4Cxosy"
-        mapping="pathname"
-        strict="0"
-        reactionsEnabled="1"
-        emitMetadata="1"
-        inputPosition="top"
-        :theme="`noborder_${isDark ? 'dark' : 'light'}`"
-        lang="zh-CN"
-        loading="lazy"
-        crossorigin="anonymous"
-      />
-    </div>
-  </el-drawer>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +44,6 @@ import { useRouter } from "vitepress";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
-import UpFontSetter from "./UpFontSetter.vue";
 import useToc from "./useToc";
 import { snapdom } from "@zumer/snapdom";
 import { ElNotification } from "element-plus";
@@ -90,17 +52,12 @@ const router = useRouter();
 const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
-const showDrawer = ref(false);
 
 // 注入显示诗词的方法
 const showDailyPoem = inject<() => void>('showDailyPoem');
 
-// 检测是否在移动端，如果时，则 size 设为 90%
+// 检测是否在移动端
 const windowSize = useWindowSize();
-const size = computed(() => (windowSize.width.value <= 640 ? "90%" : "30%"));
-const popDirection = computed(() =>
-  windowSize.width.value <= 640 ? "btt" : "rtl"
-);
 const isMobile = computed(() => windowSize.width.value <= 640);
 
 const tools = computed(() =>
@@ -144,28 +101,12 @@ const tools = computed(() =>
     },
     {
       key: Symbol(),
-      text: "A",
-      type: "font",
-      popover: true,
-      icon: "i-mynaui:type-text",
-      func: () => {},
-    },
-    {
-      key: Symbol(),
       text: "诗",
       icon: "i-lucide:book-open",
       func: () => {
         if (showDailyPoem) {
           showDailyPoem();
         }
-      },
-    },
-    {
-      key: Symbol(),
-      text: "评",
-      icon: "i-mynaui:brand-twitch",
-      func: () => {
-        showDrawer.value = true;
       },
     },
     {

@@ -15,7 +15,6 @@ interface Poem {
   dynasty: string;
   type: string;
   content: string;
-  notes?: string; // 本地数据有 notes 字段
 }
 
 // 英文枚举值映射（扩展支持更多类型）
@@ -86,8 +85,7 @@ const getFallbackPoem = (requestedType: 'ci' | 'shi' = 'ci'): Poem => {
     author: localPoem.author,
     dynasty: localPoem.dynasty,
     type: typeMap[requestedType] || localPoem.type,
-    content: localPoem.content,
-    notes: localPoem.notes
+    content: localPoem.content
   };
 };
 
@@ -202,11 +200,6 @@ onMounted(() => {
 
       <!-- 内容区 -->
       <div class="poem-content" v-html="formatContent(currentPoem.content)"></div>
-
-      <!-- 注释区（可选） -->
-      <div v-if="currentPoem.notes" class="poem-notes">
-        {{ currentPoem.notes }}
-      </div>
     </div>
 
     <!-- 加载中 -->
@@ -331,22 +324,12 @@ onMounted(() => {
   color: var(--poem-text);
 }
 
-.poem-notes {
-  padding: 0 32px 20px 32px;
-  font-size: 14px;
-  color: var(--poem-aux-text);
-  text-align: center;
-  border-top: 1px solid var(--poem-border);
-  margin-top: 8px;
-  padding-top: 20px;
-  font-style: italic;
-}
 
-.loading-container {
-  padding: 48px;
-  text-align: center;
-  color: var(--poem-text);
-}
+  .loading-container {
+    padding: 48px;
+    text-align: center;
+    color: var(--poem-text);
+  }
 
 .error-container {
   padding: 48px;
@@ -424,11 +407,6 @@ onMounted(() => {
     margin: 12px 0;
   }
 
-  .poem-notes {
-    padding: 0 16px 16px 24px;
-    font-size: 13px;
-  }
-
   .loading-container {
     padding: 32px 16px;
   }
@@ -463,11 +441,6 @@ onMounted(() => {
   .poem-content p {
     font-size: 14px;
     margin: 10px 0;
-  }
-
-  .poem-notes {
-    padding: 0 12px 12px 20px;
-    font-size: 12px;
   }
 }
 

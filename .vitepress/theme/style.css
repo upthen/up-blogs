@@ -36,6 +36,7 @@ html {
 }
 
 :root {
+  --vp-font-family-base: "PingFang SC", "苹方", "YouYuan", "幼圆", sans-serif;
   --body-bg-opacity: 0.01;
   --body-bg-img: url("./assets/sangluan_light.JPG");
 }
