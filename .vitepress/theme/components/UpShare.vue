@@ -111,15 +111,16 @@ const systemShare = async () => {
   }
 };
 
-// 署名卡用内联样式 + 主题变量，插入活 DOM 后由 snapdom 内联计算样式
+// 设计 C · 卡片：署名卡用内联样式 + 主题变量，插入活 DOM 后由 snapdom 内联计算样式
 const makeHeaderCard = () => {
   const header = document.createElement("div");
-  header.style.cssText =
-    "padding:32px 36px 24px;border-bottom:1px solid var(--color-auxGray1)";
+  header.style.cssText = "padding:44px 52px 26px";
   header.innerHTML = `
-    <div style="font-size:13px;letter-spacing:.12em;color:var(--color-aux2)">${site.value.title}</div>
-    <div style="font-size:24px;font-weight:600;line-height:1.4;margin-top:10px;color:var(--color-accentBlack)">${pageTitle.value}</div>
-    <div style="font-size:13px;margin-top:10px;color:var(--color-aux2)">${shareDate.value}</div>
+    <div style="display:flex;gap:16px">
+      <div style="width:5px;border-radius:3px;background:var(--color-dynamicGray);flex:none;margin-top:6px"></div>
+      <div style="font-size:32px;font-weight:700;line-height:1.5;color:var(--color-accentBlack)">${pageTitle.value}</div>
+    </div>
+    <div style="font-size:14px;color:var(--color-aux2);margin-top:14px">${site.value.title} · ${shareDate.value}</div>
   `;
   return header;
 };
@@ -127,21 +128,27 @@ const makeHeaderCard = () => {
 const makeFooterCard = (qrDataUrl: string) => {
   const footer = document.createElement("div");
   footer.style.cssText =
-    "display:flex;align-items:center;justify-content:space-between;padding:24px 36px 32px;border-top:1px solid var(--color-auxGray1)";
+    "display:flex;align-items:center;justify-content:space-between;padding:24px 52px 36px;border-top:1px solid var(--color-auxGray1)";
   footer.innerHTML = `
     <div>
-      <div style="font-size:14px;font-weight:600;color:var(--color-accentBlack)">${site.value.title}</div>
-      <div style="font-size:13px;margin-top:4px;color:var(--color-aux2)">${window.location.origin}</div>
+      <div style="font-size:15px;font-weight:600;color:var(--color-accentBlack)">扫码阅读原文</div>
+      <div style="font-size:13px;color:var(--color-aux2);margin-top:5px">${window.location.origin}</div>
     </div>
-    <img alt="文章二维码" style="width:88px;height:88px" src="${qrDataUrl}" />
+    <img alt="文章二维码" style="width:92px;height:92px;border-radius:12px" src="${qrDataUrl}" />
   `;
   return footer;
 };
 
 const shareDate = computed(() => {
   const date = frontmatter.value.date as string | undefined;
-  return date ? String(date).slice(0, 10) : dayjs().format("YYYY-MM-DD");
+  const raw = date ? String(date).slice(0, 10) : dayjs().format("YYYY-MM-DD");
+  return raw.replaceAll("-", "/");
 });
+
+// 正文节选区最大高度：超出即截断并用渐变过渡到卡片底色（同时避免长文导出超 canvas 上限）
+const EXCERPT_MAX = 620;
+// 渐隐过渡带高度：从半透明到完全融入卡片底色
+const FADE_HEIGHT = 180;
 
 const generateImage = async () => {
   generating.value = true;
@@ -149,7 +156,7 @@ const generateImage = async () => {
     const qrDataUrl = await QRCode.toDataURL(window.location.href, {
       width: 176,
       margin: 1,
-      // 二维码固定黑底白码，保证任何主题下都可扫
+      // 二维码固定黑码白底，保证任何主题下都可扫
       color: { dark: "#000000", light: "#ffffff" },
     });
 
@@ -158,16 +165,54 @@ const generateImage = async () => {
       ElNotification.error({ title: "生成失败", message: "未找到文章内容" });
       return;
     }
+    const card = docEle.querySelector(".up-body") ?? docEle;
+    const content = card.querySelector(".up-doc") ?? card.firstElementChild;
 
-    // 署名卡临时插进活的 DOM（snapdom 对活 DOM 的渲染最可靠），捕获完立即移除
-    const mount = docEle.querySelector(".up-body") ?? docEle;
+    // 记录原状，捕获后恢复
+    const docStyle = docEle.getAttribute("style");
+    const cardStyle = card.getAttribute("style");
+    const contentStyle = content?.getAttribute("style") ?? null;
+    const backBoxes = [...docEle.querySelectorAll(".up-back")];
+
     const header = makeHeaderCard();
     const footer = makeFooterCard(qrDataUrl);
-    // 捕获期间隐藏"返回"按钮（UpBack 根节点带 .up-back 标记）
-    const backBoxes = [...docEle.querySelectorAll(".up-back")];
+    const fade = document.createElement("div");
+    fade.style.cssText =
+      "position:absolute;left:0;right:0;bottom:0;height:" +
+      FADE_HEIGHT +
+      "px;background:linear-gradient(to bottom, transparent, var(--color-white));pointer-events:none";
+
+    // 捕获期间临时"着装"：#up-content 作背景幕布，.up-body 作悬浮卡片
     backBoxes.forEach((el) => (el.style.display = "none"));
-    mount.insertBefore(header, mount.firstChild);
-    mount.appendChild(footer);
+    docEle.style.cssText +=
+      ";background:var(--color-primaryGray);padding:36px";
+    card.style.cssText +=
+      ";background:var(--color-white);border:1px solid var(--color-auxGray1);border-radius:24px;overflow:hidden";
+    card.insertBefore(header, card.firstChild);
+    card.appendChild(footer);
+
+    // 长文截断：限制正文高度并加半隐→全隐渐变；短文不加，保持自适应
+    const cutEls: HTMLElement[] = [];
+    if (content) {
+      // 正文容器带 fade-in-down 入场动画（基础 opacity:0），
+      // 后台标签或克隆场景下动画可能停在第一帧导致正文透明，捕获前强制可见
+      content.style.cssText += ";animation:none;opacity:1";
+    }
+    if (content && content.scrollHeight > EXCERPT_MAX) {
+      content.style.cssText +=
+        `;position:relative;max-height:${EXCERPT_MAX}px;overflow:hidden`;
+      content.appendChild(fade);
+      // 给节选区以下的元素打标记，交给 snapdom 从克隆中整体剔除，
+      // 否则它会内联整篇（数万 px）子树的样式导致挂起
+      const contentTop = content.getBoundingClientRect().top;
+      content.querySelectorAll("*").forEach((el) => {
+        if (el.contains(fade)) return;
+        if (el.getBoundingClientRect().top - contentTop > EXCERPT_MAX - FADE_HEIGHT) {
+          el.classList.add("up-share-cut");
+          cutEls.push(el as HTMLElement);
+        }
+      });
+    }
 
     try {
       // 背景跟随当前主题；snapdom 2.0.1 的 dpr/scale 选项不生效，用显式 2 倍宽高导出高清图。
@@ -178,6 +223,8 @@ const generateImage = async () => {
         width: docEle.offsetWidth * 2,
         height: docEle.offsetHeight * 2,
         backgroundColor: bgColor,
+        exclude: [".up-share-cut"],
+        excludeMode: "remove",
       });
       shareBlob = await captureResult.toBlob({ type: "png" });
       previewUrl.value = URL.createObjectURL(shareBlob);
@@ -185,7 +232,17 @@ const generateImage = async () => {
     } finally {
       header.remove();
       footer.remove();
+      fade.remove();
       backBoxes.forEach((el) => (el.style.display = ""));
+      cutEls.forEach((el) => el.classList.remove("up-share-cut"));
+      if (docStyle === null) docEle.removeAttribute("style");
+      else docEle.setAttribute("style", docStyle);
+      if (cardStyle === null) card.removeAttribute("style");
+      else card.setAttribute("style", cardStyle);
+      if (content) {
+        if (contentStyle === null) content.removeAttribute("style");
+        else content.setAttribute("style", contentStyle);
+      }
     }
   } catch {
     ElNotification.error({ title: "生成分享图失败", message: "请稍后重试" });
