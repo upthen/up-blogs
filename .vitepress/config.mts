@@ -6,7 +6,7 @@ import UnoCss from "unocss/vite";
 import dayjs from "dayjs";
 import lunisolar from "lunisolar";
 
-const baseUrl = "https://upthen.me";
+const baseUrl = "https://yongbo.life";
 const RSS: RSSOptions = {
   title: "闻 · 斋",
   baseUrl,
@@ -17,7 +17,7 @@ const RSS: RSSOptions = {
   author: {
     name: "Robert Zeng",
     email: "zyb.6616@icloud.com",
-    link: "https://upthen.me",
+    link: "https://yongbo.life",
   },
   icon: true,
   filename: "feed.xml",

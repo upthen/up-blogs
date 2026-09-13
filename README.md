@@ -1,4 +1,4 @@
-# [upthen.me](https://upthen.me)
+# [yongbo.life](https://yongbo.life)
 
 一套 **极简** 风格的自定义 `VitePress` 博客模板，遵循让阅读回归本源的宗旨和极简的理念。
 
