@@ -41,7 +41,6 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "我", link: "/" },
-      { text: "编程人生", link: "/coding/" },
       { text: "随笔", link: "/essay/" },
       { text: "归档", link: "/archive/" },
     ],

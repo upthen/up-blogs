@@ -19,7 +19,6 @@ export default createContentLoader("**/**/*.md", {
           !item.frontmatter.draft &&
           item.url !== "/" &&
           item.url !== "/essay/" &&
-          item.url !== "/coding/" &&
           item.url !== "/archive/" && // 过滤归档目录首页
           !item.url.includes("/archive/") && // 过滤归档目录下的所有文章
           !item.url.includes("README") && // 过滤 README 文件

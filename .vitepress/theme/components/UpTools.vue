@@ -203,7 +203,7 @@ const tools = computed(() =>
       text: "工具",
       icon: "i-ri:tools-fill",
       func: () => {
-        router.go("/coding/tools_nav");
+        router.go("/archive/tools_nav");
       },
     },
     {

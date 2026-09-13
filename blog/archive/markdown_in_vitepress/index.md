@@ -627,7 +627,7 @@ const line4 = 'This is line 4'
 **输入**
 
 ```md
-<<< @/coding/markdown_in_vitepress/snippets/snippet.js{2}
+<<< @/archive/markdown_in_vitepress/snippets/snippet.js{2}
 ```
 
 > [!Warning]
