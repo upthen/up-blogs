@@ -48,3 +48,27 @@ html {
 #app {
   height: 100dvh;
 }
+
+/* element-plus 主题色对齐博客灰阶（html:root 提升优先级，压过 element 自身的 :root 定义） */
+html:root {
+  --el-color-primary: #212121;
+  --el-color-primary-light-3: #4e4e4e;
+  --el-color-primary-light-5: #737373;
+  --el-color-primary-light-7: #a6a6a6;
+  --el-color-primary-light-8: #c3c3c3;
+  --el-color-primary-light-9: #e0e0e0;
+  --el-color-primary-dark-2: #000000;
+}
+
+html:root.dark {
+  --el-color-primary: #e0e0e0;
+  --el-color-primary-light-3: #b7b7b7;
+  --el-color-primary-light-5: #979797;
+  --el-color-primary-light-7: #6f6f6f;
+  --el-color-primary-light-8: #575757;
+  --el-color-primary-light-9: #3f3f3f;
+  --el-color-primary-dark-2: #ffffff;
+  /* 暗色下 primary 按钮是浅灰底，文字反转为深色 */
+  --el-color-white: #121212;
+}
+
