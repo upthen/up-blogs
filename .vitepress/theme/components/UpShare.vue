@@ -191,10 +191,22 @@ const generateImage = async () => {
     // 长文截断：限制正文高度并加半隐→全隐渐变；短文不加，保持自适应
     const cutEls: HTMLElement[] = [];
     const tocEls: HTMLElement[] = [];
+    const dupH1s: HTMLElement[] = [];
     if (content) {
       // 正文容器带 fade-in-down 入场动画（基础 opacity:0），
       // 后台标签或克隆场景下动画可能停在第一帧导致正文透明，捕获前强制可见
       content.style.cssText += ";animation:none;opacity:1";
+
+      // 正文开头的 h1 与署名卡标题重复（设计稿正文直接从内容开始），捕获期间隐藏；
+      // 只处理位于正文顶部的 h1，避免误伤文章中间的 h1
+      const contentTop = content.getBoundingClientRect().top;
+      for (const h of content.querySelectorAll("h1")) {
+        if (h.getBoundingClientRect().top - contentTop < 150) {
+          dupH1s.push(h as HTMLElement);
+        }
+        break;
+      }
+      dupH1s.forEach((el) => (el.style.display = "none"));
 
       // 作者手写的目录段（"## 目录/TOC/Contents" 标题 + 后续列表直到下一个标题/分隔线）
       // 不是正文，节选图里跳过：临时隐藏，捕获后还原
@@ -250,6 +262,7 @@ const generateImage = async () => {
       fade.remove();
       backBoxes.forEach((el) => (el.style.display = ""));
       tocEls.forEach((el) => (el.style.display = ""));
+      dupH1s.forEach((el) => (el.style.display = ""));
       cutEls.forEach((el) => el.classList.remove("up-share-cut"));
       if (docStyle === null) docEle.removeAttribute("style");
       else docEle.setAttribute("style", docStyle);
