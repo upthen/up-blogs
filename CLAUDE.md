@@ -267,7 +267,7 @@ api-worker/
 
 - 使用 **UnoCSS attributify 模式** - 将 `<div class="flex items-center">` 写为 `<div flex items-center>`
 - 暗色主题通过根元素的 `.dark` 类应用
-- 亮色/暗色模式使用不同的背景纹理
+- 全局背景为 `UpDotGrid` 组件渲染的微光点阵（Canvas）：暗色模式灰白点阵 + 呼吸光点 + 鼠标光晕，亮色模式深灰静态点阵；亮色/暗色共用同一引擎，仅参数不同
 - 所有自定义组件使用 `Up` 前缀（如 `UpNav`、`UpTheme`）
 
 ## 开发工作流

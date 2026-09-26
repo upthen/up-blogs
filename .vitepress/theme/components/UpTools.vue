@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject } from "vue";
+import { computed, ref } from "vue";
 import { useDark, useWindowSize } from "@vueuse/core";
 import { VPNavBarSearch as UpNavBarSearch } from "vitepress/theme";
 import UpContentToc from "./UpContentToc.vue";
@@ -50,9 +50,6 @@ import useToc from "./useToc";
 const theme = ref("light");
 const isDark = useDark();
 const { headers, hasToc } = useToc();
-
-// 注入显示诗词的方法
-const showDailyPoem = inject<() => void>('showDailyPoem');
 
 // 检测是否在移动端
 const windowSize = useWindowSize();
@@ -94,16 +91,6 @@ const tools = computed(() =>
           document.documentElement.classList.add("dark");
         } else {
           document.documentElement.classList.remove("dark");
-        }
-      },
-    },
-    {
-      key: Symbol(),
-      text: "诗",
-      icon: "i-lucide:book-open",
-      func: () => {
-        if (showDailyPoem) {
-          showDailyPoem();
         }
       },
     },

@@ -1,4 +1,6 @@
 <template>
+  <!-- 全局微光点阵背景，放在 #up-layout 外避免内容入场动画的 transform 影响 fixed 定位 -->
+  <UpDotGrid />
   <div class="overflow-x-hidden" id="up-layout">
     <UpNav />
     <!-- 100dvh - 200px nav 80px footer 60px 文章列表 h2 标题有 60px 的 margin-top -->
@@ -32,13 +34,10 @@
     </footer>
     <UpTools />
   </div>
-
-  <!-- 每日一诗弹窗 - 移到 layout 外层以便全局访问 -->
-  <DailyPoem ref="dailyPoemRef" />
 </template>
 
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue';
+import { computed } from 'vue';
 import { useData, useRoute } from "vitepress";
 import lunisolar from "lunisolar"; // 一个js农历库
 import dayjs from "dayjs";
@@ -48,7 +47,7 @@ import {
   UpContent,
   UpDocList,
   UpBack,
-  DailyPoem,
+  UpDotGrid,
 } from "./components";
 import UpArchiveList from "./components/UpArchiveList.vue";
 
@@ -59,19 +58,6 @@ const { site, frontmatter } = data;
 
 // 判断是否为归档页面
 const isArchivePage = computed(() => route.path.startsWith('/archive/') || route.path === '/archive');
-
-// 每日诗词组件引用
-const dailyPoemRef = ref<InstanceType<typeof DailyPoem> | null>(null);
-
-// 提供显示诗词的方法给子组件
-const showDailyPoem = () => {
-  if (dailyPoemRef.value) {
-    dailyPoemRef.value.refresh();
-  }
-};
-
-// 使用 provide 将方法提供给所有子组件
-provide('showDailyPoem', showDailyPoem);
 </script>
 
 <style scoped>
