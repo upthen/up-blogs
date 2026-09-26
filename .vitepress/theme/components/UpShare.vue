@@ -111,16 +111,15 @@ const systemShare = async () => {
   }
 };
 
-// 设计 C · 卡片：署名卡用内联样式 + 主题变量，插入活 DOM 后由 snapdom 内联计算样式
+// 设计 A · 素笺：通栏署名卡，用内联样式 + 主题变量，插入活 DOM 后由 snapdom 内联计算样式
 const makeHeaderCard = () => {
   const header = document.createElement("div");
-  header.style.cssText = "padding:44px 52px 26px";
+  header.style.cssText =
+    "padding:56px 60px 32px;border-bottom:1px solid var(--color-auxGray1)";
   header.innerHTML = `
-    <div style="display:flex;gap:16px">
-      <div style="width:5px;border-radius:3px;background:var(--color-dynamicGray);flex:none;margin-top:6px"></div>
-      <div style="font-size:32px;font-weight:700;line-height:1.5;color:var(--color-accentBlack)">${pageTitle.value}</div>
-    </div>
-    <div style="font-size:14px;color:var(--color-aux2);margin-top:14px">${site.value.title} · ${shareDate.value}</div>
+    <div style="font-size:14px;letter-spacing:.35em;color:var(--color-aux2)">${site.value.title}</div>
+    <div style="font-size:34px;font-weight:600;line-height:1.5;margin-top:18px;color:var(--color-accentBlack)">${pageTitle.value}</div>
+    <div style="font-size:14px;letter-spacing:.08em;color:var(--color-aux2);margin-top:14px">${shareDate.value}</div>
   `;
   return header;
 };
@@ -128,13 +127,13 @@ const makeHeaderCard = () => {
 const makeFooterCard = (qrDataUrl: string) => {
   const footer = document.createElement("div");
   footer.style.cssText =
-    "display:flex;align-items:center;justify-content:space-between;padding:24px 52px 36px;border-top:1px solid var(--color-auxGray1)";
+    "display:flex;align-items:center;justify-content:space-between;padding:28px 60px 44px;border-top:1px solid var(--color-auxGray1)";
   footer.innerHTML = `
     <div>
-      <div style="font-size:15px;font-weight:600;color:var(--color-accentBlack)">扫码阅读原文</div>
+      <div style="font-size:16px;font-weight:600;color:var(--color-accentBlack)">${site.value.title}</div>
       <div style="font-size:13px;color:var(--color-aux2);margin-top:5px">${window.location.origin}</div>
     </div>
-    <img alt="文章二维码" style="width:92px;height:92px;border-radius:12px" src="${qrDataUrl}" />
+    <img alt="文章二维码" style="width:92px;height:92px;flex:none" src="${qrDataUrl}" />
   `;
   return footer;
 };
@@ -142,7 +141,7 @@ const makeFooterCard = (qrDataUrl: string) => {
 const shareDate = computed(() => {
   const date = frontmatter.value.date as string | undefined;
   const raw = date ? String(date).slice(0, 10) : dayjs().format("YYYY-MM-DD");
-  return raw.replaceAll("-", "/");
+  return raw.replaceAll("-", " / ");
 });
 
 // 正文节选区最大高度：超出即截断并用渐变过渡到卡片底色（同时避免长文导出超 canvas 上限）
@@ -182,21 +181,34 @@ const generateImage = async () => {
       FADE_HEIGHT +
       "px;background:linear-gradient(to bottom, transparent, var(--color-white));pointer-events:none";
 
-    // 捕获期间临时"着装"：#up-content 作背景幕布，.up-body 作悬浮卡片
+    // 捕获期间临时"着装"：#up-content 即通栏白色卡片（设计 A，无幕布、无圆角）
     backBoxes.forEach((el) => (el.style.display = "none"));
-    docEle.style.cssText +=
-      ";background:var(--color-primaryGray);padding:36px";
-    card.style.cssText +=
-      ";background:var(--color-white);border:1px solid var(--color-auxGray1);border-radius:24px;overflow:hidden";
+    docEle.style.cssText += ";background:var(--color-white)";
     card.insertBefore(header, card.firstChild);
     card.appendChild(footer);
 
     // 长文截断：限制正文高度并加半隐→全隐渐变；短文不加，保持自适应
     const cutEls: HTMLElement[] = [];
+    const tocEls: HTMLElement[] = [];
     if (content) {
       // 正文容器带 fade-in-down 入场动画（基础 opacity:0），
       // 后台标签或克隆场景下动画可能停在第一帧导致正文透明，捕获前强制可见
       content.style.cssText += ";animation:none;opacity:1";
+
+      // 作者手写的目录段（"## 目录/TOC/Contents" 标题 + 后续列表直到下一个标题/分隔线）
+      // 不是正文，节选图里跳过：临时隐藏，捕获后还原
+      for (const h of content.querySelectorAll("h1,h2,h3,h4,h5,h6")) {
+        if (/目录|contents|toc/i.test(h.textContent || "")) {
+          tocEls.push(h as HTMLElement);
+          let sib = h.nextElementSibling;
+          while (sib && !/^H[1-6]$/.test(sib.tagName)) {
+            tocEls.push(sib as HTMLElement);
+            sib = sib.nextElementSibling;
+          }
+          break;
+        }
+      }
+      tocEls.forEach((el) => (el.style.display = "none"));
     }
     if (content && content.scrollHeight > EXCERPT_MAX) {
       content.style.cssText +=
@@ -234,6 +246,7 @@ const generateImage = async () => {
       footer.remove();
       fade.remove();
       backBoxes.forEach((el) => (el.style.display = ""));
+      tocEls.forEach((el) => (el.style.display = ""));
       cutEls.forEach((el) => el.classList.remove("up-share-cut"));
       if (docStyle === null) docEle.removeAttribute("style");
       else docEle.setAttribute("style", docStyle);
