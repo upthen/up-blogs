@@ -181,9 +181,10 @@ const generateImage = async () => {
       FADE_HEIGHT +
       "px;background:linear-gradient(to bottom, transparent, var(--color-white));pointer-events:none";
 
-    // 捕获期间临时"着装"：#up-content 即通栏白色卡片（设计 A，无幕布、无圆角）
+    // 捕获期间临时"着装"：#up-content 即通栏白色卡片（设计 A，无幕布、无圆角）。
+    // main#up-content 带 min-height:calc(100dvh-200px)，会把视口高度的空白区截进图里，压掉它
     backBoxes.forEach((el) => (el.style.display = "none"));
-    docEle.style.cssText += ";background:var(--color-white)";
+    docEle.style.cssText += ";background:var(--color-white);min-height:0";
     card.insertBefore(header, card.firstChild);
     card.appendChild(footer);
 
@@ -215,11 +216,13 @@ const generateImage = async () => {
         `;position:relative;max-height:${EXCERPT_MAX}px;overflow:hidden`;
       content.appendChild(fade);
       // 给节选区以下的元素打标记，交给 snapdom 从克隆中整体剔除，
-      // 否则它会内联整篇（数万 px）子树的样式导致挂起
+      // 否则它会内联整篇（数万 px）子树的样式导致挂起。
+      // 注意边界必须是 EXCERPT_MAX 而非减去渐隐带：渐隐带内的文字要保留，
+      // 否则渐变下面没有文字可溶解，渐隐看起来就像没生效
       const contentTop = content.getBoundingClientRect().top;
       content.querySelectorAll("*").forEach((el) => {
         if (el.contains(fade)) return;
-        if (el.getBoundingClientRect().top - contentTop > EXCERPT_MAX - FADE_HEIGHT) {
+        if (el.getBoundingClientRect().top - contentTop > EXCERPT_MAX) {
           el.classList.add("up-share-cut");
           cutEls.push(el as HTMLElement);
         }
