@@ -133,7 +133,9 @@ const makeFooterCard = (qrDataUrl: string) => {
       <div style="font-size:16px;font-weight:600;color:var(--color-accentBlack)">${site.value.title}</div>
       <div style="font-size:13px;color:var(--color-aux2);margin-top:5px">${window.location.origin}</div>
     </div>
-    <img alt="文章二维码" style="width:92px;height:92px;flex:none" src="${qrDataUrl}" />
+    <div style="padding:7px;border:1px solid var(--color-auxGray1);border-radius:10px;flex:none">
+      <img alt="文章二维码" style="width:84px;height:84px;display:block" src="${qrDataUrl}" />
+    </div>
   `;
   return footer;
 };
@@ -152,11 +154,16 @@ const FADE_HEIGHT = 180;
 const generateImage = async () => {
   generating.value = true;
   try {
+    // 二维码深浅模块跟随主题文字色、底色透明融入卡片，避免暗色主题下刺眼的白色方块；
+    // 模块色与卡片底色对比度足够（约 12:1），不影响扫码
+    const themeDark = document.documentElement.classList.contains("dark");
     const qrDataUrl = await QRCode.toDataURL(window.location.href, {
-      width: 176,
+      width: 184,
       margin: 1,
-      // 二维码固定黑码白底，保证任何主题下都可扫
-      color: { dark: "#000000", light: "#ffffff" },
+      color: {
+        dark: themeDark ? "#e0e0e0" : "#212121",
+        light: "#00000000",
+      },
     });
 
     const docEle = document.getElementById("up-content");
