@@ -14,7 +14,7 @@ ds4 的正式名字叫 DwarfStar，作者是 Redis 的创造者 antirez，2026 �
 
 ## 一、先数文件：「单文件引擎」的第一天就有 49 个文件
 
-先把流传最广的「单文件」处理掉。写这篇文章时我把仓库全史克隆到 /tmp/ds4-research/ds4，797 个 commit。`git ls-tree` 显示 2026-05-07 的首个 commit「DS4 initial release」在根目录就放了 16 个条目——ds4.c、ds4_cli.c、ds4_server.c、ds4_metal.m 等 14 个文件，加 metal/、tests/ 两个目录，递归展开是 49 个文件，tests/ 里另藏着 16 个测试。初始的 ds4.c 是 16,640 行；五个月后 85,327 行，是初始的 5.1 倍；全项目 C 代码约 229,454 行——ds4_metal.m 50,528 行、ds4_cuda.cu 34,039 行、ds4_server.c 23,104 行、ds4_agent.c 13,635 行。「单文件」从第一天起就不成立。
+先把流传最广的「单文件」处理掉。写这篇文章时我把仓库全史克隆到 /tmp/ds4-research/ds4，797 个 commit。`git ls-tree` 显示 2026-05-07 的首个 commit「DS4 initial release」在根目录就放了 16 个条目——ds4.c、ds4_cli.c、ds4_server.c、ds4_metal.m 等 14 个文件，加 metal/、tests/ 两个目录，递归展开是 49 个文件，tests/ 里另藏着 16 个文件。初始的 ds4.c 是 16,640 行；五个月后 85,327 行，是初始的 5.1 倍；全项目 C 代码约 229,454 行——ds4_metal.m 50,528 行、ds4_cuda.cu 34,039 行、ds4_server.c 23,104 行、ds4_agent.c 13,635 行。「单文件」从第一天起就不成立。
 
 但另一个说法是真的，而且比「行数少」有意思。ds4.c 的头注释（ds4.c:1-9）自我声明：「This file is deliberately vertical: it owns GGUF loading, the fixed DeepSeek V4 tensor layouts, CPU reference kernels, the whole-model Metal graph driver, and tokenizer wiring」。这个文件刻意「垂直」——GGUF 加载、DeepSeek V4 的张量布局、CPU 参考内核、整模型 Metal 图驱动、tokenizer 接线，全栈每一层它都拥有一份。ds4 真正特别的不是行数，是「单核垂直 + 自包含」的组织方式：引擎的每一层摊在一个能从头读到尾的文件里，「把引擎当参考实现来读」才成为可能。头注释还补了一句，validation 只认已知的 Flash 和 Pro 布局，其他一律 fail early——不装通用。这个迷思本身就是失真的第一个样本——往下读之前，得先把对象校准一遍。
 
